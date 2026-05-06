@@ -6,8 +6,8 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Prøvepakke", href: "#provepakke" },
-  { label: "Metode", href: "#metode" },
-  { label: "Tjenester", href: "#tjenester" },
+  { label: "Hva du får", href: "#hva-du-faar" },
+  { label: "For hvem", href: "#for-hvem" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
 ];

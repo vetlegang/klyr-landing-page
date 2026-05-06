@@ -22,7 +22,7 @@ const deliverables = [
 
 export default function WhatYouGet() {
   return (
-    <section className="bg-white py-20 md:py-28 px-6">
+    <section id="hva-du-faar" className="bg-white py-20 md:py-28 px-6">
       <div className="max-w-7xl mx-auto">
         <FadeIn>
           <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-4">

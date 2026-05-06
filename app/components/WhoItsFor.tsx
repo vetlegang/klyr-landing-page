@@ -32,7 +32,7 @@ const profiles = [
 
 export default function WhoItsFor() {
   return (
-    <section className="bg-[#F7F4EE] py-20 md:py-28 px-6">
+    <section id="for-hvem" className="bg-[#F7F4EE] py-20 md:py-28 px-6">
       <div className="max-w-7xl mx-auto">
         <FadeIn>
           <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-4">
