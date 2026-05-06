@@ -23,14 +23,14 @@ export function FadeIn({
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: direction === "up" ? 28 : 0 }}
+      initial={{ opacity: 0, y: direction === "up" ? 20 : 0 }}
       animate={
         isInView
           ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: direction === "up" ? 28 : 0 }
+          : { opacity: 0, y: direction === "up" ? 20 : 0 }
       }
       transition={{
-        duration: 0.65,
+        duration: 0.55,
         delay,
         ease: "easeOut",
       }}

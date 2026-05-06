@@ -1,20 +1,20 @@
 const footerLinks = {
   Tjenester: [
-    "Paid Social",
     "Creative Strategy",
-    "Search & Shopping",
-    "CRO",
-    "Measurement",
-    "Growth Systems",
+    "Paid Social",
+    "Creative Production",
+    "CRO / Landingssider",
+    "Tracking & Measurement",
+    "Monthly Testing System",
   ],
-  Selskapet: ["Metode", "Arbeid", "Innsikt", "Kontakt"],
+  Selskapet: ["Metode", "Arbeid", "FAQ", "Kontakt"],
 };
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-black border-t border-white/[0.07] px-6 py-16 md:py-20">
+    <footer className="bg-[#101010] text-white border-t border-white/[0.07] px-6 py-16 md:py-20">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16 mb-16">
           {/* Brand */}
@@ -26,14 +26,14 @@ export default function Footer() {
               KLYR
             </a>
             <p className="text-sm text-white/35 leading-relaxed max-w-[200px]">
-              KLYR lager, tester og optimaliserer creatives som gjør det tydeligere hva som faktisk skaper salg.
+              Creative-systemer som lærer av hvert signal — fra hook til skalering.
             </p>
           </div>
 
           {/* Links */}
           {Object.entries(footerLinks).map(([heading, links]) => (
             <div key={heading}>
-              <p className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase mb-5">
+              <p className="text-[10px] font-bold tracking-[0.2em] text-white/25 uppercase mb-5">
                 {heading}
               </p>
               <ul className="flex flex-col gap-3">
@@ -41,7 +41,7 @@ export default function Footer() {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-sm text-white/45 hover:text-white transition-colors duration-200"
+                      className="text-sm text-white/40 hover:text-white transition-colors duration-200"
                     >
                       {link}
                     </a>
@@ -53,12 +53,12 @@ export default function Footer() {
 
           {/* CTA */}
           <div>
-            <p className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase mb-5">
+            <p className="text-[10px] font-bold tracking-[0.2em] text-white/25 uppercase mb-5">
               Kom i gang
             </p>
             <a
               href="#kontakt"
-              className="inline-flex items-center bg-[#BEFF00] text-black text-xs font-bold px-5 py-3 tracking-tight hover:bg-white transition-colors duration-200"
+              className="inline-flex items-center bg-[#BEFF00] text-black text-xs font-bold px-5 py-3 rounded-full tracking-tight hover:bg-white transition-colors duration-200"
             >
               Book vekstanalyse
             </a>
@@ -71,7 +71,7 @@ export default function Footer() {
             © {year} KLYR. Alle rettigheter forbeholdt.
           </p>
           <p className="text-xs text-white/15">
-            Performance Marketing · Norge
+            Creative Performance · Meta Ads · Norge
           </p>
         </div>
       </div>

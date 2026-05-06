@@ -1,92 +1,63 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
 import { FadeIn } from "./FadeIn";
 
 const deliverables = [
   {
-    title: "Vi analyserer produktet og tilbudet ditt",
-    desc: "Vi ser på hva du selger, til hvem og hva som gjør det unikt.",
+    num: "01",
+    title: "20 unike creatives",
+    desc: "10 still ads og 10 video ads — produsert for Meta og klare til bruk i Facebook- og Instagram-annonser.",
   },
   {
-    title: "Vi finner sterke vinkler og hooks",
-    desc: "Vi bestemmer hvilke argumenter og åpningslinjer som bør testes.",
+    num: "02",
+    title: "Flere hooks og vinkler å teste",
+    desc: "Ulike åpningslinjer og argumenter slik at du finner hva som faktisk stopper scrollingen og konverterer.",
   },
   {
-    title: "Vi lager stillbilder (still ads)",
-    desc: "10 statiske annonsevarianter klare til bruk i Meta.",
-  },
-  {
-    title: "Vi lager video ads",
-    desc: "10 video-annonsevarianter med ulike hooks og formater.",
-  },
-  {
-    title: "Vi lager variasjoner for testing",
-    desc: "Ulike versjoner av tekst, bildevalg, CTA og format.",
-  },
-  {
-    title: "Vi anbefaler hvordan de bør testes",
-    desc: "Du får en enkel guide for hvordan du setter opp testingen i Meta.",
-  },
-  {
-    title: "Vi kan hjelpe med anbefalinger om annonsebudsjett",
-    desc: "Vi gir konkrete råd om hva du bør bruke for å få signaler raskt.",
-  },
-  {
-    title: "Vi kan lage en ny runde hver måned",
-    desc: "Friske creatives jevnlig holder kontoen i bevegelse og algoritmene aktive.",
+    num: "03",
+    title: "Klart for Facebook og Instagram",
+    desc: "Alt er tilpasset Meta-plattformen og klar til å kjøres direkte i annonsekontoen din.",
   },
 ];
 
 export default function WhatYouGet() {
   return (
-    <section id="hva-du-faar" className="bg-[#080808] py-24 md:py-32 px-6">
+    <section className="bg-white py-20 md:py-28 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
-          {/* Left: header */}
-          <div className="md:sticky md:top-28">
-            <FadeIn>
-              <p className="text-xs font-bold tracking-[0.22em] text-white/35 uppercase mb-5">
-                Leveransen
-              </p>
-              <h2 className="text-[clamp(1.75rem,4.5vw,3.25rem)] font-black leading-[1.06] tracking-tight mb-6">
-                Dette får du{" "}
-                <span className="text-[#BEFF00]">fra KLYR</span>
-              </h2>
-              <p className="text-sm md:text-base text-white/45 leading-relaxed mb-8 max-w-sm">
-                Konkret leveranse. Ingen vage strategidokumenter. Alt du
-                trenger for å starte testing i Meta.
-              </p>
-              <a
-                href="#kontakt"
-                className="inline-flex items-center bg-[#BEFF00] text-black text-sm font-bold px-7 py-3.5 tracking-tight hover:bg-white transition-colors duration-200"
-              >
-                Start med prøvepakke
-              </a>
-            </FadeIn>
-          </div>
+        <FadeIn>
+          <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-4">
+            Hva du får
+          </p>
+          <h2 className="text-[clamp(1.5rem,3.5vw,2.5rem)] font-black leading-[1.08] tracking-tight mb-3 text-[#101010]">
+            20 creatives.{" "}
+            <span className="underline underline-offset-4 decoration-[#BEFF00] decoration-[3px]">
+              5 000 kr.
+            </span>{" "}
+            Ingen binding.
+          </h2>
+          <p className="text-sm text-[#737373] leading-relaxed mb-12 max-w-md">
+            Prøvepakken er laget for bedrifter som vil teste Meta-annonsering
+            uten å binde seg til et dyrt byråopplegg. Vanlig pris 10 000 kr —
+            50% rabatt på første runde.
+          </p>
+        </FadeIn>
 
-          {/* Right: deliverables list */}
-          <div className="flex flex-col divide-y divide-white/[0.06]">
-            {deliverables.map((item, i) => (
-              <FadeIn key={item.title} delay={i * 0.05}>
-                <div className="py-5 flex items-start gap-4">
-                  <CheckCircle2
-                    size={16}
-                    className="text-[#BEFF00] mt-0.5 shrink-0"
-                  />
-                  <div>
-                    <p className="text-sm font-bold text-white mb-1">
-                      {item.title}
-                    </p>
-                    <p className="text-xs text-white/40 leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {deliverables.map((item, i) => (
+            <FadeIn key={item.num} delay={i * 0.08}>
+              <div className="bg-[#F7F4EE] rounded-2xl border border-black/[0.07] p-7 h-full flex flex-col shadow-sm">
+                <span className="text-[10px] font-mono font-bold text-[#A3A3A3] tracking-widest mb-4 block">
+                  {item.num}
+                </span>
+                <h3 className="text-base font-black text-[#101010] mb-3 leading-snug">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-[#737373] leading-relaxed flex-1">
+                  {item.desc}
+                </p>
+              </div>
+            </FadeIn>
+          ))}
         </div>
       </div>
     </section>

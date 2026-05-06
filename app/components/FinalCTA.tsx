@@ -1,56 +1,64 @@
 "use client";
 
 import { FadeIn } from "./FadeIn";
+import LeadForm from "./LeadForm";
 
 export default function FinalCTA() {
   return (
-    <section className="bg-[#080808] py-24 md:py-32 px-6 relative overflow-hidden">
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[280px] bg-[#BEFF00]/[0.035] rounded-full blur-[100px] pointer-events-none" />
+    <section id="kontakt" className="bg-[#111111] py-20 md:py-28 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-start">
+          {/* Left */}
+          <FadeIn>
+            <p className="text-xs font-bold tracking-[0.22em] text-white/35 uppercase mb-5">
+              Start prøvepakken
+            </p>
+            <h2 className="text-[clamp(1.75rem,4.5vw,3.25rem)] font-black leading-[1.06] tracking-tight mb-5 text-white">
+              20 unike Meta-creatives.{" "}
+              <span className="text-[#BEFF00]">5 000 kr.</span>{" "}
+              Ingen binding.
+            </h2>
+            <p className="text-base text-white/50 leading-relaxed mb-8 max-w-md">
+              Send nettsiden din — vi ser på tilbudet og målgruppen din og
+              lager 20 creatives klare til bruk i Facebook- og
+              Instagram-annonser.
+            </p>
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        <FadeIn>
-          <p className="text-xs font-bold tracking-[0.25em] text-white/30 uppercase mb-6">
-            Ta neste steg nå
-          </p>
-          <h2 className="text-[clamp(2rem,6vw,5rem)] font-black leading-[0.97] tracking-tighter mb-6">
-            Vil du teste 20 creatives{" "}
-            <span className="text-[#BEFF00]">for 5 000 kr?</span>
-          </h2>
-          <p className="text-base md:text-lg text-white/45 leading-relaxed max-w-lg mx-auto mb-10">
-            Send oss nettsiden din, så ser vi om prøvepakken passer for
-            deg – og hva slags vinkler og hooks vi bør teste.
-          </p>
-        </FadeIn>
+            <div className="flex flex-col gap-3 mb-8">
+              {[
+                "10 still ads + 10 video ads til Meta",
+                "Ulike hooks og vinkler for systematisk testing",
+                "50% rabatt på første runde — vanlig pris 10 000 kr",
+                "Ingen binding — du bestemmer neste steg",
+              ].map((t) => (
+                <div key={t} className="flex items-start gap-3">
+                  <span className="text-[#BEFF00] text-xs leading-5 shrink-0 mt-0.5">✓</span>
+                  <p className="text-sm text-white/50 leading-snug">{t}</p>
+                </div>
+              ))}
+            </div>
 
-        <FadeIn delay={0.1}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
-            <a
-              href="#kontakt"
-              className="inline-flex items-center justify-center bg-[#BEFF00] text-black text-sm font-bold px-10 py-4 tracking-tight hover:bg-white transition-colors duration-200"
-            >
-              Start med prøvepakke
-            </a>
-            <a
-              href="#kalkulator"
-              className="inline-flex items-center justify-center border border-white/15 text-white/55 text-sm font-medium px-7 py-4 hover:border-white/30 hover:text-white transition-colors duration-200"
-            >
-              Beregn annonsebehov
-            </a>
-          </div>
+            <div className="pt-8 border-t border-white/[0.07]">
+              <p className="text-xs text-white/25 leading-relaxed max-w-xs">
+                Vi er creatives som jobber med Meta — ikke et tungt byrå med
+                lange prosesser og store retainere.
+              </p>
+            </div>
+          </FadeIn>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12">
-            {[
-              { value: "Gratis", label: "Første vurdering" },
-              { value: "1 dag", label: "Responstid" },
-              { value: "Ingen", label: "Binding" },
-            ].map((item) => (
-              <div key={item.label} className="text-center">
-                <p className="text-xl font-black text-[#BEFF00] mb-0.5">{item.value}</p>
-                <p className="text-xs text-white/25 tracking-wide">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </FadeIn>
+          {/* Right: form */}
+          <FadeIn delay={0.1}>
+            <div className="bg-white/[0.05] border border-white/[0.09] rounded-2xl p-7 md:p-8">
+              <p className="text-sm font-black text-white mb-1">
+                Start med prøvepakken
+              </p>
+              <p className="text-xs text-white/40 mb-6 leading-relaxed">
+                Send nettsiden din — vi ser om prøvepakken passer for deg.
+              </p>
+              <LeadForm dark />
+            </div>
+          </FadeIn>
+        </div>
       </div>
     </section>
   );

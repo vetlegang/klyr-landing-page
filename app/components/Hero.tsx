@@ -1,135 +1,71 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { FadeIn } from "./FadeIn";
+import LeadForm from "./LeadForm";
 
-const marqueeWords = [
-  "VEKST", "TESTING", "SIGNAL", "CREATIVES", "CPA", "META ADS",
-  "HOOKS", "VINKLER", "MER", "SKALERING", "ROAS", "ANNONSERING",
+const bullets = [
+  "20 unike creatives — still ads og video ads til Meta",
+  "50% rabatt på første runde — kun 5 000 kr",
+  "Ingen binding. Du bestemmer om vi skal hjelpe videre.",
 ];
-const marqueeContent = [...marqueeWords, ...marqueeWords, ...marqueeWords];
-
-const proofCards = [
-  { value: "20", label: "creatives per runde" },
-  { value: "5 000 kr", label: "første pakke" },
-  { value: "10 stills", label: "+ 10 video ads" },
-  { value: "Klar", label: "til testing i Meta" },
-];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 36 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.65, delay: i * 0.11, ease: "easeOut" },
-  }),
-};
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black pt-20">
-      {/* Grid texture */}
-      <div
-        className="absolute inset-0 opacity-[0.022]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-        }}
-      />
-      {/* Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[650px] h-[400px] bg-[#BEFF00]/[0.05] rounded-full blur-[130px] pointer-events-none" />
+    <section className="bg-[#F7F4EE] pt-28 pb-20 md:pt-36 md:pb-28 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-start">
+          {/* Left */}
+          <FadeIn>
+            <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-5">
+              Prøvepakke · Meta-annonser
+            </p>
+            <h1 className="text-[clamp(2rem,5.5vw,3.75rem)] font-black leading-[1.04] tracking-tight mb-6 text-[#101010]">
+              Test 20 unike{" "}
+              <span className="underline underline-offset-4 decoration-[#BEFF00] decoration-[3px]">
+                Meta-creatives
+              </span>{" "}
+              for 5&nbsp;000&nbsp;kr.
+            </h1>
+            <p className="text-base md:text-lg text-[#737373] leading-relaxed mb-8 max-w-lg">
+              Vi lager 20 unike creatives til Facebook- og Instagram-annonser
+              — slik at bedriften din kan teste flere hooks og vinkler uten
+              dyre byråavtaler. 50% rabatt på første runde. Ingen binding.
+            </p>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-16 md:py-0">
-        {/* Eyebrow */}
-        <motion.p
-          className="text-xs font-bold tracking-[0.28em] text-white/35 uppercase mb-7"
-          custom={0} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          KLYR · Performance Marketing
-        </motion.p>
+            <ul className="flex flex-col gap-3 mb-8">
+              {bullets.map((b) => (
+                <li key={b} className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF00] border border-black/20 mt-2 shrink-0" />
+                  <span className="text-sm text-[#737373] leading-snug">{b}</span>
+                </li>
+              ))}
+            </ul>
 
-        {/* Headline */}
-        <motion.h1
-          className="text-[clamp(2.4rem,7.5vw,7rem)] font-black leading-[0.95] tracking-tighter max-w-4xl mb-7"
-          custom={1} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          Få flere kunder med annonser som faktisk{" "}
-          <span className="text-[#BEFF00]">blir testet skikkelig.</span>
-        </motion.h1>
-
-        {/* Subheadline */}
-        <motion.p
-          className="text-base md:text-lg text-white/55 leading-relaxed max-w-2xl mb-5"
-          custom={2} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          KLYR lager 20 unike annonsevarianter i måneden for bedrifter som
-          vil ha flere salg, flere leads og mindre sløsing på Meta.
-        </motion.p>
-
-        {/* Explanation */}
-        <motion.p
-          className="text-sm text-white/35 leading-relaxed max-w-xl mb-10"
-          custom={3} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          Du får stillbilder, video ads, hooks og vinkler klare til testing –
-          uten å ansette designer, videoredigerer eller performance-team selv.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-3 mb-8"
-          custom={4} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          <a
-            href="#provepakke"
-            className="inline-flex items-center justify-center bg-[#BEFF00] text-black text-sm font-bold px-8 py-4 tracking-tight hover:bg-white transition-colors duration-200"
-          >
-            Start med prøvepakke
-          </a>
-          <a
-            href="#hva-du-faar"
-            className="inline-flex items-center justify-center border border-white/20 text-white text-sm font-semibold px-8 py-4 hover:border-white/45 hover:bg-white/[0.03] transition-colors duration-200"
-          >
-            Se hva du får
-          </a>
-        </motion.div>
-
-        {/* Trust line */}
-        <motion.p
-          className="text-xs text-white/30 font-medium tracking-wide mb-12"
-          custom={5} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          20 creatives · 10 stills · 10 video ads · Fra{" "}
-          <span className="text-[#BEFF00]/70">5 000 kr</span> eks. mva
-        </motion.p>
-
-        {/* Proof cards */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.07] max-w-2xl"
-          custom={6} initial="hidden" animate="visible" variants={fadeUp}
-        >
-          {proofCards.map((card) => (
-            <div key={card.label} className="bg-black px-5 py-4">
-              <p className="text-base font-black text-white mb-0.5">{card.value}</p>
-              <p className="text-[10px] text-white/30 leading-tight">{card.label}</p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl font-black text-[#101010]">5 000</span>
+                <span className="text-base font-bold text-[#737373]">kr</span>
+              </div>
+              <span className="text-xs text-[#A3A3A3]">eks. mva</span>
+              <span className="text-xs line-through text-[#A3A3A3]">10 000 kr</span>
+              <span className="inline-flex bg-[#101010] text-white text-[10px] font-black px-3 py-1 tracking-[0.1em] uppercase rounded-full">
+                50% rabatt
+              </span>
             </div>
-          ))}
-        </motion.div>
-      </div>
+          </FadeIn>
 
-      {/* Marquee */}
-      <div className="relative mt-14 md:mt-20 border-t border-b border-white/[0.05] py-4 overflow-hidden">
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
-        <div className="animate-marquee">
-          {marqueeContent.map((word, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-5 px-5 text-[11px] font-bold tracking-[0.22em] text-white/18 whitespace-nowrap uppercase"
-            >
-              {word}
-              <span className="text-[#BEFF00]/30">·</span>
-            </span>
-          ))}
+          {/* Right: form card */}
+          <FadeIn delay={0.1}>
+            <div className="bg-white rounded-2xl border border-black/[0.08] shadow-sm p-7 md:p-8">
+              <p className="text-sm font-black text-[#101010] mb-1">
+                Start med prøvepakken
+              </p>
+              <p className="text-xs text-[#737373] mb-6 leading-relaxed">
+                Send nettsiden din — vi ser om prøvepakken passer for deg.
+              </p>
+              <LeadForm />
+            </div>
+          </FadeIn>
         </div>
       </div>
     </section>

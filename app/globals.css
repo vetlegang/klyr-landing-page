@@ -2,11 +2,14 @@
 
 :root {
   --accent: #BEFF00;
+  --bg: #F7F4EE;
+  --bg-alt: #F0EDE6;
+  --text: #101010;
 }
 
 @theme inline {
-  --color-background: #000000;
-  --color-foreground: #ffffff;
+  --color-background: #F7F4EE;
+  --color-foreground: #101010;
   --color-accent: #BEFF00;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -22,8 +25,8 @@ html {
 }
 
 body {
-  background: #000;
-  color: #fff;
+  background: #F7F4EE;
+  color: #101010;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -34,13 +37,13 @@ body {
   width: max-content;
 }
 
-/* Custom range slider */
+/* Custom range slider — light theme */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 2px;
-  background: #2a2a2a;
+  background: #E5E2DA;
   outline: none;
   cursor: pointer;
   border-radius: 2px;
@@ -52,21 +55,21 @@ input[type="range"]::-webkit-slider-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #BEFF00;
+  background: #101010;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 0 0 0 4px rgba(190, 255, 0, 0.15);
+  box-shadow: 0 0 0 4px rgba(16, 16, 16, 0.1);
 }
 
 input[type="range"]::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #BEFF00;
+  background: #101010;
   cursor: pointer;
   border: none;
 }

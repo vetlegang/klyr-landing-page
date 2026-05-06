@@ -2,67 +2,74 @@
 
 import { FadeIn } from "./FadeIn";
 
-const proofCards = [
+const steps = [
   {
-    metric: "700+",
-    unit: "salg på 30 dager",
-    category: "Supplement",
-    color: "text-[#BEFF00]",
+    num: "01",
+    title: "Send nettsiden din",
+    desc: "Fyll ut skjemaet med nettside og hva du selger.",
   },
   {
-    metric: "800 → 420",
-    unit: "kr CPA",
-    category: "Paid Social",
-    color: "text-white",
+    num: "02",
+    title: "Vi finner hooks og vinkler",
+    desc: "Vi analyserer tilbudet og målgruppen din og bygger en testbar vinkelbank.",
   },
   {
-    metric: "100+",
-    unit: "annonsevarianter/mnd",
-    category: "Creative Volume",
-    color: "text-[#BEFF00]",
+    num: "03",
+    title: "Vi lager 20 creatives",
+    desc: "10 still ads og 10 video ads, produsert og tilpasset Meta-plattformen.",
   },
   {
-    metric: "3",
-    unit: "nye vinnervinkler",
-    category: "Creative Strategy",
-    color: "text-white",
+    num: "04",
+    title: "Du tester i Meta",
+    desc: "Du kjører annonsene i Facebook/Instagram og ser hva som faktisk konverterer.",
   },
 ];
 
 export default function ProofStrip() {
   return (
-    <section className="bg-[#080808] border-b border-white/[0.06] py-14 px-6">
+    <section className="bg-[#111111] py-20 md:py-28 px-6">
       <div className="max-w-7xl mx-auto">
-        {/* Disclaimer label */}
         <FadeIn>
-          <p className="text-[10px] font-bold tracking-[0.22em] text-white/20 uppercase mb-8">
-            Eksempeldata / erstattes med reelle cases
+          <p className="text-xs font-bold tracking-[0.22em] text-white/35 uppercase mb-4">
+            Slik fungerer det
           </p>
+          <h2 className="text-[clamp(1.5rem,3.5vw,2.5rem)] font-black leading-[1.08] tracking-tight mb-12 text-white">
+            Fra nettside til 20 Meta-creatives — raskt og konkret.
+          </h2>
         </FadeIn>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.05]">
-          {proofCards.map((card, i) => (
-            <FadeIn key={card.category} delay={i * 0.07}>
-              <div className="bg-[#080808] px-6 py-8 md:px-8 md:py-10">
-                <p
-                  className={`text-3xl md:text-4xl font-black tracking-tight mb-1 ${card.color}`}
-                >
-                  {card.metric}
-                </p>
-                <p className="text-sm text-white/50 mb-3">{card.unit}</p>
-                <p className="text-[10px] font-bold tracking-[0.2em] text-white/25 uppercase">
-                  {card.category}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.07] rounded-2xl overflow-hidden">
+          {steps.map((step, i) => (
+            <FadeIn key={step.num} delay={i * 0.07}>
+              <div className="bg-[#161616] p-7 md:p-8 h-full">
+                <span className="text-[10px] font-mono font-bold text-white/25 tracking-widest block mb-4">
+                  {step.num}
+                </span>
+                <h3 className="text-sm font-black text-white mb-2 leading-snug">
+                  {step.title}
+                </h3>
+                <p className="text-xs text-white/40 leading-relaxed">
+                  {step.desc}
                 </p>
               </div>
             </FadeIn>
           ))}
         </div>
 
-        <FadeIn delay={0.2}>
-          <p className="mt-6 text-xs text-white/20 leading-relaxed max-w-lg">
-            Når vi publiserer reelle kundecases, viser vi tall som CPA,
-            spend, salg, MER og kreative vinkler som faktisk er verifisert.
-          </p>
+        <FadeIn delay={0.3}>
+          <div className="mt-8 flex flex-wrap gap-6 md:gap-12">
+            {[
+              { value: "20", label: "Unike creatives" },
+              { value: "5 000", label: "kr eks. mva" },
+              { value: "50%", label: "Rabatt første runde" },
+              { value: "0", label: "Binding" },
+            ].map((item) => (
+              <div key={item.label}>
+                <p className="text-2xl font-black text-[#BEFF00]">{item.value}</p>
+                <p className="text-xs text-white/30 mt-0.5">{item.label}</p>
+              </div>
+            ))}
+          </div>
         </FadeIn>
       </div>
     </section>

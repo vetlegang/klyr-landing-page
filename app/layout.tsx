@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KLYR | Performance marketing byrå",
+  title: "KLYR | Creative Performance for Meta",
   description:
-    "KLYR gjør annonsering enklere å forstå: flere tydelige tester, færre tilfeldige beslutninger og raskere vei til det som selger.",
+    "KLYR bygger creative-systemer som lærer av hvert signal – ikke random testing, men systematisk iterasjon fra hook til skalering.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
       lang="no"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="bg-black text-white min-h-screen">{children}</body>
+      <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">{children}</body>
     </html>
   );
 }

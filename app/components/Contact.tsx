@@ -29,9 +29,9 @@ const pakkeOptions = [
 ];
 
 const inputClass =
-  "w-full bg-transparent border border-white/12 text-white text-sm px-4 py-3.5 placeholder-white/20 focus:outline-none focus:border-[#BEFF00]/45 transition-colors duration-200";
+  "w-full bg-[#F7F4EE] border border-black/[0.1] text-[#101010] text-sm px-4 py-3.5 rounded-xl placeholder-[#A3A3A3] focus:outline-none focus:border-black/[0.3] transition-colors duration-200";
 
-const labelClass = "block text-[10px] font-bold tracking-[0.2em] text-white/35 uppercase mb-2";
+const labelClass = "block text-[10px] font-bold tracking-[0.2em] text-[#737373] uppercase mb-2";
 
 export default function Contact() {
   const [form, setForm] = useState<FormState>({
@@ -57,45 +57,49 @@ export default function Contact() {
   };
 
   return (
-    <section id="kontakt" className="bg-black py-24 md:py-32 px-6">
+    <section id="kontakt" className="bg-white py-24 md:py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 md:gap-20">
           {/* Left */}
           <FadeIn>
-            <p className="text-xs font-bold tracking-[0.22em] text-white/35 uppercase mb-5">
+            <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-5">
               Kontakt
             </p>
-            <h2 className="text-[clamp(1.75rem,4.5vw,3.25rem)] font-black leading-[1.06] tracking-tight mb-5">
-              Vil du teste 20 creatives{" "}
-              <span className="text-[#BEFF00]">for 5 000 kr?</span>
+            <h2 className="text-[clamp(1.75rem,4.5vw,3.25rem)] font-black leading-[1.06] tracking-tight mb-5 text-[#101010]">
+              Vil du se hvilke vinkler vi{" "}
+              <span className="underline underline-offset-4 decoration-[#BEFF00] decoration-[3px]">
+                ville testet
+              </span>{" "}
+              for deg?
             </h2>
-            <p className="text-sm text-white/45 leading-relaxed mb-10 max-w-sm">
+            <p className="text-sm text-[#737373] leading-relaxed mb-10 max-w-sm">
               Send oss nettsiden din og hva du selger. Vi tar kontakt innen
-              én arbeidsdag med en vurdering av hva som bør testes.
+              én arbeidsdag med en konkret vurdering av hva som bør testes
+              — og hvorfor.
             </p>
 
             <div className="flex flex-col gap-4 mb-10">
               {[
                 "Vi svarer innen 1 arbeidsdag",
-                "Gratis første vurdering – ingen forpliktelse",
+                "Gratis første vurdering — ingen forpliktelse",
                 "Ingen binding etter første runde",
                 "Du trenger ikke forstå Meta Ads fra før",
               ].map((t) => (
                 <div key={t} className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#BEFF00] mt-1.5 shrink-0" />
-                  <p className="text-sm text-white/40 leading-snug">{t}</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#BEFF00] mt-1.5 shrink-0 border border-black/[0.2]" />
+                  <p className="text-sm text-[#737373] leading-snug">{t}</p>
                 </div>
               ))}
             </div>
 
             {/* Price reminder */}
-            <div className="border border-white/[0.07] p-5 bg-white/[0.02]">
+            <div className="border border-black/[0.08] p-5 rounded-2xl bg-[#F7F4EE]">
               <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-2xl font-black text-[#BEFF00]">5 000 kr</span>
-                <span className="text-xs text-white/35">eks. mva · første runde</span>
+                <span className="text-2xl font-black text-[#101010]">5 000 kr</span>
+                <span className="text-xs text-[#737373]">eks. mva · første runde</span>
               </div>
-              <p className="text-xs text-white/25 line-through mb-1">Vanlig pris: 10 000 kr</p>
-              <p className="text-xs text-[#BEFF00]/60 font-semibold">50% rabatt på første runde</p>
+              <p className="text-xs text-[#A3A3A3] line-through mb-1">Vanlig pris: 10 000 kr</p>
+              <p className="text-xs text-[#737373] font-semibold">50% rabatt på første runde</p>
             </div>
           </FadeIn>
 
@@ -108,10 +112,10 @@ export default function Contact() {
                     <path stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" d="M4 11l5 5 9-9" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-black text-white mb-3">
+                <h3 className="text-2xl font-black text-[#101010] mb-3">
                   Takk – vi tar kontakt snart.
                 </h3>
-                <p className="text-sm text-white/40 leading-relaxed max-w-xs">
+                <p className="text-sm text-[#737373] leading-relaxed max-w-xs">
                   Vi har mottatt meldingen din og kommer tilbake til deg
                   innen 1 arbeidsdag med en vurdering.
                 </p>
@@ -147,10 +151,10 @@ export default function Contact() {
                 <div>
                   <label className={labelClass}>Månedlig annonsebudsjett</label>
                   <select name="budsjett" required value={form.budsjett} onChange={handleChange}
-                    className={`${inputClass} appearance-none cursor-pointer bg-black`}>
+                    className={`${inputClass} appearance-none cursor-pointer`}>
                     <option value="" disabled>Velg budsjett</option>
                     {budsjettOptions.map((o) => (
-                      <option key={o} value={o} className="bg-[#111]">{o}</option>
+                      <option key={o} value={o}>{o}</option>
                     ))}
                   </select>
                 </div>
@@ -158,10 +162,10 @@ export default function Contact() {
                 <div>
                   <label className={labelClass}>Ønsket pakke</label>
                   <select name="pakke" required value={form.pakke} onChange={handleChange}
-                    className={`${inputClass} appearance-none cursor-pointer bg-black`}>
+                    className={`${inputClass} appearance-none cursor-pointer`}>
                     <option value="" disabled>Velg pakke</option>
                     {pakkeOptions.map((o) => (
-                      <option key={o} value={o} className="bg-[#111]">{o}</option>
+                      <option key={o} value={o}>{o}</option>
                     ))}
                   </select>
                 </div>
@@ -175,10 +179,10 @@ export default function Contact() {
                 </div>
 
                 <button type="submit"
-                  className="mt-1 w-full bg-[#BEFF00] text-black text-sm font-bold py-4 tracking-tight hover:bg-white transition-colors duration-200">
+                  className="mt-1 w-full bg-[#101010] text-white text-sm font-bold py-4 rounded-full tracking-tight hover:bg-[#2a2a2a] transition-colors duration-200">
                   Start med prøvepakke
                 </button>
-                <p className="text-[11px] text-white/20 text-center">
+                <p className="text-[11px] text-[#A3A3A3] text-center">
                   Ingen forpliktelse. Vi svarer innen 1 arbeidsdag.
                 </p>
               </form>
