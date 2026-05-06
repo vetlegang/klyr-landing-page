@@ -11,6 +11,10 @@ const faqs = [
     a: "Du får 20 unike creatives klare til bruk i Meta-annonser — 10 still ads og 10 video ads med ulike hooks og vinkler. Vi analyserer tilbudet ditt, finner de sterkeste argumentene og produserer alt tilpasset Facebook og Instagram. Vanlig pris er 10 000 kr, men første runde har 50% rabatt.",
   },
   {
+    q: "Er shoot inkludert?",
+    a: "Nei. Prøvepakken til 5 000 kr gjelder produksjon av 20 creatives basert på tilgjengelig materiell og enkel grafisk/AI/stock-produksjon. Hvis dere trenger nytt materiale, kan vi komme og filme hos dere for +3 000 kr, eller filme med UGC-person for +5 000 kr.",
+  },
+  {
     q: "Er det binding?",
     a: "Nei. Prøvepakken er laget for at du skal teste oss uten forpliktelse. Etter første runde bestemmer du selv om du vil fortsette med nye runder eller avslutte.",
   },

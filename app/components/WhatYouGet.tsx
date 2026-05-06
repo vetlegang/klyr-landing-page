@@ -42,7 +42,7 @@ export default function WhatYouGet() {
           </p>
         </FadeIn>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-4 mb-8">
           {deliverables.map((item, i) => (
             <FadeIn key={item.num} delay={i * 0.08}>
               <div className="bg-[#F7F4EE] rounded-2xl border border-black/[0.07] p-7 h-full flex flex-col shadow-sm">
@@ -59,6 +59,46 @@ export default function WhatYouGet() {
             </FadeIn>
           ))}
         </div>
+
+        {/* Add-ons */}
+        <FadeIn delay={0.25}>
+          <div className="border border-black/[0.08] rounded-2xl p-6 md:p-7 bg-[#F7F4EE]">
+            <p className="text-[10px] font-bold tracking-[0.2em] text-[#A3A3A3] uppercase mb-2">
+              Tilvalg ved behov
+            </p>
+            <p className="text-xs text-[#737373] leading-relaxed mb-5 max-w-2xl">
+              Fysisk shoot er ikke inkludert i prøvepakken. Vi kan bruke
+              eksisterende materiell, produktbilder, UGC, stock/AI-elementer og
+              grafisk produksjon. Trenger dere nytt materiale, kan shoot legges
+              til.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3 max-w-xl">
+              {[
+                {
+                  title: "Shoot hos dere",
+                  price: "+3 000 kr",
+                  desc: "Vi kommer til dere og filmer enkelt innhold til annonsene. UGC-person er ikke inkludert.",
+                },
+                {
+                  title: "Shoot med UGC",
+                  price: "+5 000 kr",
+                  desc: "Vi kommer til dere og filmer med UGC-person/creator. Eget shoot-tilvalg — ikke tillegg oppå vanlig shoot.",
+                },
+              ].map((addon) => (
+                <div
+                  key={addon.title}
+                  className="bg-white rounded-xl border border-black/[0.07] p-4"
+                >
+                  <div className="flex items-baseline justify-between gap-2 mb-1.5">
+                    <span className="text-xs font-black text-[#101010]">{addon.title}</span>
+                    <span className="text-xs font-black text-[#101010] shrink-0">{addon.price}</span>
+                  </div>
+                  <p className="text-[11px] text-[#A3A3A3] leading-relaxed">{addon.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
