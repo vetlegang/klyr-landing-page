@@ -10,7 +10,7 @@ const agencyItems = [
   { text: "Generiske rapporter i PowerPoint", sub: "Tall uten klar retning" },
 ];
 
-const klyrItems = [
+const fujiiItems = [
   { text: "Konkret creative sprint fra 5 000 kr", sub: "Lav risiko. Klart resultat." },
   { text: "Levering på dager — ikke uker", sub: "Rask oppstart, rask læring" },
   { text: "Meta-first, full fokus", sub: "Én plattform. Bedre signaler." },
@@ -50,7 +50,7 @@ export default function WhyCreatives() {
             <em className="not-italic font-light text-white/50">store klienter.</em>
           </h2>
           <p className="text-base text-white/50 max-w-xl mb-14 leading-relaxed">
-            KLYR er bygget for bedrifter som trenger hastighet, tydelighet
+            Fujii er bygget for bedrifter som trenger hastighet, tydelighet
             og annonser som faktisk lærer — uten å betale for det de ikke trenger.
           </p>
         </FadeIn>
@@ -79,19 +79,19 @@ export default function WhyCreatives() {
             </div>
           </FadeIn>
 
-          {/* KLYR col */}
+          {/* Fujii col */}
           <FadeIn delay={0.07}>
             <div className="bg-[#161616] p-8 md:p-10 relative">
               <div className="absolute top-6 right-6">
                 <span className="inline-flex bg-[#BEFF00] text-black text-[9px] font-black px-2.5 py-1 tracking-[0.1em] uppercase rounded-full">
-                  KLYR
+                  Fujii
                 </span>
               </div>
               <p className="text-[10px] font-bold tracking-[0.18em] text-white/50 uppercase mb-7">
                 Slik jobber vi
               </p>
               <ul className="flex flex-col gap-5">
-                {klyrItems.map((item) => (
+                {fujiiItems.map((item) => (
                   <li key={item.text} className="flex items-start gap-3">
                     <span className="text-[#BEFF00] mt-0.5 shrink-0 text-xs leading-5">✓</span>
                     <div>

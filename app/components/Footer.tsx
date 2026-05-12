@@ -23,7 +23,7 @@ export default function Footer() {
               href="#"
               className="text-2xl font-black tracking-[0.18em] text-white block mb-4"
             >
-              KLYR
+              Fujii
             </a>
             <p className="text-sm text-white/35 leading-relaxed max-w-[200px]">
               Creative-systemer som lærer av hvert signal — fra hook til skalering.
@@ -68,7 +68,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-white/[0.07]">
           <p className="text-xs text-white/20">
-            © {year} KLYR. Alle rettigheter forbeholdt.
+            © {year} Fujii. Alle rettigheter forbeholdt.
           </p>
           <p className="text-xs text-white/15">
             Creative Performance · Meta Ads · Norge

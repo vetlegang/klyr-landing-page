@@ -24,7 +24,7 @@ export default function People() {
                 <span className="text-[#BEFF00]">Skarpere mennesker.</span>
               </h2>
               <p className="text-white/50 text-base md:text-lg leading-relaxed">
-                Teknologi gir oss signaler. Mennesker tar beslutningene. KLYR
+                Teknologi gir oss signaler. Mennesker tar beslutningene. Fujii
                 kombinerer kreativ forståelse, kommersiell teft og
                 performance-disiplin for å skape vekst som faktisk holder.
               </p>

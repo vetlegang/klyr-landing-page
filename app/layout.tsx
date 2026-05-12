@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ScrollBackground from "./components/ScrollBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KLYR | Creative Performance for Meta",
+  title: "Fujii | Creative Performance for Meta",
   description:
-    "KLYR bygger creative-systemer som lærer av hvert signal – ikke random testing, men systematisk iterasjon fra hook til skalering.",
+    "Fujii bygger creative-systemer som lærer av hvert signal – ikke random testing, men systematisk iterasjon fra hook til skalering.",
 };
 
 export default function RootLayout({
@@ -28,7 +29,12 @@ export default function RootLayout({
       lang="no"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">{children}</body>
+      <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">
+          <ScrollBackground />
+          <div className="relative z-10">
+            {children}
+          </div>
+        </body>
     </html>
   );
 }

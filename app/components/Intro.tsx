@@ -43,7 +43,7 @@ export default function Intro() {
             <p className="text-white/55 text-base md:text-lg leading-relaxed">
               Moderne performance-markedsføring er støyete: plattformer,
               attribusjon, creatives, tracking, AI, målgrupper, budsjetter.
-              KLYR hjelper merkevarer å skille det som skaper vekst fra det
+              Fujii hjelper merkevarer å skille det som skaper vekst fra det
               som brenner budsjett – uke etter uke, med disiplin og system.
             </p>
           </FadeIn>

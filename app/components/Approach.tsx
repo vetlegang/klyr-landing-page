@@ -49,7 +49,7 @@ export default function Approach() {
             Vår metode
           </p>
           <h2 className="text-[clamp(1.75rem,4.5vw,3.25rem)] font-black leading-[1.06] tracking-tight mb-5 text-[#101010]">
-            KLYR Creative Loop
+            Fujii Creative Loop
           </h2>
           <p className="text-sm md:text-base text-[#737373] leading-relaxed max-w-xl mb-10">
             Et systematisk kreativt feedback-system — fra markedsforståelse

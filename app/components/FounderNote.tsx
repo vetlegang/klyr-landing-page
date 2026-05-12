@@ -10,7 +10,7 @@ export default function FounderNote() {
           <div>
             <FadeIn>
               <p className="text-xs font-bold tracking-[0.22em] text-white/35 uppercase mb-8">
-                Hvorfor KLYR
+                Hvorfor Fujii
               </p>
             </FadeIn>
 
@@ -33,7 +33,7 @@ export default function FounderNote() {
 
             <FadeIn delay={0.18}>
               <p className="text-sm text-white/35 leading-relaxed mb-10">
-                KLYR er ikke et massebyrå. Vi er et lite team som leverer
+                Fujii er ikke et massebyrå. Vi er et lite team som leverer
                 konkret og raskt — og som er ærlige om hva som virker og
                 hva som ikke gjør det. Du skal alltid forstå hva som skjer,
                 og nøyaktig hvorfor.
@@ -51,7 +51,7 @@ export default function FounderNote() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">Vetle Gangeskar</p>
-                  <p className="text-xs text-white/30">Founder, KLYR</p>
+                  <p className="text-xs text-white/30">Founder, Fujii</p>
                 </div>
                 <a
                   href="#kontakt"

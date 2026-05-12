@@ -11,7 +11,7 @@ const bullets = [
 
 export default function Hero() {
   return (
-    <section id="provepakke" className="bg-[#F7F4EE] pt-28 pb-20 md:pt-36 md:pb-28 px-6">
+    <section id="provepakke" className="bg-transparent pt-28 pb-20 md:pt-36 md:pb-28 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-start">
           {/* Left */}
