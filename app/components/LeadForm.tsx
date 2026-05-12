@@ -7,6 +7,7 @@ type ShootOption = "ingen" | "shoot" | "ugc";
 type FormState = {
   navn: string;
   epost: string;
+  telefon: string;
   nettside: string;
   hvaSelger: string;
   budsjett: string;
@@ -64,12 +65,15 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
   const [form, setForm] = useState<FormState>({
     navn: "",
     epost: "",
+    telefon: "",
     nettside: "",
     hvaSelger: "",
     budsjett: "",
     shoot: "ingen",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -81,9 +85,26 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
     setForm((prev) => ({ ...prev, shoot: id }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          shoot: `${selectedShoot.label} (${selectedShoot.tag})`,
+        }),
+      });
+      if (!res.ok) throw new Error("Feil ved sending");
+      setSubmitted(true);
+    } catch {
+      setError("Noe gikk galt. Prøv igjen eller kontakt oss direkte.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const selectedShoot = shootOptions.find((o) => o.id === form.shoot)!;
@@ -214,6 +235,19 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
       </div>
 
       <div>
+        <label className={labelClass(dark)}>Telefon</label>
+        <input
+          type="tel"
+          name="telefon"
+          required
+          placeholder="400 00 000"
+          value={form.telefon}
+          onChange={handleChange}
+          className={inputClass(dark)}
+        />
+      </div>
+
+      <div>
         <label className={labelClass(dark)}>Nettside</label>
         <input
           type="url"
@@ -257,11 +291,15 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
         </select>
       </div>
 
+      {error && (
+        <p className="text-xs text-red-400 text-center">{error}</p>
+      )}
       <button
         type="submit"
-        className="mt-1 w-full bg-[#101010] text-white text-sm font-bold py-4 rounded-full tracking-tight hover:bg-[#2a2a2a] transition-colors duration-200"
+        disabled={loading}
+        className="mt-1 w-full bg-[#101010] text-white text-sm font-bold py-4 rounded-full tracking-tight hover:bg-[#2a2a2a] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        Send inn for vurdering
+        {loading ? "Sender…" : "Send inn for vurdering"}
       </button>
       <p className={`text-[11px] text-center ${dark ? "text-white/30" : "text-[#A3A3A3]"}`}>
         20 unike creatives. {totalFormatted} kr. 50% rabatt. Ingen binding.

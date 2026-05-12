@@ -6,6 +6,7 @@ import { FadeIn } from "./FadeIn";
 type FormState = {
   navn: string;
   epost: string;
+  telefon: string;
   nettside: string;
   hvaSelger: string;
   budsjett: string;
@@ -37,6 +38,7 @@ export default function Contact() {
   const [form, setForm] = useState<FormState>({
     navn: "",
     epost: "",
+    telefon: "",
     nettside: "",
     hvaSelger: "",
     budsjett: "",
@@ -44,6 +46,8 @@ export default function Contact() {
     melding: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -51,9 +55,23 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Feil ved sending");
+      setSubmitted(true);
+    } catch {
+      setError("Noe gikk galt. Prøv igjen eller kontakt oss direkte.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -136,6 +154,12 @@ export default function Contact() {
                 </div>
 
                 <div>
+                  <label className={labelClass}>Telefon</label>
+                  <input type="tel" name="telefon" required placeholder="400 00 000"
+                    value={form.telefon} onChange={handleChange} className={inputClass} />
+                </div>
+
+                <div>
                   <label className={labelClass}>Nettside</label>
                   <input type="url" name="nettside" placeholder="https://dinside.no"
                     value={form.nettside} onChange={handleChange} className={inputClass} />
@@ -178,9 +202,12 @@ export default function Contact() {
                     className={`${inputClass} resize-none`} />
                 </div>
 
-                <button type="submit"
-                  className="mt-1 w-full bg-[#101010] text-white text-sm font-bold py-4 rounded-full tracking-tight hover:bg-[#2a2a2a] transition-colors duration-200">
-                  Start med prøvepakke
+                {error && (
+                  <p className="text-xs text-red-600 text-center">{error}</p>
+                )}
+                <button type="submit" disabled={loading}
+                  className="mt-1 w-full bg-[#101010] text-white text-sm font-bold py-4 rounded-full tracking-tight hover:bg-[#2a2a2a] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
+                  {loading ? "Sender…" : "Start med prøvepakke"}
                 </button>
                 <p className="text-[11px] text-[#A3A3A3] text-center">
                   Ingen forpliktelse. Vi svarer innen 1 arbeidsdag.
