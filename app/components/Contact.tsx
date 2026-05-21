@@ -65,10 +65,11 @@ export default function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Feil ved sending");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.details ?? json.error ?? "Feil ved sending");
       setSubmitted(true);
-    } catch {
-      setError("Noe gikk galt. Prøv igjen eller kontakt oss direkte.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Noe gikk galt. Prøv igjen eller kontakt oss direkte.");
     } finally {
       setLoading(false);
     }

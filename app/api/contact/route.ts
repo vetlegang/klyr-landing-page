@@ -93,23 +93,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const from = process.env.CONTACT_EMAIL_FROM ?? "Fujii <onboarding@resend.dev>";
+
   const resend = new Resend(apiKey);
   const { data, error } = await resend.emails.send({
-    from: "Fujii.no <noreply@fujii.no>",
+    from,
     to,
     replyTo: epost.trim(),
-    subject: "Ny lead fra Fujii.no",
+    subject: "New Fujii lead from website",
     html: buildHtml(body),
   });
 
   if (error) {
-    console.error("[contact] Resend feil:", JSON.stringify(error));
-    const isDev = process.env.NODE_ENV === "development";
+    const msg = (error as { message?: string }).message ?? String(error);
+    console.error("Contact API error:", JSON.stringify(error));
     return NextResponse.json(
-      {
-        error: "Kunne ikke sende e-post",
-        ...(isDev && { details: (error as { message?: string }).message ?? String(error) }),
-      },
+      { error: "Kunne ikke sende e-post", details: msg },
       { status: 500 }
     );
   }

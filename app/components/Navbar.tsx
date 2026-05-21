@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
@@ -36,9 +37,9 @@ export default function Navbar() {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-          <a href="/" className="text-xl font-black tracking-[0.18em] text-[#101010]">
+          <Link href="/" className="text-xl font-black tracking-[0.18em] text-[#101010]">
             Fujii
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#737373]">
             {navLinks.map((link) => (
