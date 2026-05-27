@@ -95,7 +95,7 @@ export default function StudioIndexHero() {
             <div
               style={{
                 position:    "relative",
-                width:       "clamp(260px, 32vw, 480px)",
+                width:       "clamp(180px, 55vw, 480px)",
                 aspectRatio: "1 / 1",
                 flexShrink:  0,
               }}

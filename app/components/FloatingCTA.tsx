@@ -17,7 +17,10 @@ export default function FloatingCTA() {
     const place = () => {
       const W = window.innerWidth;
       const H = window.innerHeight;
-      setPos({ x: W - 152, y: H - 72 });
+      const isMobile = W < 640;
+      // On mobile the button is narrower (~120px), on desktop ~140px
+      const btnW = isMobile ? 120 : 144;
+      setPos({ x: W - btnW - 16, y: H - (isMobile ? 64 : 72) });
     };
     place();
     window.addEventListener("resize", place);
@@ -78,10 +81,10 @@ export default function FloatingCTA() {
         color:       "#fff",
         border:      "none",
         borderRadius: "999px",
-        padding:     "14px 26px",
+        padding:     "clamp(10px, 1.5vw, 14px) clamp(16px, 2.5vw, 26px)",
         fontFamily:  "var(--font-nunito), sans-serif",
         fontWeight:  900,
-        fontSize:    "clamp(0.85rem, 1.1vw, 0.95rem)",
+        fontSize:    "clamp(0.78rem, 2.4vw, 0.95rem)",
         letterSpacing: "0.01em",
         cursor:      dragging.current ? "grabbing" : "grab",
         userSelect:  "none",

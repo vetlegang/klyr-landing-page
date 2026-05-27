@@ -1,22 +1,19 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export interface VideoCardData {
   src: string;
   client: string;
   label: string;
-  stat?: string;       // e.g. "5.6x" — big number shown on glass
+  stat?: string;       // e.g. "5.6×"
   statLabel?: string;  // e.g. "ROAS"
 }
 
 function LiveBadge() {
   return (
     <span className="flex items-center gap-2">
-      <span
-        className="relative flex h-2.5 w-2.5"
-      >
-        {/* Pulsing ring */}
+      <span className="relative flex h-2.5 w-2.5">
         <span
           className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
           style={{ background: "#BEFF00" }}
@@ -32,13 +29,53 @@ function LiveBadge() {
 }
 
 export default function VideoCard({ src, client, label, stat, statLabel }: VideoCardData) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [hovered, setHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef     = useRef<HTMLVideoElement>(null);
 
-  const isLive  = label.toLowerCase().includes("live");
-  const isRoas  = !!stat; // treat any explicit stat as ROAS-style display
+  const [hovered,  setHovered]  = useState(false);
+  const [isTouch,  setIsTouch]  = useState(false);
+  const [inView,   setInView]   = useState(false);
 
+  const isLive = label.toLowerCase().includes("live");
+
+  // ── Detect touch device once on mount ──────────────────────────────────────
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(hover: none)").matches);
+  }, []);
+
+  // ── IntersectionObserver: autoplay on mobile, pause-when-offscreen on all ──
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+        const v = videoRef.current;
+        if (!v) return;
+
+        if (entry.isIntersecting) {
+          // Mobile: autoplay immediately. Desktop: only if already hovered.
+          if (isTouch) {
+            v.currentTime = 0;
+            v.play().catch(() => {});
+          }
+        } else {
+          v.pause();
+          v.currentTime = 0;
+          if (isTouch) setHovered(false);
+        }
+      },
+      { threshold: 0.55 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isTouch]);
+
+  // ── Desktop hover handlers ─────────────────────────────────────────────────
   const handleEnter = () => {
+    if (isTouch) return;
     setHovered(true);
     const v = videoRef.current;
     if (!v) return;
@@ -47,6 +84,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
   };
 
   const handleLeave = () => {
+    if (isTouch) return;
     setHovered(false);
     const v = videoRef.current;
     if (!v) return;
@@ -54,12 +92,24 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
     v.currentTime = 0;
   };
 
+  // ── Mobile tap: toggle glass overlay ──────────────────────────────────────
+  const handleTap = () => {
+    if (!isTouch) return;
+    setHovered(h => !h);
+  };
+
+  // Overlay visible when: desktop hover OR mobile (always when in view)
+  const overlayVisible = hovered || (isTouch && inView);
+  const videoActive    = hovered || (isTouch && inView);
+
   return (
     <div
-      className="relative overflow-hidden rounded-2xl cursor-pointer select-none group"
-      style={{ aspectRatio: "9 / 16" }}
+      ref={containerRef}
+      className="relative overflow-hidden rounded-2xl select-none"
+      style={{ aspectRatio: "9 / 16", cursor: isTouch ? "pointer" : "pointer" }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
+      onClick={handleTap}
     >
       {/* Video */}
       <video
@@ -71,49 +121,51 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
         loop
         className="absolute inset-0 w-full h-full object-cover transition-all duration-500"
         style={{
-          filter: hovered ? "blur(2px) brightness(0.75)" : "blur(0px) brightness(1)",
-          transform: hovered ? "scale(1.04)" : "scale(1)",
+          filter:    videoActive ? "blur(2px) brightness(0.72)" : "blur(0px) brightness(1)",
+          transform: videoActive ? "scale(1.04)"                : "scale(1)",
         }}
       />
 
-      {/* ── Idle: subtle bottom gradient + client name ── */}
+      {/* ── Idle gradient + client name (desktop only when not hovered) ── */}
       <div
         className="absolute inset-0 transition-opacity duration-300"
         style={{
           background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)",
-          opacity: hovered ? 0 : 1,
+          opacity: overlayVisible ? 0 : 1,
+          pointerEvents: "none",
         }}
       />
       <div
-        className="absolute bottom-0 left-0 right-0 p-5 transition-opacity duration-300"
-        style={{ opacity: hovered ? 0 : 1 }}
+        className="absolute bottom-0 left-0 right-0 p-4 md:p-5 transition-opacity duration-300"
+        style={{ opacity: overlayVisible ? 0 : 1, pointerEvents: "none" }}
       >
         <p
           className="text-white font-bold leading-tight drop-shadow"
           style={{
             fontFamily: "var(--font-nunito), sans-serif",
-            fontSize: "clamp(0.85rem, 1.1vw, 1rem)",
+            fontSize: "clamp(0.8rem, 1.1vw, 1rem)",
           }}
         >
           {client}
         </p>
       </div>
 
-      {/* ── Hover: frosted glass panel ── */}
+      {/* ── Frosted glass stat overlay ── */}
       <div
         className="absolute inset-x-3 bottom-3 rounded-xl overflow-hidden transition-all duration-400"
         style={{
-          opacity: hovered ? 1 : 0,
-          transform: hovered ? "translateY(0)" : "translateY(14px)",
-          backdropFilter: "blur(18px) saturate(1.4)",
-          WebkitBackdropFilter: "blur(18px) saturate(1.4)",
-          background: "rgba(10, 30, 10, 0.52)",
-          border: "1px solid rgba(255,255,255,0.10)",
-          padding: "18px 20px",
+          opacity:   overlayVisible ? 1 : 0,
+          transform: overlayVisible ? "translateY(0)" : "translateY(14px)",
+          backdropFilter:         "blur(18px) saturate(1.4)",
+          WebkitBackdropFilter:   "blur(18px) saturate(1.4)",
+          background:             "rgba(10, 30, 10, 0.52)",
+          border:                 "1px solid rgba(255,255,255,0.10)",
+          padding:                "16px 18px",
+          pointerEvents:          "none",
         }}
       >
-        {isRoas ? (
-          /* Big stat display */
+        {stat ? (
+          /* Big ROAS / metric display */
           <div className="flex items-end justify-between">
             <div>
               <p
@@ -125,8 +177,8 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
               <p
                 className="text-white leading-none font-black"
                 style={{
-                  fontFamily: "var(--font-nunito), sans-serif",
-                  fontSize: "clamp(2.2rem, 4vw, 3rem)",
+                  fontFamily:    "var(--font-nunito), sans-serif",
+                  fontSize:      "clamp(2rem, 6vw, 3rem)",
                   letterSpacing: "-0.03em",
                 }}
               >
@@ -134,12 +186,11 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
               </p>
             </div>
             <p
-              className="text-white/60 text-right pb-1"
+              className="text-white/55 text-right pb-1"
               style={{
                 fontFamily: "var(--font-nunito), sans-serif",
                 fontWeight: 700,
-                fontSize: "clamp(0.7rem, 0.9vw, 0.8rem)",
-                maxWidth: "100px",
+                fontSize:   "0.75rem",
                 lineHeight: 1.3,
               }}
             >
@@ -150,7 +201,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
           /* Live / status display */
           <div>
             <p
-              className="text-white/55 uppercase tracking-widest mb-2"
+              className="text-white/55 uppercase tracking-widest mb-1.5"
               style={{ fontSize: "0.65rem", fontWeight: 700 }}
             >
               {client}
@@ -159,7 +210,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
               className="text-white font-black leading-none"
               style={{
                 fontFamily: "var(--font-nunito), sans-serif",
-                fontSize: "clamp(1.1rem, 1.8vw, 1.35rem)",
+                fontSize:   "clamp(1rem, 3vw, 1.3rem)",
               }}
             >
               {isLive ? <LiveBadge /> : label}
@@ -167,6 +218,23 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
           </div>
         )}
       </div>
+
+      {/* Mobile tap hint — show briefly on first visible, then hide */}
+      {isTouch && !hovered && inView && (
+        <div
+          className="absolute top-3 right-3 rounded-full px-2 py-1"
+          style={{
+            background: "rgba(0,0,0,0.35)",
+            backdropFilter: "blur(6px)",
+            fontSize: "0.6rem",
+            color: "rgba(255,255,255,0.6)",
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+          }}
+        >
+          TRYKK
+        </div>
+      )}
     </div>
   );
 }

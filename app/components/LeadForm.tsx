@@ -198,7 +198,7 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
       </div>
 
       {/* Fields */}
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <div>
           <label className={labelCls(dark)}>Navn</label>
           <input type="text" name="navn" required placeholder="Ditt navn"
