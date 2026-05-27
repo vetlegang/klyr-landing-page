@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
 import { FadeIn } from "./FadeIn";
 import { motion, AnimatePresence } from "framer-motion";
+
+const G = "#2A5C18";
 
 const faqs = [
   {
@@ -29,63 +30,96 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="bg-white py-20 md:py-28 px-6">
-      <div className="max-w-4xl mx-auto">
+    <section id="faq" className="px-6 md:px-12 py-24 md:py-36" style={{ background: "#F5F4F0" }}>
+      <div className="max-w-[1440px] mx-auto">
+
         <FadeIn>
-          <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-4">
-            Vanlige spørsmål
-          </p>
-          <h2 className="text-[clamp(1.5rem,3.5vw,2.5rem)] font-black leading-[1.08] tracking-tight mb-10 text-[#101010]">
-            Lurer du på noe?
-          </h2>
+          <div className="flex items-center gap-3 mb-14">
+            <span className="w-6 h-px" style={{ background: G, opacity: 0.3 }} />
+            <p
+              className="text-[10px] font-bold tracking-[0.3em] uppercase"
+              style={{ color: G, opacity: 0.5 }}
+            >
+              Spørsmål
+            </p>
+          </div>
         </FadeIn>
 
-        <div className="flex flex-col divide-y divide-black/[0.07]">
-          {faqs.map((faq, i) => {
-            const isOpen = open === i;
-            return (
-              <FadeIn key={i} delay={i * 0.05}>
-                <div>
-                  <button
-                    className="w-full flex items-start justify-between gap-4 py-5 text-left group"
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    aria-expanded={isOpen}
-                  >
-                    <span className="text-sm font-bold text-[#737373] group-hover:text-[#101010] transition-colors leading-snug">
-                      {faq.q}
-                    </span>
-                    <span className="shrink-0 mt-0.5">
-                      {isOpen ? (
-                        <Minus size={15} className="text-[#101010]" />
-                      ) : (
-                        <Plus size={15} className="text-[#A3A3A3] group-hover:text-[#737373] transition-colors" />
-                      )}
-                    </span>
-                  </button>
+        <div className="grid md:grid-cols-[280px_1fr] lg:grid-cols-[360px_1fr] gap-12 md:gap-20 items-start">
 
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        key="answer"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="overflow-hidden"
+          <FadeIn>
+            <h2
+              className="leading-[1.05] tracking-tight sticky top-28"
+              style={{
+                fontFamily: "var(--font-nunito), sans-serif",
+                fontWeight: 900,
+                fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+                color: G,
+              }}
+            >
+              Lurer du på noe?
+            </h2>
+          </FadeIn>
+
+          <div className="flex flex-col">
+            {faqs.map((faq, i) => {
+              const isOpen = open === i;
+              return (
+                <FadeIn key={i} delay={i * 0.04}>
+                  <div className="border-t" style={{ borderColor: `rgba(42,92,24,0.1)` }}>
+                    <button
+                      className="w-full flex items-start justify-between gap-8 py-6 text-left group"
+                      onClick={() => setOpen(isOpen ? null : i)}
+                      aria-expanded={isOpen}
+                    >
+                      <span
+                        className="text-[15px] font-bold leading-snug transition-colors"
+                        style={{ color: G, opacity: isOpen ? 1 : 0.55 }}
                       >
-                        <p className="text-sm text-[#737373] leading-relaxed pb-5 pr-8">
-                          {faq.a}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </FadeIn>
-            );
-          })}
+                        {faq.q}
+                      </span>
+                      <span
+                        className="shrink-0 mt-1 text-[18px] font-light leading-none transition-transform duration-200 select-none"
+                        style={{
+                          color: G,
+                          opacity: isOpen ? 1 : 0.3,
+                          transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                          display: "inline-block",
+                        }}
+                      >
+                        +
+                      </span>
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          key="answer"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.22, ease: "easeOut" }}
+                          className="overflow-hidden"
+                        >
+                          <p
+                            className="text-[14px] leading-relaxed pb-6 pr-10 max-w-2xl"
+                            style={{ color: G, opacity: 0.55 }}
+                          >
+                            {faq.a}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </FadeIn>
+              );
+            })}
+            <div className="border-t" style={{ borderColor: `rgba(42,92,24,0.1)` }} />
+          </div>
+
         </div>
       </div>
     </section>

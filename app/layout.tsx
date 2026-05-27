@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import ScrollBackground from "./components/ScrollBackground";
+import FloatingCTA from "./components/FloatingCTA";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +12,14 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Rounded playful font for wordmark + studio menu
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["800", "900"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -27,13 +36,14 @@ export default function RootLayout({
   return (
     <html
       lang="no"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
     >
       <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">
           <ScrollBackground />
           <div className="relative z-10">
             {children}
           </div>
+          <FloatingCTA />
         </body>
     </html>
   );

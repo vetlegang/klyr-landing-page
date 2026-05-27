@@ -2,13 +2,13 @@
 
 :root {
   --accent: #BEFF00;
-  --bg: #F7F4EE;
-  --bg-alt: #F0EDE6;
+  --bg: #F5F4F0;
+  --bg-alt: #EDECEA;
   --text: #101010;
 }
 
 @theme inline {
-  --color-background: #F7F4EE;
+  --color-background: #F5F4F0;
   --color-foreground: #101010;
   --color-accent: #BEFF00;
   --font-sans: var(--font-geist-sans);
@@ -20,12 +20,21 @@
   to { transform: translateX(-50%); }
 }
 
+@keyframes char-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes char-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: #F7F4EE;
+  background: #F5F4F0;
   color: #101010;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

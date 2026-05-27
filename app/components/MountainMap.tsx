@@ -108,13 +108,17 @@ export default function MountainMap() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div className="text-center mb-10" variants={pop(0)} initial="hidden" animate={a}>
-          <p className="text-[10px] font-bold tracking-[0.22em] text-[#737373] uppercase mb-4">
-            Vår metode
-          </p>
-          <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-black tracking-tight text-[#101010] leading-tight">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="w-6 h-px bg-[#101010]/20" />
+            <p className="text-[10px] font-bold tracking-[0.28em] text-[#737373] uppercase">
+              Vår metode
+            </p>
+            <span className="w-6 h-px bg-[#101010]/20" />
+          </div>
+          <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-black tracking-tight text-[#101010] leading-[1.05]">
             Hvordan vi når toppen
           </h2>
-          <p className="text-sm text-[#737373] mt-3 max-w-xs mx-auto leading-relaxed">
+          <p className="text-[14px] text-[#888] mt-3 max-w-xs mx-auto leading-relaxed">
             Vi finner rutene som faktisk når toppen — fra 20 creatives til salg.
           </p>
         </motion.div>

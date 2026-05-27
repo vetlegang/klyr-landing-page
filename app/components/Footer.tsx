@@ -1,79 +1,73 @@
-const footerLinks = {
-  Tjenester: [
-    "Creative Strategy",
-    "Paid Social",
-    "Creative Production",
-    "CRO / Landingssider",
-    "Tracking & Measurement",
-    "Monthly Testing System",
-  ],
-  Selskapet: ["Metode", "Arbeid", "FAQ", "Kontakt"],
-};
+const G = "#2A5C18";
+
+const footerLinks = [
+  { label: "Arbeid", href: "#arbeid" },
+  { label: "Tilbud", href: "#tilbud" },
+  { label: "Prosess", href: "#prosess" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Kontakt", href: "#kontakt" },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#101010] text-white border-t border-white/[0.07] px-6 py-16 md:py-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16 mb-16">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <a
-              href="#"
-              className="text-2xl font-black tracking-[0.18em] text-white block mb-4"
+    <footer
+      className="px-6 md:px-14 pt-16 pb-10 md:pt-20 md:pb-12 border-t"
+      style={{ background: "#F5F4F0", borderColor: `rgba(42,92,24,0.1)` }}
+    >
+      <div className="max-w-[1440px] mx-auto">
+
+        {/* Top row: wordmark + character */}
+        <div className="flex items-end justify-between mb-14">
+          <div>
+            <p
+              className="font-black tracking-[-0.04em] leading-none mb-3"
+              style={{
+                fontFamily: "var(--font-nunito), sans-serif",
+                fontSize: "clamp(2.5rem,7vw,6rem)",
+                color: G,
+              }}
             >
               Fujii
-            </a>
-            <p className="text-sm text-white/35 leading-relaxed max-w-[200px]">
-              Creative-systemer som lærer av hvert signal — fra hook til skalering.
             </p>
-          </div>
-
-          {/* Links */}
-          {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading}>
-              <p className="text-[10px] font-bold tracking-[0.2em] text-white/25 uppercase mb-5">
-                {heading}
-              </p>
-              <ul className="flex flex-col gap-3">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-white/40 hover:text-white transition-colors duration-200"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          {/* CTA */}
-          <div>
-            <p className="text-[10px] font-bold tracking-[0.2em] text-white/25 uppercase mb-5">
-              Kom i gang
-            </p>
-            <a
-              href="#kontakt"
-              className="inline-flex items-center bg-[#BEFF00] text-black text-xs font-bold px-5 py-3 rounded-full tracking-tight hover:bg-white transition-colors duration-200"
+            <p
+              className="text-[12px] leading-relaxed max-w-[200px]"
+              style={{ color: G, opacity: 0.4 }}
             >
-              Book vekstanalyse
-            </a>
+              Performance-creatives for Meta — klare for testing.
+            </p>
           </div>
+
         </div>
 
-        {/* Bottom */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 border-t border-white/[0.07]">
-          <p className="text-xs text-white/20">
-            © {year} Fujii. Alle rettigheter forbeholdt.
+        {/* Nav links */}
+        <div className="flex flex-wrap gap-x-8 gap-y-2 mb-12">
+          {footerLinks.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-[12px] tracking-wide transition-opacity duration-150 hover:opacity-100"
+              style={{ color: G, opacity: 0.35 }}
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Bottom row */}
+        <div
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-6 border-t"
+          style={{ borderColor: `rgba(42,92,24,0.08)` }}
+        >
+          <p className="text-[11px]" style={{ color: G, opacity: 0.3 }}>
+            © {year} Fujii AS · All rights reserved
           </p>
-          <p className="text-xs text-white/15">
+          <p className="text-[11px] tracking-wide" style={{ color: G, opacity: 0.3 }}>
             Creative Performance · Meta Ads · Norge
           </p>
         </div>
+
       </div>
     </footer>
   );

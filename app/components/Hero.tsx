@@ -1,72 +1,83 @@
 "use client";
 
-import { FadeIn } from "./FadeIn";
-import LeadForm from "./LeadForm";
-
-const bullets = [
-  "20 unike creatives — still ads og video ads til Meta",
-  "50% rabatt på første runde — kun 5 000 kr",
-  "Ingen binding. Du bestemmer om vi skal hjelpe videre.",
-];
+import { motion } from "framer-motion";
+import { FujiMountain } from "./Illustrations";
 
 export default function Hero() {
   return (
-    <section id="provepakke" className="bg-transparent pt-28 pb-20 md:pt-36 md:pb-28 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-start">
-          {/* Left */}
-          <FadeIn>
-            <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-5">
-              Prøvepakke · Meta-annonser
-            </p>
-            <h1 className="text-[clamp(2rem,5.5vw,3.75rem)] font-black leading-[1.04] tracking-tight mb-6 text-[#101010]">
-              Test 20 unike{" "}
-              <span className="underline underline-offset-4 decoration-[#BEFF00] decoration-[3px]">
-                Meta-creatives
-              </span>{" "}
-              for 5&nbsp;000&nbsp;kr.
-            </h1>
-            <p className="text-base md:text-lg text-[#737373] leading-relaxed mb-8 max-w-lg">
-              Vi lager 20 unike creatives til Facebook- og Instagram-annonser
-              — slik at bedriften din kan teste flere hooks og vinkler uten
-              dyre byråavtaler. 50% rabatt på første runde. Ingen binding.
-            </p>
+    <section className="min-h-[92svh] flex flex-col justify-end pt-24 pb-14 md:pt-36 md:pb-20 px-6 md:px-12 relative overflow-hidden">
+      <div className="max-w-[1440px] mx-auto w-full relative">
 
-            <ul className="flex flex-col gap-3 mb-8">
-              {bullets.map((b) => (
-                <li key={b} className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF00] border border-black/20 mt-2 shrink-0" />
-                  <span className="text-sm text-[#737373] leading-snug">{b}</span>
-                </li>
-              ))}
-            </ul>
+        {/* Mountain illustration — top right, editorial placement */}
+        <motion.div
+          className="absolute top-0 right-0 -translate-y-6 text-[#0A0A0A]/[0.06] pointer-events-none select-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.4 }}
+        >
+          <FujiMountain className="w-[180px] md:w-[260px]" />
+        </motion.div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-3xl font-black text-[#101010]">5 000</span>
-                <span className="text-base font-bold text-[#737373]">kr</span>
-              </div>
-              <span className="text-xs text-[#A3A3A3]">eks. mva</span>
-              <span className="text-xs line-through text-[#A3A3A3]">10 000 kr</span>
-              <span className="inline-flex bg-[#101010] text-white text-[10px] font-black px-3 py-1 tracking-[0.1em] uppercase rounded-full">
-                50% rabatt
-              </span>
-            </div>
-          </FadeIn>
+        {/* Kicker */}
+        <motion.div
+          className="flex items-center gap-3 mb-10 md:mb-14"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <span className="block w-7 h-px bg-[#0A0A0A]/20" />
+          <p className="text-[10px] font-bold tracking-[0.3em] text-[#AAA] uppercase">
+            Performance Creative — Meta Ads
+          </p>
+        </motion.div>
 
-          {/* Right: form card */}
-          <FadeIn delay={0.1}>
-            <div className="bg-white rounded-2xl border border-black/[0.08] shadow-sm p-7 md:p-8">
-              <p className="text-sm font-black text-[#101010] mb-1">
-                Start med prøvepakken
+        {/* Headline */}
+        <motion.h1
+          className="text-[clamp(3rem,8.5vw,7.5rem)] font-black leading-[0.93] tracking-[-0.02em] text-[#0A0A0A] mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          Creatives
+          <br />
+          <span className="text-[#0A0A0A]/15">klare for</span>
+          <br />
+          testing.
+        </motion.h1>
+
+        {/* Bottom strip */}
+        <motion.div
+          className="flex flex-col md:flex-row md:items-end justify-between gap-8 pt-7 border-t border-black/[0.07]"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.42, ease: "easeOut" }}
+        >
+          <p className="text-[15px] text-[#888] leading-relaxed max-w-[380px]">
+            Vi lager performance-creatives for Meta.
+            20 unike ads — klart for testing innen 5–10 arbeidsdager.
+          </p>
+
+          <div className="flex flex-col sm:flex-row sm:items-end gap-8">
+            <div>
+              <p className="text-[clamp(1.75rem,3vw,2.5rem)] font-black text-[#0A0A0A] leading-none">
+                5 000 kr
               </p>
-              <p className="text-xs text-[#737373] mb-6 leading-relaxed">
-                Send nettsiden din — vi ser om prøvepakken passer for deg.
+              <p className="text-[11px] text-[#BBB] mt-1.5 tracking-wide">
+                eks. mva · ingen binding
               </p>
-              <LeadForm />
             </div>
-          </FadeIn>
-        </div>
+            <a
+              href="#kontakt"
+              className="inline-flex items-center gap-2 border border-[#0A0A0A]/20 text-[#0A0A0A] text-[11px] font-black px-6 py-3 hover:bg-[#0A0A0A] hover:text-white hover:border-[#0A0A0A] transition-all duration-150 tracking-widest uppercase shrink-0"
+            >
+              Start testpakken
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

@@ -1,9 +1,8 @@
+import StudioIndexHero from "./components/StudioIndexHero";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import WhatYouGet from "./components/WhatYouGet";
-import WhoItsFor from "./components/WhoItsFor";
-import ProofStrip from "./components/ProofStrip";
-import MountainMap from "./components/MountainMap";
+import ArbeidSection from "./components/ArbeidSection";
+import OfferSection from "./components/OfferSection";
+import Process from "./components/Process";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
@@ -11,15 +10,13 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <>
+      {/* Minimal navbar — transparent until scrolled, overlays the hero */}
       <Navbar />
       <main>
-        <Hero />
-        <WhatYouGet />
-        <WhoItsFor />
-        <ProofStrip />
-        <section id="hvordan-vi-nar-toppen">
-          <MountainMap />
-        </section>
+        <StudioIndexHero />
+        <ArbeidSection />
+        <OfferSection />
+        <Process />
         <FAQ />
         <FinalCTA />
       </main>
