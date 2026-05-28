@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
 
@@ -44,6 +44,8 @@ export default function StudioIndexHero() {
   const [hoveredChar, setHoveredChar] = useState<string | null>(null);
   const resetTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const swapPending = useRef(false);
+  const autoTimer   = useRef<ReturnType<typeof setInterval> | null>(null);
+  const autoIndex   = useRef(0);
 
   const switchTo = (char: string) => {
     if (char === activeChar) return;
@@ -65,6 +67,23 @@ export default function StudioIndexHero() {
     setHoveredChar(null);
     resetTimer.current = setTimeout(() => switchTo("arbeid"), 700);
   };
+
+  // Auto-rotate characters on touch devices
+  useEffect(() => {
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    if (!isTouch) return;
+
+    const chars = menuItemsNo.map((m) => m.char);
+    autoTimer.current = setInterval(() => {
+      autoIndex.current = (autoIndex.current + 1) % chars.length;
+      switchTo(chars[autoIndex.current]);
+    }, 2000);
+
+    return () => {
+      if (autoTimer.current) clearInterval(autoTimer.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Plain <img> tags — bypasses Next/Image cache. ?v= busts browser cache after re-export.
   const src = (name: string) => `/characters/${name}.png?v=${V}`;
