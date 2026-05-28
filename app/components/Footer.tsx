@@ -76,15 +76,24 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-6 border-t"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-6 border-t"
           style={{ borderColor: `rgba(42,92,24,0.08)` }}
         >
           <p className="text-[11px]" style={{ color: G, opacity: 0.3 }}>
-            © {year} Fujii AS · All rights reserved
+            © {year} Fujii AS · Org. 937 775 792 · All rights reserved
           </p>
-          <p className="text-[11px] tracking-wide" style={{ color: G, opacity: 0.3 }}>
-            Creative Performance · Meta Ads · Norge
-          </p>
+          <div className="flex items-center gap-5">
+            <a
+              href="/personvern"
+              className="text-[11px] transition-opacity duration-150 hover:opacity-60"
+              style={{ color: G, opacity: 0.3 }}
+            >
+              Personvern
+            </a>
+            <p className="text-[11px] tracking-wide" style={{ color: G, opacity: 0.3 }}>
+              Creative Performance · Meta Ads · Norge
+            </p>
+          </div>
         </div>
 
       </div>

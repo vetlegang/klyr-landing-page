@@ -83,18 +83,20 @@ export default function StudioIndexHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.2, 0, 0.2, 1] }}
         >
-          <h1
-            className="leading-none select-none"
-            style={{
-              fontSize:   "clamp(5.5rem, 20vw, 17rem)",
-              fontWeight: 900,
-              fontFamily: "var(--font-nunito), sans-serif",
-              letterSpacing: "-0.025em",
-              color: G,
-            }}
-          >
-            Fujii
-          </h1>
+          <a href="/" aria-label="Fujii — tilbake til forsiden">
+            <h1
+              className="leading-none select-none"
+              style={{
+                fontSize:   "clamp(5.5rem, 20vw, 17rem)",
+                fontWeight: 900,
+                fontFamily: "var(--font-nunito), sans-serif",
+                letterSpacing: "-0.025em",
+                color: G,
+              }}
+            >
+              Fujii
+            </h1>
+          </a>
         </motion.div>
 
         {/* ── Character (left) + Menu (right) ── fills remaining height */}
