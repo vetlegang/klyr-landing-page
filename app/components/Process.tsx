@@ -25,7 +25,12 @@ const steps = [
   {
     num: "04",
     title: "Testing",
-    desc: "Du kjører annonsene i Facebook/Instagram og finner hva som faktisk konverterer for din bedrift.",
+    desc: "Vi tester annonsene og bygger videre på de som faktisk vinner, for å få mest mulig ut av kampanjen.",
+  },
+  {
+    num: "05",
+    title: "Hva skal du gjøre?",
+    desc: "Lene deg tilbake og forberede deg på et økt salg.",
   },
 ];
 
