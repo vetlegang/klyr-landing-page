@@ -110,6 +110,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
     >
       <head>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+        <link rel="apple-touch-icon" href="/favicon-192.png" />
         <StructuredData />
       </head>
       <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">
