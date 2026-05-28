@@ -73,7 +73,7 @@ export const metadata: Metadata = {
       "20 unike Meta-creatives klare for testing. Still ads + video ads med vinnende hooks. Fra 5 000 kr, ingen binding.",
     images: [
       {
-        url: "/opengraph-image",
+        url: "https://fujii.no/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Fujii — Annonser som faktisk selger",
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
     title: "Fujii — Annonser som faktisk selger",
     description:
       "20 unike Meta-creatives klare for testing. Fra 5 000 kr, ingen binding.",
-    images: ["/opengraph-image"],
+    images: ["https://fujii.no/opengraph-image"],
   },
   alternates: {
     canonical: "https://fujii.no",
