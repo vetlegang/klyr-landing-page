@@ -42,7 +42,8 @@ export default function Navbar() {
           >
             <Link
               href="/"
-              className="text-[13px] font-black tracking-[0.3em] text-[#0A0A0A] uppercase select-none"
+              className="text-[13px] font-black tracking-[0.3em] uppercase select-none"
+              style={{ color: "#2A5C18" }}
             >
               Fujii
             </Link>

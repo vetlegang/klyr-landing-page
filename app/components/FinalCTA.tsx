@@ -63,22 +63,25 @@ export default function FinalCTA() {
             </div>
           </FadeIn>
 
-          {/* Right: form */}
+          {/* Right: form — dark green card */}
           <FadeIn delay={0.12}>
             <div
-              className="pt-7 border-t-2"
-              style={{ borderColor: G }}
+              className="rounded-2xl p-7 md:p-9"
+              style={{
+                background: G,
+                boxShadow: "0 12px 48px rgba(42,92,24,0.28), 0 2px 8px rgba(0,0,0,0.10)",
+              }}
             >
               <p
-                className="text-[15px] font-black mb-1 tracking-tight"
-                style={{ fontFamily: "var(--font-nunito), sans-serif", color: G }}
+                className="text-[15px] font-black mb-1 tracking-tight text-white"
+                style={{ fontFamily: "var(--font-nunito), sans-serif" }}
               >
                 Start testpakken
               </p>
-              <p className="text-[12px] mb-7 leading-relaxed" style={{ color: G, opacity: 0.4 }}>
+              <p className="text-[12px] mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
                 Vi svarer innen 1 arbeidsdag.
               </p>
-              <LeadForm />
+              <LeadForm dark />
             </div>
           </FadeIn>
 
