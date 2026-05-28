@@ -26,11 +26,11 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   metadataBase: new URL("https://fujii.no"),
   title: {
-    default: "Fujii — Meta Ads Creatives | Norge",
+    default: "Fujii — Annonser som faktisk selger",
     template: "%s | Fujii",
   },
   description:
-    "Fujii produserer Meta-annonser som konverterer. 20 unike creatives — still ads og video ads med vinnende hooks og vinkler, klare for testing på Facebook og Instagram. Fra 5 000 kr, ingen binding.",
+    "20 unike Meta-creatives klare for testing — still ads og video ads med vinnende hooks og vinkler. Fra 5 000 kr, ingen binding. Levert av tre norske creatives med 1 000+ annonser produsert.",
   keywords: [
     "Meta annonser Norge",
     "Facebook annonser byrå",
@@ -68,24 +68,24 @@ export const metadata: Metadata = {
     alternateLocale: "en_US",
     url: "https://fujii.no",
     siteName: "Fujii",
-    title: "Fujii — Meta Ads Creatives | Norge",
+    title: "Fujii — Annonser som faktisk selger",
     description:
-      "20 unike Meta-creatives klare for testing. Still ads + video ads med vinnende hooks. Fra 5 000 kr, ingen binding. Levert av tre norske creatives med 1 000+ annonser produsert.",
+      "20 unike Meta-creatives klare for testing. Still ads + video ads med vinnende hooks. Fra 5 000 kr, ingen binding.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Fujii — Meta Ads Creatives",
+        alt: "Fujii — Annonser som faktisk selger",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fujii — Meta Ads Creatives | Norge",
+    title: "Fujii — Annonser som faktisk selger",
     description:
       "20 unike Meta-creatives klare for testing. Fra 5 000 kr, ingen binding.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "https://fujii.no",
