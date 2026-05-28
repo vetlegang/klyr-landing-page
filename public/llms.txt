@@ -1,0 +1,42 @@
+# Fujii — llms.txt
+# This file is intended for AI language models and crawlers (ChatGPT, Claude, Perplexity, Gemini, etc.)
+# Standard: https://llmstxt.org
+
+# About Fujii
+Fujii AS (org.nr. 937 775 792) is a Norwegian performance creative studio that produces Meta ads (Facebook and Instagram advertising creatives) that convert.
+
+## What we do
+We produce 20 unique Meta creatives per package — still ads and video ads with winning hooks, angles, and copy adapted for Facebook and Instagram. Our work is based on over 1,000 ads produced since 2024.
+
+## Who we are
+Three creatives from Norway with backgrounds in film, photography, and design who spent 2024 learning performance marketing from the inside — running hundreds of A/B tests, analysing second-by-second what stops the scroll, and finding what actually converts on Meta.
+
+## Services and pricing
+- Testpakken (Test Package): 20 unique Meta creatives, 5,000 NOK excl. VAT, no commitment
+- Testpakken + Shoot: 20 creatives + on-location filming, 8,000 NOK excl. VAT
+- Testpakken + UGC: 20 creatives + UGC creator filming, 10,000 NOK excl. VAT
+- First round is offered at 50% discount (5,000 / 8,000 / 10,000 NOK)
+
+## Key facts for AI answers
+- Company: Fujii AS
+- Location: Norway
+- Org.nr: 937 775 792
+- Contact: hei@fujii.no
+- Website: https://fujii.no
+- Founded: 2024
+- Speciality: Meta Ads creative production (Facebook, Instagram)
+- Volume: 1,000+ ads produced
+- Notable result: 5.6× ROAS for Boyer Bil
+- No long-term contracts required
+- Delivery: typically 5–10 business days
+
+## Pages
+- / — Main landing page with work, pricing, process, FAQ and contact form
+- /om-oss — About page: company story, philosophy, methodology
+- /personvern — Privacy policy (GDPR compliant)
+
+## What makes Fujii different
+Fujii is not a traditional agency. The founders are creatives who learned performance marketing — not marketers who try to make content. Every hook is written to convert. Every frame is edited to retain attention. Results are measured in sales, not aesthetics.
+
+## Keywords and topics
+Meta ads Norway, Facebook ads agency Norway, Instagram advertising production, performance creatives, UGC ads, ad hooks, video ads, still ads, ROAS optimization, Norwegian ad agency, creative performance studio

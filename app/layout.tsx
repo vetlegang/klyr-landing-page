@@ -4,6 +4,7 @@ import "./globals.css";
 import ScrollBackground from "./components/ScrollBackground";
 import FloatingCTA from "./components/FloatingCTA";
 import { LanguageProvider } from "./i18n/LanguageContext";
+import StructuredData from "./components/StructuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +16,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Rounded playful font for wordmark + studio menu
 const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
@@ -24,9 +24,79 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Fujii | Creative Performance for Meta",
+  metadataBase: new URL("https://fujii.no"),
+  title: {
+    default: "Fujii — Meta Ads Creatives | Norge",
+    template: "%s | Fujii",
+  },
   description:
-    "Fujii bygger creative-systemer som lærer av hvert signal – ikke random testing, men systematisk iterasjon fra hook til skalering.",
+    "Fujii produserer Meta-annonser som konverterer. 20 unike creatives — still ads og video ads med vinnende hooks og vinkler, klare for testing på Facebook og Instagram. Fra 5 000 kr, ingen binding.",
+  keywords: [
+    "Meta annonser Norge",
+    "Facebook annonser byrå",
+    "Instagram annonser",
+    "performance creatives",
+    "UGC annonser",
+    "annonseproduksjon",
+    "Meta ads byrå",
+    "Facebook ads produksjon",
+    "kreative annonser Norge",
+    "video ads Meta",
+    "still ads Meta",
+    "hooks annonser",
+    "ROAS forbedring",
+    "annonsebyrå Norge",
+    "Fujii",
+  ],
+  authors: [{ name: "Fujii AS", url: "https://fujii.no" }],
+  creator: "Fujii AS",
+  publisher: "Fujii AS",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "nb_NO",
+    alternateLocale: "en_US",
+    url: "https://fujii.no",
+    siteName: "Fujii",
+    title: "Fujii — Meta Ads Creatives | Norge",
+    description:
+      "20 unike Meta-creatives klare for testing. Still ads + video ads med vinnende hooks. Fra 5 000 kr, ingen binding. Levert av tre norske creatives med 1 000+ annonser produsert.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Fujii — Meta Ads Creatives",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fujii — Meta Ads Creatives | Norge",
+    description:
+      "20 unike Meta-creatives klare for testing. Fra 5 000 kr, ingen binding.",
+    images: ["/og-image.png"],
+  },
+  alternates: {
+    canonical: "https://fujii.no",
+    languages: {
+      "nb-NO": "https://fujii.no",
+      "en-US": "https://fujii.no",
+    },
+  },
+  verification: {
+    // google: "legg-til-din-google-search-console-kode-her",
+  },
 };
 
 export default function RootLayout({
@@ -39,15 +109,18 @@ export default function RootLayout({
       lang="no"
       className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
     >
+      <head>
+        <StructuredData />
+      </head>
       <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">
-          <LanguageProvider>
-            <ScrollBackground />
-            <div className="relative z-10">
-              {children}
-            </div>
-            <FloatingCTA />
-          </LanguageProvider>
-        </body>
+        <LanguageProvider>
+          <ScrollBackground />
+          <div className="relative z-10">
+            {children}
+          </div>
+          <FloatingCTA />
+        </LanguageProvider>
+      </body>
     </html>
   );
 }
