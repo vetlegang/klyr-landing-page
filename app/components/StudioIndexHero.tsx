@@ -137,18 +137,15 @@ export default function StudioIndexHero() {
                   alt={i === 0 ? "Fujii karakter" : ""}
                   aria-hidden={i !== activeIndex}
                   style={{
-                    position:   "absolute",
-                    inset:      0,
-                    width:      "100%",
-                    height:     "100%",
-                    objectFit: "contain",
-                    objectPosition: "center center",
-                    opacity:    i === activeIndex ? 1 : 0,
-                    transition: `opacity ${FADE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-                    // Subtle scale: active slightly larger, inactive slightly smaller
-                    transform:  i === activeIndex ? "scale(1)" : "scale(0.97)",
-                    // Scale transition matches opacity
-                    // transition handles both via shorthand below
+                    position:        "absolute",
+                    inset:           0,
+                    width:           "100%",
+                    height:          "100%",
+                    objectFit:       "contain",
+                    objectPosition:  "center center",
+                    opacity:         i === activeIndex ? 1 : 0,
+                    transition:      `opacity ${FADE_MS}ms ease-in-out`,
+                    willChange:      "opacity",
                   }}
                 />
               ))}
