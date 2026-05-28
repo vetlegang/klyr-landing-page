@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { FadeIn } from "./FadeIn";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const G = "#2A5C18";
 
-const faqs = [
+const faqsNo = [
   {
     q: "Hva får jeg for 5 000 kr?",
     a: "Du får 20 unike creatives klare til bruk i Meta-annonser — 10 still ads og 10 video ads med ulike hooks og vinkler. Vi analyserer tilbudet ditt, finner de sterkeste argumentene og produserer alt tilpasset Facebook og Instagram. Vanlig pris er 10 000 kr, men første runde har 50% rabatt.",
@@ -29,7 +30,32 @@ const faqs = [
   },
 ];
 
+const faqsEn = [
+  {
+    q: "What do I get for 5 000 kr?",
+    a: "You get 20 unique creatives ready to use in Meta ads — 10 still ads and 10 video ads with different hooks and angles. We analyse your offer, find the strongest arguments and produce everything adapted for Facebook and Instagram. Regular price is 10 000 kr, but the first round is 50% off.",
+  },
+  {
+    q: "Is a shoot included?",
+    a: "No. The test package at 5 000 kr covers production of 20 creatives based on available material and simple graphic/AI/stock production. If you need new footage, we can come and film at your location for +3 000 kr, or film with a UGC creator for +5 000 kr.",
+  },
+  {
+    q: "Is there a commitment?",
+    a: "No. The test package is designed for you to try us without obligation. After the first round, you decide whether to continue with new rounds or stop.",
+  },
+  {
+    q: "Does this suit small businesses?",
+    a: "Yes, absolutely. The test package is designed specifically for smaller, ambitious businesses who want to test Meta advertising without committing to large agency retainers. You don't need to have run ads before.",
+  },
+  {
+    q: "Do I need an ad account already?",
+    a: "No. You need a Meta account to run the ads yourself, but we take care of all the creatives and recommendations. If you don't have an account yet, we can help you get started.",
+  },
+];
+
 export default function FAQ() {
+  const { lang } = useLanguage();
+  const faqs = lang === "no" ? faqsNo : faqsEn;
   const [open, setOpen] = useState<number | null>(null);
 
   return (
@@ -43,7 +69,7 @@ export default function FAQ() {
               className="text-[10px] font-bold tracking-[0.3em] uppercase"
               style={{ color: G, opacity: 0.5 }}
             >
-              Spørsmål
+              {lang === "no" ? "Spørsmål" : "FAQ"}
             </p>
           </div>
         </FadeIn>
@@ -60,7 +86,7 @@ export default function FAQ() {
                 color: G,
               }}
             >
-              Lurer du på noe?
+              {lang === "no" ? "Lurer du på noe?" : "Any questions?"}
             </h2>
           </FadeIn>
 

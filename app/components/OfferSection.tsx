@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const G  = "#2A5C18";
 const BG = "#F5F4F0";
 
-const plans = [
+const plansNo = [
   {
     id: "basis",
     name: "Testpakken",
@@ -68,6 +69,78 @@ const plans = [
   },
 ];
 
+const plansEn = [
+  {
+    id: "basis",
+    name: "Test Package",
+    price: "5 000",
+    unit: "kr excl. VAT",
+    tag: null,
+    desc: "Get started with Meta advertising based on existing material.",
+    features: [
+      "20 unique Meta creatives",
+      "Still ads + video ads",
+      "Hooks and angles",
+      "Copy for each creative",
+      "Feed, Stories and Reels",
+      "Delivery within agreed deadline",
+      "No commitment",
+    ],
+    absent: ["On-location shoot", "UGC creator"],
+    cta: "Choose Test Package",
+    featured: false,
+  },
+  {
+    id: "shoot",
+    name: "Test Package + Shoot",
+    price: "8 000",
+    unit: "kr excl. VAT",
+    tag: "Most popular",
+    desc: "Everything in the Test Package, plus we come and film new material at your location.",
+    features: [
+      "20 unique Meta creatives",
+      "Still ads + video ads",
+      "Hooks and angles",
+      "Copy for each creative",
+      "Feed, Stories and Reels",
+      "On-location shoot included",
+      "No commitment",
+    ],
+    absent: ["UGC creator"],
+    cta: "Choose Shoot Package",
+    featured: true,
+  },
+  {
+    id: "ugc",
+    name: "Test Package + UGC",
+    price: "10 000",
+    unit: "kr excl. VAT",
+    tag: null,
+    desc: "Everything in the Test Package, plus filming with a UGC creator.",
+    features: [
+      "20 unique Meta creatives",
+      "Still ads + video ads",
+      "Hooks and angles",
+      "Copy for each creative",
+      "Feed, Stories and Reels",
+      "Filming with UGC creator",
+      "No commitment",
+    ],
+    absent: [],
+    cta: "Choose UGC Package",
+    featured: false,
+  },
+];
+
+const headingNo = "Velg pakken som passer deg.";
+const headingEn = "Choose the package that fits you.";
+const subNo = "50% rabatt på første runde. Vanlig pris er det dobbelte — vi gir deg halv pris for å teste oss.";
+const subEn = "50% off the first round. Regular price is double — we give you half price to test us.";
+const footerNoteNo = "Ingen binding · du bestemmer hva som skjer etter første runde";
+const footerNoteEn = "No commitment · you decide what happens after the first round";
+const labelNo = "Tilbudet";
+const labelEn = "Offer";
+
 function CheckIcon({ dim }: { dim?: boolean }) {
   return (
     <svg
@@ -96,6 +169,13 @@ function CrossIcon() {
 }
 
 export default function OfferSection() {
+  const { lang } = useLanguage();
+  const plans    = lang === "no" ? plansNo : plansEn;
+  const heading  = lang === "no" ? headingNo : headingEn;
+  const sub      = lang === "no" ? subNo : subEn;
+  const footerNote = lang === "no" ? footerNoteNo : footerNoteEn;
+  const sectionLabel = lang === "no" ? labelNo : labelEn;
+
   const scrollToContact = () => {
     document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -115,7 +195,7 @@ export default function OfferSection() {
           <div className="flex items-center gap-3 mb-5">
             <span className="w-6 h-px" style={{ background: G, opacity: 0.3 }} />
             <p className="text-[10px] font-bold tracking-[0.3em] uppercase" style={{ color: G, opacity: 0.5 }}>
-              Tilbudet
+              {sectionLabel}
             </p>
           </div>
           <h2
@@ -128,10 +208,10 @@ export default function OfferSection() {
               maxWidth:      "600px",
             }}
           >
-            Velg pakken som passer deg.
+            {heading}
           </h2>
           <p className="mt-3 text-[14px] max-w-md" style={{ color: G, opacity: 0.5 }}>
-            50% rabatt på første runde. Vanlig pris er det dobbelte — vi gir deg halv pris for å teste oss.
+            {sub}
           </p>
         </motion.div>
 
@@ -277,7 +357,7 @@ export default function OfferSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          Ingen binding · du bestemmer hva som skjer etter første runde
+          {footerNote}
         </motion.p>
 
       </div>

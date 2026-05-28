@@ -14,38 +14,64 @@ type FormState = {
   shoot: ShootOption;
 };
 
-const shootOptions: { id: ShootOption; label: string; tag: string; price: number; desc: string }[] = [
-  {
-    id: "ingen",
-    label: "Ingen shoot",
-    tag: "+0 kr",
-    price: 0,
-    desc: "Vi bruker eksisterende materiell, produktbilder, stock/AI og grafisk produksjon.",
-  },
-  {
-    id: "shoot",
-    label: "Shoot hos dere",
-    tag: "+3 000 kr",
-    price: 3000,
-    desc: "Vi kommer til dere og filmer enkelt materiale. UGC-person er ikke inkludert.",
-  },
-  {
-    id: "ugc",
-    label: "Shoot med UGC",
-    tag: "+5 000 kr",
-    price: 5000,
-    desc: "Vi filmer med UGC-person/creator. Eget tilvalg — ikke tillegg oppå vanlig shoot.",
-  },
+const shootOptionsNo = [
+  { id: "ingen" as ShootOption, label: "Ingen shoot",   tag: "+0 kr",       price: 0,    desc: "Vi bruker eksisterende materiell, produktbilder, stock/AI og grafisk produksjon." },
+  { id: "shoot" as ShootOption, label: "Shoot hos dere", tag: "+3 000 kr",   price: 3000, desc: "Vi kommer til dere og filmer enkelt materiale. UGC-person er ikke inkludert." },
+  { id: "ugc"   as ShootOption, label: "Shoot med UGC", tag: "+5 000 kr",   price: 5000, desc: "Vi filmer med UGC-person/creator. Eget tilvalg — ikke tillegg oppå vanlig shoot." },
+];
+
+const shootOptionsEn = [
+  { id: "ingen" as ShootOption, label: "No shoot",        tag: "+0 kr",       price: 0,    desc: "We use existing material, product images, stock/AI and graphic production." },
+  { id: "shoot" as ShootOption, label: "On-site shoot",   tag: "+3 000 kr",   price: 3000, desc: "We come to you and film simple material. UGC creator is not included." },
+  { id: "ugc"   as ShootOption, label: "Shoot with UGC",  tag: "+5 000 kr",   price: 5000, desc: "We film with a UGC creator. Separate add-on — not in addition to the regular shoot." },
 ];
 
 const BASE_PRICE = 5000;
 
-const budsjettOptions = [
-  "Under 5 000 kr",
-  "5 000–20 000 kr",
-  "20 000–50 000 kr",
-  "50 000 kr+",
-];
+const budsjettOptionsNo = ["Under 5 000 kr", "5 000–20 000 kr", "20 000–50 000 kr", "50 000 kr+"];
+const budsjettOptionsEn = ["Under 5 000 kr", "5 000–20 000 kr", "20 000–50 000 kr", "50 000 kr+"];
+
+const labelsNo = {
+  shootQ:  "Trenger dere shoot?",
+  total:   "Totalt eks. mva",
+  name:    "Navn",
+  email:   "E-post",
+  phone:   "Telefon",
+  website: "Nettside",
+  sells:   "Hva selger du?",
+  sellsPh: "Eks: treningsutstyr, klinikk, klær...",
+  budget:  "Annonsebudsjett",
+  budgetOpt: "Valgfri",
+  budgetPh: "Velg budsjett",
+  submit:  "Send inn for vurdering",
+  sending: "Sender…",
+  footerNote: (total: string) => `20 creatives · ${total} kr · 50% rabatt · ingen binding`,
+  successTitle: "Takk — vi tar kontakt snart.",
+  successSub:   "Vi svarer innen 1 arbeidsdag med en vurdering.",
+  successShoot: (label: string) => ` Du valgte ${label}.`,
+  error:   "Noe gikk galt. Prøv igjen eller kontakt oss direkte.",
+};
+
+const labelsEn = {
+  shootQ:  "Do you need a shoot?",
+  total:   "Total excl. VAT",
+  name:    "Name",
+  email:   "Email",
+  phone:   "Phone",
+  website: "Website",
+  sells:   "What do you sell?",
+  sellsPh: "E.g.: gym equipment, clinic, clothing...",
+  budget:  "Ad budget",
+  budgetOpt: "Optional",
+  budgetPh: "Select budget",
+  submit:  "Submit for assessment",
+  sending: "Sending…",
+  footerNote: (total: string) => `20 creatives · ${total} kr · 50% off · no commitment`,
+  successTitle: "Thanks — we'll be in touch soon.",
+  successSub:   "We respond within 1 business day with an assessment.",
+  successShoot: (label: string) => ` You chose ${label}.`,
+  error:   "Something went wrong. Try again or contact us directly.",
+};
 
 function inputCls(dark: boolean) {
   return [
@@ -62,7 +88,10 @@ function labelCls(dark: boolean) {
   }`;
 }
 
-export default function LeadForm({ dark = false }: { dark?: boolean }) {
+export default function LeadForm({ dark = false, lang = "no" }: { dark?: boolean; lang?: "no" | "en" }) {
+  const shootOptions  = lang === "no" ? shootOptionsNo  : shootOptionsEn;
+  const budsjettOptions = lang === "no" ? budsjettOptionsNo : budsjettOptionsEn;
+  const L = lang === "no" ? labelsNo : labelsEn;
   const [form, setForm] = useState<FormState>({
     navn: "",
     epost: "",
@@ -122,12 +151,12 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
           </svg>
         </div>
         <h3 className={`text-lg font-black mb-2 ${dark ? "text-white" : "text-[#101010]"}`}>
-          Takk — vi tar kontakt snart.
+          {L.successTitle}
         </h3>
         <p className={`text-[13px] leading-relaxed ${dark ? "text-white/45" : "text-[#737373]"}`}>
-          Vi svarer innen 1 arbeidsdag med en vurdering.
+          {L.successSub}
           {form.shoot !== "ingen" && (
-            <> Du valgte <strong>{selectedShoot.label}</strong>.</>
+            <strong>{L.successShoot(selectedShoot.label)}</strong>
           )}
         </p>
       </div>
@@ -139,7 +168,7 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
 
       {/* Shoot selector */}
       <div>
-        <p className={labelCls(dark)}>Trenger dere shoot?</p>
+        <p className={labelCls(dark)}>{L.shootQ}</p>
         <div className="flex flex-col gap-1.5">
           {shootOptions.map((opt) => {
             const sel = form.shoot === opt.id;
@@ -190,7 +219,7 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
         dark ? "bg-white/[0.05] border border-white/[0.07]" : "bg-[#F7F4EE]"
       }`}>
         <span className={`text-[12px] font-semibold ${dark ? "text-white/35" : "text-[#888]"}`}>
-          Totalt eks. mva
+          {L.total}
         </span>
         <span className={`text-[17px] font-black ${dark ? "text-white" : "text-[#101010]"}`}>
           {totalFormatted} kr
@@ -200,44 +229,44 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
       {/* Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <div>
-          <label className={labelCls(dark)}>Navn</label>
-          <input type="text" name="navn" required placeholder="Ditt navn"
+          <label className={labelCls(dark)}>{L.name}</label>
+          <input type="text" name="navn" required placeholder={lang === "no" ? "Ditt navn" : "Your name"}
             value={form.navn} onChange={handleChange} className={inputCls(dark)} />
         </div>
         <div>
-          <label className={labelCls(dark)}>E-post</label>
-          <input type="email" name="epost" required placeholder="din@epost.no"
+          <label className={labelCls(dark)}>{L.email}</label>
+          <input type="email" name="epost" required placeholder={lang === "no" ? "din@epost.no" : "your@email.com"}
             value={form.epost} onChange={handleChange} className={inputCls(dark)} />
         </div>
       </div>
 
       <div>
-        <label className={labelCls(dark)}>Telefon</label>
+        <label className={labelCls(dark)}>{L.phone}</label>
         <input type="tel" name="telefon" required placeholder="400 00 000"
           value={form.telefon} onChange={handleChange} className={inputCls(dark)} />
       </div>
 
       <div>
-        <label className={labelCls(dark)}>Nettside</label>
-        <input type="url" name="nettside" required placeholder="https://dinside.no"
+        <label className={labelCls(dark)}>{L.website}</label>
+        <input type="url" name="nettside" required placeholder="https://yoursite.com"
           value={form.nettside} onChange={handleChange} className={inputCls(dark)} />
       </div>
 
       <div>
-        <label className={labelCls(dark)}>Hva selger du?</label>
+        <label className={labelCls(dark)}>{L.sells}</label>
         <input type="text" name="hvaSelger" required
-          placeholder="Eks: treningsutstyr, klinikk, klær..."
+          placeholder={L.sellsPh}
           value={form.hvaSelger} onChange={handleChange} className={inputCls(dark)} />
       </div>
 
       <div>
         <label className={labelCls(dark)}>
-          Annonsebudsjett{" "}
-          <span className="normal-case font-normal tracking-normal">(valgfri)</span>
+          {L.budget}{" "}
+          <span className="normal-case font-normal tracking-normal">({L.budgetOpt})</span>
         </label>
         <select name="budsjett" value={form.budsjett} onChange={handleChange}
           className={`${inputCls(dark)} appearance-none cursor-pointer`}>
-          <option value="">Velg budsjett</option>
+          <option value="">{L.budgetPh}</option>
           {budsjettOptions.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
       </div>
@@ -248,11 +277,11 @@ export default function LeadForm({ dark = false }: { dark?: boolean }) {
 
       <button type="submit" disabled={loading}
         className="mt-1 w-full bg-[#101010] text-white text-[13px] font-black py-3.5 rounded-full tracking-tight hover:bg-[#2a2a2a] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-        {loading ? "Sender…" : "Send inn for vurdering"}
+        {loading ? L.sending : L.submit}
       </button>
 
       <p className={`text-[11px] text-center ${dark ? "text-white/20" : "text-[#B0B0B0]"}`}>
-        20 creatives · {totalFormatted} kr · 50% rabatt · ingen binding
+        {L.footerNote(totalFormatted)}
       </p>
     </form>
   );

@@ -3,8 +3,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import VideoCard, { VideoCardData } from "./VideoCard";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const G = "#2A5C18";
+
+const T = {
+  no: { heading: "Arbeid", sub: "Hover for å se kampanjen", intro: "annonser produsert" },
+  en: { heading: "Work",   sub: "Hover to see the campaign", intro: "ads produced" },
+};
 
 // ─── Edit videos here ────────────────────────────────────────────────────────
 const videos: VideoCardData[] = [
@@ -48,6 +54,8 @@ const videos: VideoCardData[] = [
 type Phase = "intro" | "grid";
 
 export default function ArbeidSection() {
+  const { lang } = useLanguage();
+  const t = T[lang];
   const [phase, setPhase] = useState<Phase>("intro");
   const sectionRef = useRef<HTMLElement>(null);
   const fired      = useRef(false);
@@ -104,7 +112,7 @@ export default function ArbeidSection() {
               color:         G,
             }}
           >
-            Arbeid
+            {t.heading}
           </h2>
           <p
             className="mt-2"
@@ -114,7 +122,7 @@ export default function ArbeidSection() {
               opacity:  0.45,
             }}
           >
-            Hover for å se kampanjen
+            {t.sub}
           </p>
         </motion.div>
 
@@ -166,7 +174,7 @@ export default function ArbeidSection() {
                   animate={{ opacity: 0.55, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.18, ease: "easeOut" }}
                 >
-                  annonser produsert
+                  {t.intro}
                 </motion.p>
               </motion.div>
             )}

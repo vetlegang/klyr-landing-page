@@ -2,11 +2,12 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { useLanguage } from "../i18n/LanguageContext";
 
-const G   = "#2A5C18"; // Fujii deep green — wordmark, menu, character, everything
-const V   = "7";       // bump to bust browser/CDN cache after asset changes
+const G   = "#2A5C18";
+const V   = "7";
 
-const menuItems = [
+const menuItemsNo = [
   { label: "Arbeid",         href: "#arbeid",  char: "arbeid" },
   { label: "Meta Creatives", href: "#tilbud",  char: "meta-creatives" },
   { label: "Testpakken",     href: "#tilbud",  char: "testpakken" },
@@ -15,9 +16,28 @@ const menuItems = [
   { label: "Kontakt",        href: "#kontakt", char: "kontakt" },
 ];
 
+const menuItemsEn = [
+  { label: "Work",           href: "#arbeid",  char: "arbeid" },
+  { label: "Meta Creatives", href: "#tilbud",  char: "meta-creatives" },
+  { label: "Test Package",   href: "#tilbud",  char: "testpakken" },
+  { label: "Production",     href: "#tilbud",  char: "produksjon" },
+  { label: "Process",        href: "#prosess", char: "prosess" },
+  { label: "Contact",        href: "#kontakt", char: "kontakt" },
+];
+
+const offerTagsNo = ["20 Meta-creatives", "5 000 kr", "Ingen binding"];
+const offerTagsEn = ["20 Meta-creatives", "5 000 kr", "No commitment"];
+const ctaNo = "Start testpakken →";
+const ctaEn = "Start the test package →";
+
 const FADE_MS = 220;
 
 export default function StudioIndexHero() {
+  const { lang } = useLanguage();
+  const menuItems = lang === "no" ? menuItemsNo : menuItemsEn;
+  const offerTags = lang === "no" ? offerTagsNo : offerTagsEn;
+  const ctaLabel  = lang === "no" ? ctaNo : ctaEn;
+
   const [activeChar, setActiveChar] = useState("arbeid");
   const [prevChar,   setPrevChar]   = useState<string | null>(null);
   const [generation, setGeneration] = useState(0);
@@ -197,7 +217,7 @@ export default function StudioIndexHero() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.92 }}
             >
-              {["20 Meta-creatives", "5 000 kr", "Ingen binding"].map((t, i) => (
+              {offerTags.map((t, i) => (
                 <span key={t} className="contents">
                   {i > 0 && (
                     <span
@@ -232,7 +252,7 @@ export default function StudioIndexHero() {
                   textDecorationColor:    G,
                 }}
               >
-                Start testpakken →
+                {ctaLabel}
               </a>
             </motion.div>
 

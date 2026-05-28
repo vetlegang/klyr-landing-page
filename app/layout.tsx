@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import ScrollBackground from "./components/ScrollBackground";
 import FloatingCTA from "./components/FloatingCTA";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,11 +40,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
     >
       <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">
-          <ScrollBackground />
-          <div className="relative z-10">
-            {children}
-          </div>
-          <FloatingCTA />
+          <LanguageProvider>
+            <ScrollBackground />
+            <div className="relative z-10">
+              {children}
+            </div>
+            <FloatingCTA />
+          </LanguageProvider>
         </body>
     </html>
   );

@@ -2,10 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const G = "#2A5C18";
 
-const steps = [
+const stepsNo = [
   {
     num: "01",
     title: "Brief",
@@ -34,19 +35,35 @@ const steps = [
     num: "05",
     title: "Hva skal du gjøre?",
     desc: "Lene deg tilbake og forberede deg på et økt salg.",
-    accent: true, // solid green, hero card
+    accent: true,
   },
 ];
 
-const introLines = [
-  "Creatives",
-  "som kan",
-  "performance.",
+const stepsEn = [
+  { num: "01", title: "Brief",        desc: "You send us your website and what you sell. We respond within 1 business day with a concrete assessment.", accent: false },
+  { num: "02", title: "Angles & hooks", desc: "We analyse the offer and target audience and select the strongest creative angles and arguments for testing.", accent: false },
+  { num: "03", title: "Production",   desc: "20 creatives produced and adapted for Meta — still ads and video ads, ready to run immediately.", accent: false },
+  { num: "04", title: "Testing",      desc: "We test the ads and build on the ones that actually win, to get the most out of the campaign.", accent: false },
+  { num: "05", title: "What do you do?", desc: "Sit back and prepare for increased sales.", accent: true },
 ];
+
+const introLinesNo = ["Creatives", "som kan", "performance."];
+const introLinesEn = ["Creatives", "that drive", "performance."];
+
+const sectionLabelNo = "Prosess";
+const sectionLabelEn = "Process";
+const footerLineNo   = "Fra brief til levering — typisk 5–10 arbeidsdager.";
+const footerLineEn   = "From brief to delivery — typically 5–10 business days.";
 
 type Phase = "intro" | "steps";
 
 export default function Process() {
+  const { lang } = useLanguage();
+  const steps      = lang === "no" ? stepsNo : stepsEn;
+  const introLines = lang === "no" ? introLinesNo : introLinesEn;
+  const sectionLabel = lang === "no" ? sectionLabelNo : sectionLabelEn;
+  const footerLine   = lang === "no" ? footerLineNo   : footerLineEn;
+
   const [phase, setPhase] = useState<Phase>("intro");
   const sectionRef = useRef<HTMLElement>(null);
   const fired      = useRef(false);
@@ -93,7 +110,7 @@ export default function Process() {
         >
           <span className="w-6 h-px" style={{ background: G, opacity: 0.3 }} />
           <p className="text-[10px] font-bold tracking-[0.3em] uppercase" style={{ color: G, opacity: 0.5 }}>
-            Prosess
+            {sectionLabel}
           </p>
         </motion.div>
 
@@ -256,7 +273,7 @@ export default function Process() {
                       className="inline-flex items-center gap-2 text-[11px] font-black px-6 py-3.5 rounded-full tracking-widest uppercase shrink-0 transition-all duration-150"
                       style={{ background: "#BEFF00", color: "#0D1F0A" }}
                     >
-                      Start nå →
+                      {lang === "no" ? "Start nå →" : "Start now →"}
                     </a>
                   </motion.div>
 
@@ -270,7 +287,7 @@ export default function Process() {
                   animate={{ opacity: 0.35 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                  Fra brief til levering — typisk 5–10 arbeidsdager.
+                  {footerLine}
                 </motion.p>
               </motion.div>
             )}

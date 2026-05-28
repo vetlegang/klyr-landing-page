@@ -1,14 +1,33 @@
+"use client";
+
+import { useLanguage } from "../i18n/LanguageContext";
+
 const G = "#2A5C18";
 
-const footerLinks = [
-  { label: "Arbeid", href: "#arbeid" },
-  { label: "Tilbud", href: "#tilbud" },
+const linksNo = [
+  { label: "Arbeid",  href: "#arbeid" },
+  { label: "Tilbud",  href: "#tilbud" },
+  { label: "Om oss",  href: "/om-oss" },
   { label: "Prosess", href: "#prosess" },
-  { label: "FAQ", href: "#faq" },
+  { label: "FAQ",     href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
 ];
 
+const linksEn = [
+  { label: "Work",    href: "#arbeid" },
+  { label: "Offer",   href: "#tilbud" },
+  { label: "About",   href: "/om-oss" },
+  { label: "Process", href: "#prosess" },
+  { label: "FAQ",     href: "#faq" },
+  { label: "Contact", href: "#kontakt" },
+];
+
 export default function Footer() {
+  const { lang } = useLanguage();
+  const footerLinks = lang === "no" ? linksNo : linksEn;
+  const tagline = lang === "no"
+    ? "Performance-creatives for Meta — klare for testing."
+    : "Performance creatives for Meta — ready for testing.";
   const year = new Date().getFullYear();
 
   return (
@@ -35,7 +54,7 @@ export default function Footer() {
               className="text-[12px] leading-relaxed max-w-[200px]"
               style={{ color: G, opacity: 0.4 }}
             >
-              Performance-creatives for Meta — klare for testing.
+              {tagline}
             </p>
           </div>
 
