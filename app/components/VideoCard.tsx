@@ -28,6 +28,26 @@ function LiveBadge() {
   );
 }
 
+function SoundOnIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  );
+}
+
+function SoundOffIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  );
+}
+
 export default function VideoCard({ src, client, label, stat, statLabel }: VideoCardData) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
@@ -35,6 +55,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
   const [hovered,  setHovered]  = useState(false);
   const [isTouch,  setIsTouch]  = useState(false);
   const [inView,   setInView]   = useState(false);
+  const [isMuted,  setIsMuted]  = useState(false); // sound ON by default
 
   const isLive = label.toLowerCase().includes("live");
 
@@ -42,6 +63,24 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
   useEffect(() => {
     setIsTouch(window.matchMedia("(hover: none)").matches);
   }, []);
+
+  // ── Keep video.muted in sync with state ────────────────────────────────────
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) v.muted = isMuted;
+  }, [isMuted]);
+
+  // ── Helper: play with sound, fall back to muted if browser blocks ──────────
+  const playWithSound = (v: HTMLVideoElement) => {
+    v.muted = isMuted;
+    v.currentTime = 0;
+    v.play().catch(() => {
+      // Autoplay blocked unmuted — mute and retry
+      v.muted = true;
+      setIsMuted(true);
+      v.play().catch(() => {});
+    });
+  };
 
   // ── IntersectionObserver: autoplay on mobile, pause-when-offscreen on all ──
   useEffect(() => {
@@ -55,11 +94,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
         if (!v) return;
 
         if (entry.isIntersecting) {
-          // Mobile: autoplay immediately. Desktop: only if already hovered.
-          if (isTouch) {
-            v.currentTime = 0;
-            v.play().catch(() => {});
-          }
+          if (isTouch) playWithSound(v);
         } else {
           v.pause();
           v.currentTime = 0;
@@ -71,6 +106,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
 
     observer.observe(el);
     return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTouch]);
 
   // ── Desktop hover handlers ─────────────────────────────────────────────────
@@ -79,8 +115,7 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
     setHovered(true);
     const v = videoRef.current;
     if (!v) return;
-    v.currentTime = 0;
-    v.play().catch(() => {});
+    playWithSound(v);
   };
 
   const handleLeave = () => {
@@ -98,20 +133,30 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
     setHovered(h => !h);
   };
 
+  // ── Mute button ───────────────────────────────────────────────────────────
+  const toggleMute = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    const v = videoRef.current;
+    const next = !isMuted;
+    setIsMuted(next);
+    if (v) v.muted = next;
+  };
+
   // Overlay visible when: desktop hover OR mobile (always when in view)
   const overlayVisible = hovered || (isTouch && inView);
   const videoActive    = hovered || (isTouch && inView);
+  const showMuteBtn    = videoActive;
 
   return (
     <div
       ref={containerRef}
       className="relative overflow-hidden rounded-2xl select-none"
-      style={{ aspectRatio: "9 / 16", cursor: isTouch ? "pointer" : "pointer" }}
+      style={{ aspectRatio: "9 / 16", cursor: "pointer" }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onClick={handleTap}
     >
-      {/* Video */}
+      {/* Video — starts muted for autoplay compat, isMuted effect syncs it */}
       <video
         ref={videoRef}
         src={src}
@@ -126,7 +171,30 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
         }}
       />
 
-      {/* ── Idle gradient + client name (desktop only when not hovered) ── */}
+      {/* ── Mute / unmute button ── */}
+      <button
+        type="button"
+        onClick={toggleMute}
+        onTouchEnd={toggleMute}
+        aria-label={isMuted ? "Skru på lyd" : "Skru av lyd"}
+        className="absolute top-3 right-3 z-10 flex items-center justify-center rounded-full transition-all duration-200"
+        style={{
+          width:           32,
+          height:          32,
+          background:      "rgba(0,0,0,0.38)",
+          backdropFilter:  "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          border:          "1px solid rgba(255,255,255,0.12)",
+          color:           "rgba(255,255,255,0.85)",
+          opacity:         showMuteBtn ? 1 : 0,
+          pointerEvents:   showMuteBtn ? "auto" : "none",
+          transform:       showMuteBtn ? "scale(1)" : "scale(0.85)",
+        }}
+      >
+        {isMuted ? <SoundOffIcon /> : <SoundOnIcon />}
+      </button>
+
+      {/* ── Idle gradient + client name ── */}
       <div
         className="absolute inset-0 transition-opacity duration-300"
         style={{
@@ -165,7 +233,6 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
         }}
       >
         {stat ? (
-          /* Big ROAS / metric display */
           <div className="flex items-end justify-between">
             <div>
               <p
@@ -198,7 +265,6 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
             </p>
           </div>
         ) : (
-          /* Live / status display */
           <div>
             <p
               className="text-white/55 uppercase tracking-widest mb-1.5"
@@ -218,23 +284,6 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
           </div>
         )}
       </div>
-
-      {/* Mobile tap hint — show briefly on first visible, then hide */}
-      {isTouch && !hovered && inView && (
-        <div
-          className="absolute top-3 right-3 rounded-full px-2 py-1"
-          style={{
-            background: "rgba(0,0,0,0.35)",
-            backdropFilter: "blur(6px)",
-            fontSize: "0.6rem",
-            color: "rgba(255,255,255,0.6)",
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-          }}
-        >
-          TRYKK
-        </div>
-      )}
     </div>
   );
 }
