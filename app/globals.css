@@ -21,12 +21,12 @@
 }
 
 @keyframes char-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  0%   { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
 }
 @keyframes char-fade-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.04); }
 }
 
 html {

@@ -30,7 +30,7 @@ const offerTagsEn = ["20 Meta-creatives", "5 000 kr", "No commitment"];
 const ctaNo = "Start testpakken →";
 const ctaEn = "Start the test package →";
 
-const FADE_MS = 220;
+const FADE_MS = 420;
 
 export default function StudioIndexHero() {
   const { lang } = useLanguage();
@@ -42,19 +42,16 @@ export default function StudioIndexHero() {
   const [prevChar,   setPrevChar]   = useState<string | null>(null);
   const [generation, setGeneration] = useState(0);
   const [hoveredChar, setHoveredChar] = useState<string | null>(null);
-  const resetTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const swapPending = useRef(false);
-  const autoTimer   = useRef<ReturnType<typeof setInterval> | null>(null);
-  const autoIndex   = useRef(0);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
+  const autoIndex  = useRef(0);
 
   const switchTo = (char: string) => {
     if (char === activeChar) return;
-    if (swapPending.current) return;
-    swapPending.current = true;
     setPrevChar(activeChar);
     setActiveChar(char);
     setGeneration((g) => g + 1);
-    setTimeout(() => { setPrevChar(null); swapPending.current = false; }, FADE_MS + 30);
+    setTimeout(() => setPrevChar(null), FADE_MS + 60);
   };
 
   const handleEnter = (char: string) => {
@@ -156,7 +153,7 @@ export default function StudioIndexHero() {
                     height: "100%",
                     objectFit: "contain",
                     objectPosition: "center center",
-                    animation: `char-fade-out ${FADE_MS}ms ease forwards`,
+                    animation: `char-fade-out ${FADE_MS}ms ease-in-out forwards`,
                   }}
                 />
               )}
@@ -174,7 +171,7 @@ export default function StudioIndexHero() {
                   height: "100%",
                   objectFit: "contain",
                   objectPosition: "center center",
-                  animation: `char-fade-in ${FADE_MS}ms ease forwards`,
+                  animation: `char-fade-in ${FADE_MS}ms ease-in-out forwards`,
                 }}
               />
             </div>
