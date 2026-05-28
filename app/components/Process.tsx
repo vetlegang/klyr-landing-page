@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { FadeIn } from "./FadeIn";
 
 const G = "#2A5C18";
 
@@ -11,34 +10,38 @@ const steps = [
     num: "01",
     title: "Brief",
     desc: "Du sender oss nettside og hva du selger. Vi responderer innen 1 arbeidsdag med en konkret vurdering.",
+    accent: false,
   },
   {
     num: "02",
     title: "Vinkler og hooks",
     desc: "Vi analyserer tilbudet og målgruppen og velger de sterkeste kreative vinklene og argumentene for testing.",
+    accent: false,
   },
   {
     num: "03",
     title: "Produksjon",
     desc: "20 creatives produsert og tilpasset Meta — still ads og video ads, klar til å kjøres direkte.",
+    accent: false,
   },
   {
     num: "04",
     title: "Testing",
     desc: "Vi tester annonsene og bygger videre på de som faktisk vinner, for å få mest mulig ut av kampanjen.",
+    accent: false,
   },
   {
     num: "05",
     title: "Hva skal du gjøre?",
     desc: "Lene deg tilbake og forberede deg på et økt salg.",
+    accent: true, // solid green, hero card
   },
 ];
 
-// Two-word split for dramatic stagger
 const introLines = [
-  { big: "Creatives",    small: null },
-  { big: "som kan",      small: null },
-  { big: "performance.", small: null },
+  "Creatives",
+  "som kan",
+  "performance.",
 ];
 
 type Phase = "intro" | "steps";
@@ -80,7 +83,7 @@ export default function Process() {
     >
       <div className="max-w-[1440px] mx-auto">
 
-        {/* Section label — always visible */}
+        {/* Section label */}
         <motion.div
           className="flex items-center gap-3 mb-14"
           initial={{ opacity: 0, y: 10 }}
@@ -89,10 +92,7 @@ export default function Process() {
           transition={{ duration: 0.5 }}
         >
           <span className="w-6 h-px" style={{ background: G, opacity: 0.3 }} />
-          <p
-            className="text-[10px] font-bold tracking-[0.3em] uppercase"
-            style={{ color: G, opacity: 0.5 }}
-          >
+          <p className="text-[10px] font-bold tracking-[0.3em] uppercase" style={{ color: G, opacity: 0.5 }}>
             Prosess
           </p>
         </motion.div>
@@ -124,51 +124,60 @@ export default function Process() {
                       fontSize:      "clamp(3.2rem, 13vw, 11rem)",
                       letterSpacing: "-0.03em",
                       color:         G,
-                      // Alternate: last word slightly faded for depth
-                      opacity: i === 2 ? 0.45 : 1,
+                      opacity:       i === 2 ? 0.45 : 1,
                     }}
                     initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                    animate={{
-                      opacity: i === 2 ? 0.45 : 1,
-                      x: 0,
-                    }}
-                    transition={{
-                      duration: 0.55,
-                      delay: i * 0.14,
-                      ease: [0.2, 0, 0.2, 1],
-                    }}
+                    animate={{ opacity: i === 2 ? 0.45 : 1, x: 0 }}
+                    transition={{ duration: 0.55, delay: i * 0.14, ease: [0.2, 0, 0.2, 1] }}
                   >
-                    {line.big}
+                    {line}
                   </motion.p>
                 ))}
               </motion.div>
             )}
 
-            {/* ── Process steps ── */}
+            {/* ── Process step cards ── */}
             {phase === "steps" && (
               <motion.div
                 key="steps"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className="flex flex-col">
-                  {steps.map((step, i) => (
+                {/* Grid: 2 col on md, 1 col on mobile. Last card spans full width. */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                  {steps.slice(0, 4).map((step, i) => (
                     <motion.div
                       key={step.num}
-                      className="grid grid-cols-[32px_1fr] md:grid-cols-[48px_200px_1fr] items-start gap-6 md:gap-10 py-8 md:py-10 border-t"
-                      style={{ borderColor: "rgba(42,92,24,0.1)" }}
-                      initial={{ opacity: 0, y: 18 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.45,
-                        delay: i * 0.09,
-                        ease: "easeOut",
+                      className="relative rounded-2xl p-7 md:p-8 flex flex-col gap-4 overflow-hidden"
+                      style={{
+                        background: "rgba(42,92,24,0.07)",
+                        border:     "1.5px solid rgba(42,92,24,0.1)",
                       }}
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: i * 0.1, ease: [0.2, 0, 0.2, 1] }}
                     >
+                      {/* Big faded number in background */}
                       <span
-                        className="text-[11px] font-mono font-bold tracking-[0.15em] pt-1"
-                        style={{ color: G, opacity: 0.25 }}
+                        className="absolute right-5 top-3 font-black select-none pointer-events-none"
+                        style={{
+                          fontFamily:    "var(--font-nunito), sans-serif",
+                          fontSize:      "clamp(4rem, 8vw, 7rem)",
+                          letterSpacing: "-0.04em",
+                          color:         G,
+                          opacity:       0.06,
+                          lineHeight:    1,
+                        }}
+                      >
+                        {step.num}
+                      </span>
+
+                      {/* Small step number */}
+                      <span
+                        className="text-[10px] font-bold tracking-[0.2em] uppercase"
+                        style={{ color: G, opacity: 0.35 }}
                       >
                         {step.num}
                       </span>
@@ -178,7 +187,7 @@ export default function Process() {
                         style={{
                           fontFamily: "var(--font-nunito), sans-serif",
                           fontWeight: 900,
-                          fontSize:   "clamp(1.1rem, 1.8vw, 1.4rem)",
+                          fontSize:   "clamp(1.2rem, 2vw, 1.55rem)",
                           color:      G,
                         }}
                       >
@@ -186,41 +195,83 @@ export default function Process() {
                       </h3>
 
                       <p
-                        className="text-[14px] leading-relaxed col-span-2 md:col-span-1 -mt-2 md:mt-0 ml-[38px] md:ml-0"
-                        style={{ color: G, opacity: 0.5 }}
+                        className="text-[13px] leading-relaxed"
+                        style={{ color: G, opacity: 0.55 }}
                       >
                         {step.desc}
                       </p>
                     </motion.div>
                   ))}
-                  <div className="border-t" style={{ borderColor: "rgba(42,92,24,0.1)" }} />
-                </div>
 
-                <FadeIn delay={0.4}>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mt-12">
-                    <p className="text-[13px]" style={{ color: G, opacity: 0.45 }}>
-                      Fra brief til levering — typisk 5–10 arbeidsdager.
-                    </p>
-                    <a
-                      href="#kontakt"
-                      className="inline-flex items-center gap-2 text-[11px] font-black px-5 py-3 rounded-full transition-all duration-150 tracking-widest uppercase w-fit"
-                      style={{ border: "1.5px solid rgba(42,92,24,0.35)", color: G }}
-                      onMouseEnter={e => {
-                        (e.currentTarget as HTMLElement).style.background = G;
-                        (e.currentTarget as HTMLElement).style.color = "#F5F4F0";
-                      }}
-                      onMouseLeave={e => {
-                        (e.currentTarget as HTMLElement).style.background = "transparent";
-                        (e.currentTarget as HTMLElement).style.color = G;
+                  {/* Step 05 — full width, solid green accent card */}
+                  <motion.div
+                    className="md:col-span-2 relative rounded-2xl p-7 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-16 overflow-hidden"
+                    style={{ background: G }}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: 0.42, ease: [0.2, 0, 0.2, 1] }}
+                  >
+                    {/* Big faded number */}
+                    <span
+                      className="absolute right-8 top-4 font-black select-none pointer-events-none"
+                      style={{
+                        fontFamily:    "var(--font-nunito), sans-serif",
+                        fontSize:      "clamp(5rem, 12vw, 11rem)",
+                        letterSpacing: "-0.04em",
+                        color:         "#fff",
+                        opacity:       0.06,
+                        lineHeight:    1,
                       }}
                     >
-                      Start nå
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      05
+                    </span>
+
+                    <div className="flex flex-col gap-2 flex-1">
+                      <span className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.35)" }}>
+                        05
+                      </span>
+                      <h3
+                        className="leading-tight tracking-tight"
+                        style={{
+                          fontFamily: "var(--font-nunito), sans-serif",
+                          fontWeight: 900,
+                          fontSize:   "clamp(1.5rem, 3vw, 2.2rem)",
+                          color:      "#fff",
+                        }}
+                      >
+                        {steps[4].title}
+                      </h3>
+                    </div>
+
+                    <p
+                      className="text-[15px] leading-relaxed md:max-w-sm"
+                      style={{ color: "rgba(255,255,255,0.6)" }}
+                    >
+                      {steps[4].desc}
+                    </p>
+
+                    {/* CTA pill */}
+                    <a
+                      href="#kontakt"
+                      className="inline-flex items-center gap-2 text-[11px] font-black px-6 py-3.5 rounded-full tracking-widest uppercase shrink-0 transition-all duration-150"
+                      style={{ background: "#BEFF00", color: "#0D1F0A" }}
+                    >
+                      Start nå →
                     </a>
-                  </div>
-                </FadeIn>
+                  </motion.div>
+
+                </div>
+
+                {/* Footer note */}
+                <motion.p
+                  className="mt-8 text-[12px]"
+                  style={{ color: G, opacity: 0.35 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.35 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  Fra brief til levering — typisk 5–10 arbeidsdager.
+                </motion.p>
               </motion.div>
             )}
 
