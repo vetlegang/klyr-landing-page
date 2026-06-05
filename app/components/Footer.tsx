@@ -90,6 +90,16 @@ export default function Footer() {
             >
               Personvern
             </a>
+            <button
+              onClick={() => {
+                try { localStorage.removeItem("fujii-cookie-consent"); } catch {}
+                window.dispatchEvent(new CustomEvent("showCookieBanner"));
+              }}
+              className="text-[11px] transition-opacity duration-150 hover:opacity-60"
+              style={{ color: G, opacity: 0.3, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            >
+              Cookie-innstillinger
+            </button>
             <p className="text-[11px] tracking-wide" style={{ color: G, opacity: 0.3 }}>
               Creative Performance · Meta Ads · Norge
             </p>

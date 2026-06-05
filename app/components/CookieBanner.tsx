@@ -14,6 +14,10 @@ export default function CookieBanner() {
     } catch {
       setVisible(true);
     }
+
+    const handler = () => setVisible(true);
+    window.addEventListener("showCookieBanner", handler);
+    return () => window.removeEventListener("showCookieBanner", handler);
   }, []);
 
   const handleAccept = () => {
