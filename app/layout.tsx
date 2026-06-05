@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import ScrollBackground from "./components/ScrollBackground";
 import FloatingCTA from "./components/FloatingCTA";
+import CookieBanner from "./components/CookieBanner";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import StructuredData from "./components/StructuredData";
 
@@ -122,6 +123,7 @@ export default function RootLayout({
             {children}
           </div>
           <FloatingCTA />
+          <CookieBanner />
         </LanguageProvider>
       </body>
     </html>
