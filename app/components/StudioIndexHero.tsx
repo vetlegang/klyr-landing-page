@@ -1,18 +1,20 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const G = "#2A5C18";
 
+// Each character has its own measured background colour (sampled from video corners).
+// Used for per-character canvas chromakey so every video is keyed precisely.
 const CHARS = [
-  { key: "arbeid",         webm: "/characters/karakter-1.webm", safari: "/characters/karakter-1-safari.mp4", png: "/characters/arbeid.png?v=7" },
-  { key: "meta-creatives", webm: "/characters/karakter-2.webm", safari: "/characters/karakter-2-safari.mp4", png: "/characters/meta-creatives.png?v=7" },
-  { key: "testpakken",     webm: "/characters/karakter-3.webm", safari: "/characters/karakter-3-safari.mp4", png: "/characters/testpakken.png?v=7" },
-  { key: "produksjon",     webm: "/characters/karakter-4.webm", safari: "/characters/karakter-4-safari.mp4", png: "/characters/produksjon.png?v=7" },
-  { key: "prosess",        webm: "/characters/karakter-5.webm", safari: "/characters/karakter-5-safari.mp4", png: "/characters/prosess.png?v=7" },
-  { key: "kontakt",        webm: "/characters/karakter-6.webm", safari: "/characters/karakter-6-safari.mp4", png: "/characters/kontakt.png?v=7" },
+  { key: "arbeid",         webm: "/characters/karakter-1.webm", safari: "/characters/karakter-1-safari.mp4", png: "/characters/arbeid.png?v=7",         bg: [249, 250, 250] as [number, number, number] },
+  { key: "meta-creatives", webm: "/characters/karakter-2.webm", safari: "/characters/karakter-2-safari.mp4", png: "/characters/meta-creatives.png?v=7",  bg: [246, 249, 249] as [number, number, number] },
+  { key: "testpakken",     webm: "/characters/karakter-3.webm", safari: "/characters/karakter-3-safari.mp4", png: "/characters/testpakken.png?v=7",      bg: [248, 250, 250] as [number, number, number] },
+  { key: "produksjon",     webm: "/characters/karakter-4.webm", safari: "/characters/karakter-4-safari.mp4", png: "/characters/produksjon.png?v=7",      bg: [249, 250, 250] as [number, number, number] },
+  { key: "prosess",        webm: "/characters/karakter-5.webm", safari: "/characters/karakter-5-safari.mp4", png: "/characters/prosess.png?v=7",         bg: [249, 249, 249] as [number, number, number] },
+  { key: "kontakt",        webm: "/characters/karakter-6.webm", safari: "/characters/karakter-6-safari.mp4", png: "/characters/kontakt.png?v=7",         bg: [247, 249, 249] as [number, number, number] },
 ];
 
 const menuItemsNo = [
@@ -40,6 +42,109 @@ const ctaEn = "Start the test package →";
 
 const FADE_MS = 500;
 
+// ── Per-character canvas chromakey ───────────────────────────────────────────
+// bg = exact background colour measured from the video's corner pixels.
+// Uses Euclidean colour-distance so each character's unique tint is removed cleanly.
+function ChromakeyCanvas({
+  src,
+  bg,
+  isActive,
+  style,
+}: {
+  src: string;
+  bg: [number, number, number];
+  isActive: boolean;
+  style: React.CSSProperties;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rafRef   = useRef<number>(0);
+  const readyRef = useRef(false);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.play().catch(() => {});
+  }, [src]);
+
+  const drawLoop = useCallback(() => {
+    const video  = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
+
+    const W = 240, H = 240;
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(video, 0, 0, W, H);
+
+    const imgData = ctx.getImageData(0, 0, W, H);
+    const d = imgData.data;
+
+    const [bgR, bgG, bgB] = bg;
+    const HARD = 18;  // pixels within 18 units of bg colour → fully transparent
+    const SOFT = 45;  // pixels within 45 units → fade (anti-aliasing / edge pixels)
+
+    for (let i = 0; i < d.length; i += 4) {
+      const dr = d[i]     - bgR;
+      const dg = d[i + 1] - bgG;
+      const db = d[i + 2] - bgB;
+      // Euclidean distance in RGB space
+      const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+
+      if (dist < HARD) {
+        d[i + 3] = 0;
+      } else if (dist < SOFT) {
+        d[i + 3] = Math.round(((dist - HARD) / (SOFT - HARD)) * 255);
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+    rafRef.current = requestAnimationFrame(drawLoop);
+  }, [bg]);
+
+  useEffect(() => {
+    if (isActive && readyRef.current) {
+      rafRef.current = requestAnimationFrame(drawLoop);
+    } else {
+      cancelAnimationFrame(rafRef.current);
+    }
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [isActive, drawLoop]);
+
+  return (
+    <>
+      {/* iOS Safari requires video to be in DOM (not display:none) for canvas drawImage */}
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        playsInline
+        loop
+        preload="auto"
+        style={{
+          position:      "fixed",
+          left:          "-9999px",
+          top:           0,
+          width:         1,
+          height:        1,
+          opacity:       0,
+          pointerEvents: "none",
+        }}
+        onCanPlay={() => {
+          readyRef.current = true;
+          if (isActive) {
+            rafRef.current = requestAnimationFrame(drawLoop);
+          }
+        }}
+      />
+      <canvas ref={canvasRef} width={240} height={240} style={style} />
+    </>
+  );
+}
+
 // ── Main hero component ───────────────────────────────────────────────────────
 export default function StudioIndexHero() {
   const { lang } = useLanguage();
@@ -49,34 +154,28 @@ export default function StudioIndexHero() {
 
   const [activeIndex, setActiveIndex]   = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  // null = detecting; true = Safari (no VP9); false = Chrome/Firefox (VP9)
-  const [isSafari, setIsSafari] = useState<boolean | null>(null);
+  const [isSafari, setIsSafari]         = useState<boolean | null>(null);
 
-  const resetTimer   = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const autoTimer    = useRef<ReturnType<typeof setInterval> | null>(null);
-  const webmRefs     = useRef<(HTMLVideoElement | null)[]>([]);
-  const safariRefs   = useRef<(HTMLVideoElement | null)[]>([]);
-  const imgRefs      = useRef<(HTMLImageElement | null)[]>([]);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
+  const webmRefs   = useRef<(HTMLVideoElement | null)[]>([]);
+  const imgRefs    = useRef<(HTMLImageElement | null)[]>([]);
 
-  // Detect VP9 support (Safari returns "" → isSafari=true)
   useEffect(() => {
     const v = document.createElement("video");
     setIsSafari(v.canPlayType('video/webm; codecs="vp9"') === "");
   }, []);
 
-  // Play all videos on mount / active change
   useEffect(() => {
-    if (isSafari === null) return;
-    const refs = isSafari ? safariRefs.current : webmRefs.current;
-    refs.forEach((v, i) => {
+    if (isSafari !== false) return;
+    webmRefs.current.forEach((v, i) => {
       if (!v) return;
       v.muted = true;
-      if (!isSafari && i === activeIndex) v.currentTime = 0;
+      if (i === activeIndex) v.currentTime = 0;
       v.play().catch(() => {});
     });
   }, [activeIndex, isSafari]);
 
-  // Auto-rotate on touch devices
   useEffect(() => {
     const isTouch = window.matchMedia("(hover: none)").matches;
     if (!isTouch) return;
@@ -167,18 +266,12 @@ export default function StudioIndexHero() {
                   <div key={char.key} style={wrapStyle} aria-hidden={i !== activeIndex}>
 
                     {isSafari === true ? (
-                      // ── Safari: white-bg video + mix-blend-mode:multiply ──
-                      // The near-white background (250,250,250) disappears against
-                      // the page background (#fcfcfc) with multiply blending.
-                      <video
-                        ref={el => { safariRefs.current[i] = el; }}
+                      // ── Safari: canvas chromakey with per-character bg colour ──
+                      <ChromakeyCanvas
                         src={char.safari}
-                        muted
-                        playsInline
-                        loop
-                        preload="auto"
-                        aria-hidden
-                        style={{ ...mediaStyle, mixBlendMode: "multiply" }}
+                        bg={char.bg}
+                        isActive={i === activeIndex}
+                        style={mediaStyle}
                       />
 
                     ) : isSafari === false ? (
@@ -210,7 +303,7 @@ export default function StudioIndexHero() {
                       </>
 
                     ) : (
-                      // ── Detecting (SSR / first paint): show PNG ──
+                      // ── Detecting (first paint): show PNG ──
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={char.png}
