@@ -50,20 +50,10 @@ export default function StudioIndexHero() {
   // Index into CHARS — this is the single source of truth
   const [activeIndex, setActiveIndex]   = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  // false = safe default (PNG); useEffect upgrades to WebM on Chrome/Android/Firefox
-  const [canWebM, setCanWebM] = useState(false);
 
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
   const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
-
-  // Safari (all versions, mobile + desktop) doesn't render WebM VP9 alpha correctly.
-  // Detect Safari by UA and keep PNG fallback for it; enable WebM on everything else.
-  useEffect(() => {
-    const ua = navigator.userAgent;
-    const isSafari = /Safari/i.test(ua) && !/Chrome|Chromium|CriOS|FxiOS/i.test(ua);
-    setCanWebM(!isSafari);
-  }, []);
 
   // Play active video, pause others
   useEffect(() => {
@@ -153,41 +143,51 @@ export default function StudioIndexHero() {
               }}
             >
               {CHARS.map((char, i) => {
-                const sharedStyle: React.CSSProperties = {
+                // Each character: wrapper controls cross-fade, PNG is always base layer,
+                // WebM video starts hidden (opacity:0) and reveals itself via onCanPlay
+                // — this means Safari (can't play WebM) always shows clean PNG, no grey box.
+                const wrapStyle: React.CSSProperties = {
+                  position:   "absolute",
+                  inset:      0,
+                  opacity:    i === activeIndex ? 1 : 0,
+                  transition: `opacity ${FADE_MS}ms ease-in-out`,
+                  willChange: "opacity",
+                };
+                const mediaStyle: React.CSSProperties = {
                   position:       "absolute",
                   inset:          0,
                   width:          "100%",
                   height:         "100%",
                   objectFit:      "contain",
                   objectPosition: "center center",
-                  opacity:        i === activeIndex ? 1 : 0,
-                  transition:     `opacity ${FADE_MS}ms ease-in-out`,
-                  willChange:     "opacity",
                 };
-                // Safari/iOS doesn't support WebM VP9 alpha — show PNG instead (no grey box)
-                // Chrome/Firefox/Android: show WebM with real transparency
-                const showVideo = canWebM && char.webm;
-                return showVideo ? (
-                  <video
-                    key={char.key}
-                    ref={el => { videoRefs.current[i] = el; }}
-                    muted
-                    playsInline
-                    loop
-                    aria-hidden={i !== activeIndex}
-                    style={sharedStyle}
-                  >
-                    <source src={char.webm} type="video/webm" />
-                  </video>
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={`${char.key}-png`}
-                    src={char.png}
-                    alt={i === 0 ? "Fujii karakter" : ""}
-                    aria-hidden={i !== activeIndex}
-                    style={sharedStyle}
-                  />
+                return (
+                  <div key={char.key} style={wrapStyle} aria-hidden={i !== activeIndex}>
+                    {/* PNG base — always visible, transparent background */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={char.png}
+                      alt={i === 0 ? "Fujii karakter" : ""}
+                      style={mediaStyle}
+                    />
+                    {/* WebM overlay — hidden until video actually fires canplay */}
+                    {/* Safari can't play WebM so this stays opacity:0, PNG shows instead */}
+                    {char.webm && (
+                      <video
+                        ref={el => { videoRefs.current[i] = el; }}
+                        muted
+                        playsInline
+                        loop
+                        aria-hidden
+                        style={{ ...mediaStyle, opacity: 0, background: "transparent" }}
+                        onCanPlay={e => {
+                          (e.currentTarget as HTMLVideoElement).style.opacity = "1";
+                        }}
+                      >
+                        <source src={char.webm} type="video/webm" />
+                      </video>
+                    )}
+                  </div>
                 );
               })}
             </div>
