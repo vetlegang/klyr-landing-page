@@ -54,6 +54,7 @@ export default function StudioIndexHero() {
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
   const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
+  const imgRefs    = useRef<(HTMLImageElement | null)[]>([]);
 
   // Play active video, pause others
   useEffect(() => {
@@ -163,15 +164,19 @@ export default function StudioIndexHero() {
                 };
                 return (
                   <div key={char.key} style={wrapStyle} aria-hidden={i !== activeIndex}>
-                    {/* PNG base — always visible, transparent background */}
+                    {/* PNG fallback — shown until video canplay fires */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
+                      ref={el => { imgRefs.current[i] = el; }}
                       src={char.png}
                       alt={i === 0 ? "Fujii karakter" : ""}
                       style={mediaStyle}
                     />
-                    {/* WebM overlay — hidden until video actually fires canplay */}
-                    {/* Safari can't play WebM so this stays opacity:0, PNG shows instead */}
+                    {/* Video overlay — opacity:0 until canplay.
+                        On canplay: show video + hide PNG so transparent video
+                        areas show the page background, not the static PNG.
+                        NOTE: HEVC source removed until files are re-encoded
+                        with format=ayuv (VideoToolbox alpha fix). */}
                     {char.webm && (
                       <video
                         ref={el => { videoRefs.current[i] = el; }}
@@ -179,15 +184,17 @@ export default function StudioIndexHero() {
                         playsInline
                         loop
                         aria-hidden
-                        style={{ ...mediaStyle, opacity: 0, background: "transparent" }}
+                        style={{ ...mediaStyle, opacity: 0 }}
                         onCanPlay={e => {
-                          (e.currentTarget as HTMLVideoElement).style.opacity = "1";
+                          e.currentTarget.style.opacity = "1";
+                          const img = imgRefs.current[i];
+                          if (img) img.style.opacity = "0";
                         }}
                       >
                         {/* Chrome/Firefox/Android: VP9 WebM with alpha */}
                         <source src={char.webm} type="video/webm" />
-                        {/* Safari iOS 13+ / macOS Catalina+: HEVC with alpha */}
-                        <source src={char.hevc} type='video/mp4; codecs="hvc1"' />
+                        {/* Safari: HEVC with alpha — uncomment once re-encoded with format=ayuv */}
+                        {/* <source src={char.hevc} type='video/mp4; codecs="hvc1"' /> */}
                       </video>
                     )}
                   </div>
