@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
 
@@ -40,101 +40,6 @@ const ctaEn = "Start the test package →";
 
 const FADE_MS = 500;
 
-// ── Canvas-based chromakey for Safari (black background → transparent) ──────
-// Runs requestAnimationFrame only when isActive to save CPU on inactive chars.
-function ChromakeyCanvas({
-  src,
-  isActive,
-  style,
-}: {
-  src: string;
-  isActive: boolean;
-  style: React.CSSProperties;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef    = useRef<number>(0);
-  const readyRef  = useRef(false);   // true once canplay fired
-
-  // Start loading / playing all videos immediately (preload for instant switch)
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true;
-    v.play().catch(() => {});
-  }, [src]);
-
-  const drawLoop = useCallback(() => {
-    const video  = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas) return;
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
-
-    const W = 240, H = 240;
-    ctx.clearRect(0, 0, W, H);
-    ctx.drawImage(video, 0, 0, W, H);
-
-    const imgData = ctx.getImageData(0, 0, W, H);
-    const d = imgData.data;
-
-    // Black-background chromakey: pixels close to (0,0,0) → transparent
-    // High threshold to catch HEVC compression noise around edges
-    for (let i = 0; i < d.length; i += 4) {
-      const r = d[i], g = d[i + 1], b = d[i + 2];
-      const sum = r + g + b;
-      if (sum < 120) {
-        d[i + 3] = 0;                                         // dark + noise → fully transparent
-      } else if (sum < 300) {
-        d[i + 3] = Math.round(((sum - 120) / 180) * 255);    // smooth edge transition
-      }
-    }
-
-    ctx.putImageData(imgData, 0, 0);
-    rafRef.current = requestAnimationFrame(drawLoop);
-  }, []);
-
-  useEffect(() => {
-    if (isActive && readyRef.current) {
-      rafRef.current = requestAnimationFrame(drawLoop);
-    } else {
-      cancelAnimationFrame(rafRef.current);
-    }
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [isActive, drawLoop]);
-
-  return (
-    <>
-      {/* iOS Safari needs the video in DOM (not display:none) to draw frames to canvas */}
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        playsInline
-        loop
-        preload="auto"
-        style={{
-          position:      "fixed",
-          left:          "-9999px",
-          top:           0,
-          width:         1,
-          height:        1,
-          opacity:       0,
-          pointerEvents: "none",
-        }}
-        onCanPlay={() => {
-          readyRef.current = true;
-          if (isActive) {
-            rafRef.current = requestAnimationFrame(drawLoop);
-          }
-        }}
-      />
-      <canvas ref={canvasRef} width={240} height={240} style={style} />
-    </>
-  );
-}
-
 // ── Main hero component ───────────────────────────────────────────────────────
 export default function StudioIndexHero() {
   const { lang } = useLanguage();
@@ -144,31 +49,32 @@ export default function StudioIndexHero() {
 
   const [activeIndex, setActiveIndex]   = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  // null = not yet detected; true = use canvas (Safari); false = use WebM
-  const [useSafariCanvas, setUseSafariCanvas] = useState<boolean | null>(null);
+  // null = detecting; true = Safari (no VP9); false = Chrome/Firefox (VP9)
+  const [isSafari, setIsSafari] = useState<boolean | null>(null);
 
-  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
-  const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
-  const imgRefs    = useRef<(HTMLImageElement | null)[]>([]);
+  const resetTimer   = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoTimer    = useRef<ReturnType<typeof setInterval> | null>(null);
+  const webmRefs     = useRef<(HTMLVideoElement | null)[]>([]);
+  const safariRefs   = useRef<(HTMLVideoElement | null)[]>([]);
+  const imgRefs      = useRef<(HTMLImageElement | null)[]>([]);
 
-  // Detect WebM VP9 support on mount
+  // Detect VP9 support (Safari returns "" → isSafari=true)
   useEffect(() => {
     const v = document.createElement("video");
-    const canVP9 = v.canPlayType('video/webm; codecs="vp9"') !== "";
-    setUseSafariCanvas(!canVP9);
+    setIsSafari(v.canPlayType('video/webm; codecs="vp9"') === "");
   }, []);
 
-  // WebM path: preload + play all videos in background, reset active to frame 0
+  // Play all videos on mount / active change
   useEffect(() => {
-    if (useSafariCanvas !== false) return;
-    videoRefs.current.forEach((v, i) => {
+    if (isSafari === null) return;
+    const refs = isSafari ? safariRefs.current : webmRefs.current;
+    refs.forEach((v, i) => {
       if (!v) return;
       v.muted = true;
-      if (i === activeIndex) v.currentTime = 0;
+      if (!isSafari && i === activeIndex) v.currentTime = 0;
       v.play().catch(() => {});
     });
-  }, [activeIndex, useSafariCanvas]);
+  }, [activeIndex, isSafari]);
 
   // Auto-rotate on touch devices
   useEffect(() => {
@@ -260,17 +166,24 @@ export default function StudioIndexHero() {
                 return (
                   <div key={char.key} style={wrapStyle} aria-hidden={i !== activeIndex}>
 
-                    {useSafariCanvas === true ? (
-                      // ── Safari: canvas chromakey (black bg → transparent) ──
-                      <ChromakeyCanvas
+                    {isSafari === true ? (
+                      // ── Safari: white-bg video + mix-blend-mode:multiply ──
+                      // The near-white background (250,250,250) disappears against
+                      // the page background (#fcfcfc) with multiply blending.
+                      <video
+                        ref={el => { safariRefs.current[i] = el; }}
                         src={char.safari}
-                        isActive={i === activeIndex}
-                        style={mediaStyle}
+                        muted
+                        playsInline
+                        loop
+                        preload="auto"
+                        aria-hidden
+                        style={{ ...mediaStyle, mixBlendMode: "multiply" }}
                       />
-                    ) : useSafariCanvas === false ? (
+
+                    ) : isSafari === false ? (
                       // ── Chrome / Firefox / Android: WebM VP9 with alpha ──
                       <>
-                        {/* PNG fallback until video fires canplay */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           ref={el => { imgRefs.current[i] = el; }}
@@ -279,7 +192,7 @@ export default function StudioIndexHero() {
                           style={mediaStyle}
                         />
                         <video
-                          ref={el => { videoRefs.current[i] = el; }}
+                          ref={el => { webmRefs.current[i] = el; }}
                           muted
                           playsInline
                           loop
@@ -295,8 +208,9 @@ export default function StudioIndexHero() {
                           <source src={char.webm} type="video/webm" />
                         </video>
                       </>
+
                     ) : (
-                      // ── Not yet detected: show PNG ──
+                      // ── Detecting (SSR / first paint): show PNG ──
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={char.png}
