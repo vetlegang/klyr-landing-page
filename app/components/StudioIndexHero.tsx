@@ -61,6 +61,16 @@ function ChromakeyCanvas({
   const rafRef   = useRef<number>(0);
   const readyRef = useRef(false);
 
+  // Set canvas resolution on mount — use devicePixelRatio for retina sharpness
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const size = Math.round(480 * dpr);   // 480 CSS px × dpr → crisp on any screen
+    canvas.width  = size;
+    canvas.height = size;
+  }, []);
+
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -76,7 +86,7 @@ function ChromakeyCanvas({
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
 
-    const W = 240, H = 240;
+    const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
     ctx.drawImage(video, 0, 0, W, H);
 
@@ -84,19 +94,21 @@ function ChromakeyCanvas({
     const d = imgData.data;
 
     const [bgR, bgG, bgB] = bg;
-    const HARD = 28;  // pixels within 28 units of bg colour → fully transparent
-    const SOFT = 58;  // pixels within 58 units → fade (anti-aliasing / edge pixels)
+    const HARD = 28;
+    const SOFT = 58;
+    const HARD_SQ = HARD * HARD;   // 784  — avoid sqrt for fully-transparent pixels
+    const SOFT_SQ = SOFT * SOFT;   // 3364
 
     for (let i = 0; i < d.length; i += 4) {
       const dr = d[i]     - bgR;
       const dg = d[i + 1] - bgG;
       const db = d[i + 2] - bgB;
-      // Euclidean distance in RGB space
-      const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+      const distSq = dr * dr + dg * dg + db * db;
 
-      if (dist < HARD) {
+      if (distSq < HARD_SQ) {
         d[i + 3] = 0;
-      } else if (dist < SOFT) {
+      } else if (distSq < SOFT_SQ) {
+        const dist = Math.sqrt(distSq);
         d[i + 3] = Math.round(((dist - HARD) / (SOFT - HARD)) * 255);
       }
     }
@@ -140,7 +152,7 @@ function ChromakeyCanvas({
           }
         }}
       />
-      <canvas ref={canvasRef} width={240} height={240} style={style} />
+      <canvas ref={canvasRef} style={style} />
     </>
   );
 }
