@@ -8,12 +8,12 @@ const G = "#2A5C18";
 const V = "7";
 
 const CHARS = [
-  { key: "arbeid",         video: "/characters/karakter-1.webm", png: "/characters/arbeid.png?v=7" },
-  { key: "meta-creatives", video: "/characters/karakter-2.webm", png: "/characters/meta-creatives.png?v=7" },
-  { key: "testpakken",     video: "/characters/karakter-3.webm", png: "/characters/testpakken.png?v=7" },
-  { key: "produksjon",     video: "/characters/karakter-4.webm", png: "/characters/produksjon.png?v=7" },
-  { key: "prosess",        video: "/characters/karakter-5.webm", png: "/characters/prosess.png?v=7" },
-  { key: "kontakt",        video: "/characters/karakter-6.webm", png: "/characters/kontakt.png?v=7" },
+  { key: "arbeid",         webm: "/characters/karakter-1.webm", mp4: "/characters/karakter-1.mp4", png: "/characters/arbeid.png?v=7" },
+  { key: "meta-creatives", webm: "/characters/karakter-2.webm", mp4: "/characters/karakter-2.mp4", png: "/characters/meta-creatives.png?v=7" },
+  { key: "testpakken",     webm: "/characters/karakter-3.webm", mp4: "/characters/karakter-3.mp4", png: "/characters/testpakken.png?v=7" },
+  { key: "produksjon",     webm: "/characters/karakter-4.webm", mp4: "/characters/karakter-4.mp4", png: "/characters/produksjon.png?v=7" },
+  { key: "prosess",        webm: "/characters/karakter-5.webm", mp4: "/characters/karakter-5.mp4", png: "/characters/prosess.png?v=7" },
+  { key: "kontakt",        webm: "/characters/karakter-6.webm", mp4: "/characters/karakter-6.mp4", png: "/characters/kontakt.png?v=7" },
 ];
 
 const menuItemsNo = [
@@ -153,18 +153,25 @@ export default function StudioIndexHero() {
                   opacity:        i === activeIndex ? 1 : 0,
                   transition:     `opacity ${FADE_MS}ms ease-in-out`,
                   willChange:     "opacity",
+                  // multiply removes near-white MP4 bg on Safari (iOS doesn't support WebM)
+                  // has no visible effect on transparent WebM on Chrome/Firefox
+                  mixBlendMode:   "multiply",
                 };
-                return char.video ? (
+                return char.webm ? (
                   <video
                     key={char.key}
                     ref={el => { videoRefs.current[i] = el; }}
-                    src={char.video}
                     muted
                     playsInline
                     loop
                     aria-hidden={i !== activeIndex}
                     style={sharedStyle}
-                  />
+                  >
+                    {/* WebM with alpha: Chrome, Firefox, Android */}
+                    <source src={char.webm} type="video/webm" />
+                    {/* MP4 fallback: Safari/iOS — mix-blend-mode:multiply handles bg */}
+                    {char.mp4 && <source src={char.mp4} type="video/mp4" />}
+                  </video>
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
