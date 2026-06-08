@@ -153,6 +153,7 @@ export default function StudioIndexHero() {
                   opacity:        i === activeIndex ? 1 : 0,
                   transition:     `opacity ${FADE_MS}ms ease-in-out`,
                   willChange:     "opacity",
+                  mixBlendMode:   "multiply",
                 };
                 return char.video ? (
                   <video
