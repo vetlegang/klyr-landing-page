@@ -22,7 +22,7 @@ const pains = [
 
 export default function ProblemSection() {
   return (
-    <section className="bg-[#F7F4EE] py-24 md:py-32 px-6">
+    <section className="bg-[#fcfcfc] py-24 md:py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <FadeIn>
           <div className="max-w-3xl mb-14">

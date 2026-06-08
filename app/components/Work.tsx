@@ -6,7 +6,7 @@ import { FadeIn } from "./FadeIn";
 
 function NettbutikkMockup() {
   return (
-    <div className="h-40 bg-gradient-to-br from-[#F7F4EE] to-[#EDEAE3] rounded-xl mb-6 flex items-center justify-center gap-4 p-4">
+    <div className="h-40 bg-gradient-to-br from-[#fcfcfc] to-[#EDEAE3] rounded-xl mb-6 flex items-center justify-center gap-4 p-4">
       {/* Product card */}
       <div className="bg-white rounded-xl border border-black/[0.08] p-3 shadow-sm w-32 shrink-0">
         <div className="h-16 bg-[#E5E2DA] rounded-lg mb-2.5 flex items-center justify-center">
@@ -44,7 +44,7 @@ function KalenderMockup() {
   const highlight = 4; // Friday — best performing
 
   return (
-    <div className="h-40 bg-gradient-to-br from-[#F7F4EE] to-[#EDEAE3] rounded-xl mb-6 flex items-center gap-4 p-4">
+    <div className="h-40 bg-gradient-to-br from-[#fcfcfc] to-[#EDEAE3] rounded-xl mb-6 flex items-center gap-4 p-4">
       <div className="bg-white rounded-xl border border-black/[0.08] p-3 shadow-sm flex-1">
         <div className="flex items-center justify-between mb-2">
           <p className="text-[10px] font-bold text-[#101010]">Oktober 2025</p>
@@ -96,7 +96,7 @@ function AdGridMockup() {
   ];
 
   return (
-    <div className="h-40 bg-gradient-to-br from-[#F7F4EE] to-[#EDEAE3] rounded-xl mb-6 flex items-center gap-4 p-4">
+    <div className="h-40 bg-gradient-to-br from-[#fcfcfc] to-[#EDEAE3] rounded-xl mb-6 flex items-center gap-4 p-4">
       <div className="grid grid-cols-3 gap-1.5 flex-1">
         {cards.map((card) => (
           <div
@@ -163,7 +163,7 @@ const scenarios = [
 
 export default function Work() {
   return (
-    <section className="bg-[#F7F4EE] py-28 md:py-36 px-6">
+    <section className="bg-[#fcfcfc] py-28 md:py-36 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <FadeIn>
@@ -214,7 +214,7 @@ export default function Work() {
                     { label: "Signaler", value: s.signaler },
                     { label: "Neste trekk", value: s.neste },
                   ].map((item) => (
-                    <div key={item.label} className="bg-[#F7F4EE] rounded-xl p-3 border border-black/[0.05]">
+                    <div key={item.label} className="bg-[#fcfcfc] rounded-xl p-3 border border-black/[0.05]">
                       <p className="text-[9px] font-bold text-[#A3A3A3] uppercase tracking-wider mb-1.5">
                         {item.label}
                       </p>

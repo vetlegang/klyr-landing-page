@@ -78,7 +78,7 @@ function inputCls(dark: boolean) {
     "w-full text-[13px] px-3.5 py-3 rounded-xl border transition-colors duration-150 outline-none",
     dark
       ? "bg-white/[0.07] border-white/[0.1] text-white placeholder:text-white/25 focus:border-white/30"
-      : "bg-[#F7F4EE] border-transparent text-[#101010] placeholder:text-[#B0B0B0] focus:border-black/20 focus:bg-white",
+      : "bg-[#fcfcfc] border-transparent text-[#101010] placeholder:text-[#B0B0B0] focus:border-black/20 focus:bg-white",
   ].join(" ");
 }
 
@@ -184,7 +184,7 @@ export default function LeadForm({ dark = false, lang = "no" }: { dark?: boolean
                       : "bg-white/[0.04] border-white/[0.08] hover:border-white/15"
                     : sel
                     ? "bg-[#101010] border-[#101010]"
-                    : "bg-[#F7F4EE] border-transparent hover:border-black/10"
+                    : "bg-[#fcfcfc] border-transparent hover:border-black/10"
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
@@ -216,7 +216,7 @@ export default function LeadForm({ dark = false, lang = "no" }: { dark?: boolean
 
       {/* Price total */}
       <div className={`flex items-center justify-between rounded-xl px-4 py-3 ${
-        dark ? "bg-white/[0.05] border border-white/[0.07]" : "bg-[#F7F4EE]"
+        dark ? "bg-white/[0.05] border border-white/[0.07]" : "bg-[#fcfcfc]"
       }`}>
         <span className={`text-[12px] font-semibold ${dark ? "text-white/35" : "text-[#888]"}`}>
           {L.total}

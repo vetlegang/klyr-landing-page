@@ -96,7 +96,7 @@ export default function Process() {
       ref={sectionRef}
       id="prosess"
       className="px-8 md:px-16 py-16 md:py-24 overflow-hidden"
-      style={{ background: "#F5F4F0" }}
+      style={{ background: "#fcfcfc" }}
     >
       <div className="max-w-[1440px] mx-auto">
 

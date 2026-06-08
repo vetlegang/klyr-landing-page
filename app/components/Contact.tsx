@@ -30,7 +30,7 @@ const pakkeOptions = [
 ];
 
 const inputClass =
-  "w-full bg-[#F7F4EE] border border-black/[0.1] text-[#101010] text-sm px-4 py-3.5 rounded-xl placeholder-[#A3A3A3] focus:outline-none focus:border-black/[0.3] transition-colors duration-200";
+  "w-full bg-[#fcfcfc] border border-black/[0.1] text-[#101010] text-sm px-4 py-3.5 rounded-xl placeholder-[#A3A3A3] focus:outline-none focus:border-black/[0.3] transition-colors duration-200";
 
 const labelClass = "block text-[10px] font-bold tracking-[0.2em] text-[#737373] uppercase mb-2";
 
@@ -112,7 +112,7 @@ export default function Contact() {
             </div>
 
             {/* Price reminder */}
-            <div className="border border-black/[0.08] p-5 rounded-2xl bg-[#F7F4EE]">
+            <div className="border border-black/[0.08] p-5 rounded-2xl bg-[#fcfcfc]">
               <div className="flex items-baseline gap-2 mb-1">
                 <span className="text-2xl font-black text-[#101010]">5 000 kr</span>
                 <span className="text-xs text-[#737373]">eks. mva · første runde</span>

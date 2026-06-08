@@ -116,7 +116,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon-192.png" />
         <StructuredData />
       </head>
-      <body className="bg-[#F7F4EE] text-[#101010] min-h-screen">
+      <body className="bg-[#fcfcfc] text-[#101010] min-h-screen">
         <LanguageProvider>
           <ScrollBackground />
           <div className="relative z-10">

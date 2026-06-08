@@ -27,7 +27,7 @@ const profiles = [
 
 export default function WhoItsFor() {
   return (
-    <section id="for-hvem" className="bg-[#F7F4EE] py-24 md:py-36 px-6">
+    <section id="for-hvem" className="bg-[#fcfcfc] py-24 md:py-36 px-6">
       <div className="max-w-7xl mx-auto">
 
         <FadeIn>

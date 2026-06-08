@@ -59,7 +59,7 @@ export default function Approach() {
 
         {/* Visual pill flow — compact overview */}
         <FadeIn delay={0.05}>
-          <div className="flex items-center gap-2 flex-wrap bg-[#F7F4EE] border border-black/[0.07] rounded-2xl p-5 mb-14 shadow-sm">
+          <div className="flex items-center gap-2 flex-wrap bg-[#fcfcfc] border border-black/[0.07] rounded-2xl p-5 mb-14 shadow-sm">
             {steps.map((step, i) => (
               <span key={step.num} className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-2 bg-white border border-black/[0.1] rounded-full px-3.5 py-1.5 shadow-sm">
@@ -130,7 +130,7 @@ export default function Approach() {
                 <div className="hidden md:flex absolute -top-[calc(1.5rem+1px)] left-0 items-center justify-center">
                   <div className="w-3 h-3 rounded-full bg-[#BEFF00] border-2 border-[#BEFF00]/50" />
                 </div>
-                <div className="md:pt-8 pl-5 md:pl-0 bg-[#F7F4EE] rounded-2xl border border-black/[0.07] p-6 shadow-sm">
+                <div className="md:pt-8 pl-5 md:pl-0 bg-[#fcfcfc] rounded-2xl border border-black/[0.07] p-6 shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-[10px] font-mono font-bold text-[#A3A3A3] tracking-widest">
                       07

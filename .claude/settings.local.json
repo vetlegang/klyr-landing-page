@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"http://localhost:8000/api/analysis?limit=10\")",
+      "Bash(python3 -c \":*)",
+      "Bash(python3:*)",
+      "Read(//Users/vetlegangeskar/Desktop/creative-intelligence-engine/pages/**)",
+      "Read(//Users/vetlegangeskar/Desktop/creative-intelligence-engine/js/**)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "claude-flow"
+  ]
+}

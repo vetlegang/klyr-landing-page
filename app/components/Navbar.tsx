@@ -70,7 +70,7 @@ export default function Navbar() {
       <motion.nav
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
           scrolled
-            ? "bg-[#F5F4F0]/95 backdrop-blur-md border-b border-black/[0.05]"
+            ? "bg-[#fcfcfc]/95 backdrop-blur-md border-b border-black/[0.05]"
             : "bg-transparent"
         }`}
         initial={{ opacity: 0 }}
@@ -165,7 +165,7 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-40 bg-[#F5F4F0] flex flex-col px-6 pt-24 pb-10"
+            className="fixed inset-0 z-40 bg-[#fcfcfc] flex flex-col px-6 pt-24 pb-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

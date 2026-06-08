@@ -53,7 +53,7 @@ export default function WhatYouGet() {
         <div className="grid md:grid-cols-3 gap-4 mb-10">
           {deliverables.map((item, i) => (
             <FadeIn key={item.num} delay={i * 0.08}>
-              <div className="bg-[#F7F4EE] rounded-2xl p-7 h-full flex flex-col border border-black/[0.05]">
+              <div className="bg-[#fcfcfc] rounded-2xl p-7 h-full flex flex-col border border-black/[0.05]">
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-[10px] font-mono font-bold text-[#C0C0C0] tracking-[0.2em]">
                     {item.num}

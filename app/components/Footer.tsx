@@ -33,7 +33,7 @@ export default function Footer() {
   return (
     <footer
       className="px-6 md:px-14 pt-16 pb-10 md:pt-20 md:pb-12 border-t"
-      style={{ background: "#F5F4F0", borderColor: `rgba(42,92,24,0.1)` }}
+      style={{ background: "#fcfcfc", borderColor: `rgba(42,92,24,0.1)` }}
     >
       <div className="max-w-[1440px] mx-auto">
 

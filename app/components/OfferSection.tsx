@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const G  = "#2A5C18";
-const BG = "#F5F4F0";
+const BG = "#fcfcfc";
 
 const plansNo = [
   {
@@ -300,7 +300,7 @@ export default function OfferSection() {
                   onMouseEnter={e => {
                     if (!plan.featured) {
                       (e.currentTarget as HTMLElement).style.background = G;
-                      (e.currentTarget as HTMLElement).style.color = "#F5F4F0";
+                      (e.currentTarget as HTMLElement).style.color = "#fcfcfc";
                       (e.currentTarget as HTMLElement).style.border = `1.5px solid ${G}`;
                     }
                   }}

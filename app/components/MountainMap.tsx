@@ -103,7 +103,7 @@ export default function MountainMap() {
   return (
     <section
       ref={ref}
-      className="bg-[#F7F4EE] py-20 md:py-28 px-4 overflow-hidden"
+      className="bg-[#fcfcfc] py-20 md:py-28 px-4 overflow-hidden"
     >
       <div className="max-w-4xl mx-auto">
         {/* Header */}

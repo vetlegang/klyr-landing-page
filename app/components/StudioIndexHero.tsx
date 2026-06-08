@@ -97,7 +97,7 @@ export default function StudioIndexHero() {
   return (
     <section
       className="min-h-screen flex flex-col px-8 md:px-16 pt-8 md:pt-10 pb-8 md:pb-12"
-      style={{ background: "#F5F4F0" }}
+      style={{ background: "#fcfcfc" }}
     >
       <div className="max-w-[1440px] mx-auto w-full flex flex-col flex-1">
 

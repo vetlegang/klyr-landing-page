@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const G  = "#2A5C18";
-const BG = "#F5F4F0";
+const BG = "#fcfcfc";
 
 const T = {
   no: {
@@ -363,7 +363,7 @@ export default function AboutContent() {
           <motion.a
             href="/#tilbud"
             className="inline-flex items-center gap-2 text-[13px] font-black px-8 py-4 rounded-full tracking-tight shrink-0 transition-all duration-150"
-            style={{ background: G, color: "#F5F4F0" }}
+            style={{ background: G, color: "#fcfcfc" }}
             whileHover={{ scale: 1.04 }}
             {...fade(0.1)}
           >

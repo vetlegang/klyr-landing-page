@@ -45,7 +45,7 @@ const pillars = [
 
 export default function GrowthEngine() {
   return (
-    <section id="tjenester" className="bg-[#F7F4EE] py-28 md:py-36 px-6">
+    <section id="tjenester" className="bg-[#fcfcfc] py-28 md:py-36 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-end mb-16 md:mb-20">
           <FadeIn>
@@ -80,7 +80,7 @@ export default function GrowthEngine() {
             return (
               <FadeIn key={p.title} delay={i * 0.07}>
                 <div className="group bg-white rounded-2xl border border-black/[0.07] p-8 md:p-9 h-full flex flex-col hover:shadow-md hover:border-black/[0.12] transition-all duration-300 shadow-sm">
-                  <div className="mb-6 w-10 h-10 flex items-center justify-center border border-black/[0.1] rounded-xl bg-[#F7F4EE] group-hover:border-black/[0.2] transition-colors duration-300">
+                  <div className="mb-6 w-10 h-10 flex items-center justify-center border border-black/[0.1] rounded-xl bg-[#fcfcfc] group-hover:border-black/[0.2] transition-colors duration-300">
                     <Icon
                       size={17}
                       className="text-[#737373] group-hover:text-[#101010] transition-colors duration-300"

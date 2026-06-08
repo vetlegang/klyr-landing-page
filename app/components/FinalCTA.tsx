@@ -41,7 +41,7 @@ export default function FinalCTA() {
     <section
       id="kontakt"
       className="px-6 md:px-14 py-24 md:py-36 border-t"
-      style={{ background: "#F5F4F0", borderColor: `rgba(42,92,24,0.1)` }}
+      style={{ background: "#fcfcfc", borderColor: `rgba(42,92,24,0.1)` }}
     >
       <div className="max-w-[1440px] mx-auto">
         <div className="grid lg:grid-cols-[1fr_480px] gap-16 lg:gap-28 items-start">

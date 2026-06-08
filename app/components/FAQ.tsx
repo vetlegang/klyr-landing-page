@@ -59,7 +59,7 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="px-6 md:px-12 py-24 md:py-36" style={{ background: "#F5F4F0" }}>
+    <section id="faq" className="px-6 md:px-12 py-24 md:py-36" style={{ background: "#fcfcfc" }}>
       <div className="max-w-[1440px] mx-auto">
 
         <FadeIn>

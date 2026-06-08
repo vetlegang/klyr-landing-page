@@ -21,7 +21,7 @@ const addOns = [
 
 export default function PricingSection() {
   return (
-    <section className="bg-[#F7F4EE] py-24 md:py-32 px-6">
+    <section className="bg-[#fcfcfc] py-24 md:py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <FadeIn>
           <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-5">
@@ -94,7 +94,7 @@ export default function PricingSection() {
                 {addOns.map((addon) => {
                   const Icon = addon.icon;
                   return (
-                    <div key={addon.label} className="flex items-start gap-3 p-4 bg-[#F7F4EE] rounded-xl border border-black/[0.06]">
+                    <div key={addon.label} className="flex items-start gap-3 p-4 bg-[#fcfcfc] rounded-xl border border-black/[0.06]">
                       <div className="w-7 h-7 border border-black/[0.1] rounded-lg flex items-center justify-center shrink-0 bg-white">
                         <Icon size={12} className="text-[#737373]" />
                       </div>

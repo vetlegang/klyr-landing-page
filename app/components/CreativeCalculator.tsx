@@ -48,8 +48,8 @@ function getSignal(spend: number, minimum: number): { status: SignalStatus; labe
 
 const signalStyle: Record<SignalStatus, { border: string; text: string; dot: string; bg: string }> = {
   low:    { border: "border-amber-500/20",    text: "text-amber-600",    dot: "bg-amber-500",    bg: "bg-amber-50" },
-  ok:     { border: "border-[#101010]/20",    text: "text-[#101010]",    dot: "bg-[#BEFF00]",    bg: "bg-[#F7F4EE]" },
-  strong: { border: "border-[#101010]/20",    text: "text-[#101010]",    dot: "bg-[#BEFF00]",    bg: "bg-[#F7F4EE]" },
+  ok:     { border: "border-[#101010]/20",    text: "text-[#101010]",    dot: "bg-[#BEFF00]",    bg: "bg-[#fcfcfc]" },
+  strong: { border: "border-[#101010]/20",    text: "text-[#101010]",    dot: "bg-[#BEFF00]",    bg: "bg-[#fcfcfc]" },
 };
 
 export default function CreativeCalculator() {
@@ -65,7 +65,7 @@ export default function CreativeCalculator() {
   const style = signalStyle[signal.status];
 
   return (
-    <section id="kalkulator" className="bg-[#F7F4EE] py-24 md:py-32 px-6">
+    <section id="kalkulator" className="bg-[#fcfcfc] py-24 md:py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <FadeIn>
           <p className="text-xs font-bold tracking-[0.22em] text-[#737373] uppercase mb-5">
@@ -182,7 +182,7 @@ export default function CreativeCalculator() {
               <p className="text-sm text-[#737373] leading-relaxed">{signal.desc}</p>
 
               {/* Prøvepakke note */}
-              <div className="border border-black/[0.08] bg-[#F7F4EE] p-5 rounded-xl">
+              <div className="border border-black/[0.08] bg-[#fcfcfc] p-5 rounded-xl">
                 <p className="text-xs font-bold text-[#101010] mb-1">Prøvepakken dekker:</p>
                 <p className="text-sm text-[#737373]">
                   20 creatives · 10 stills · 10 video ads · 5 000 kr

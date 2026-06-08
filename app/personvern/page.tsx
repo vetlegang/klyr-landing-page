@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const G  = "#2A5C18";
-const BG = "#F5F4F0";
+const BG = "#fcfcfc";
 
 const T = {
   no: {
