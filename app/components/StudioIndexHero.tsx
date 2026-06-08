@@ -50,18 +50,19 @@ export default function StudioIndexHero() {
   // Index into CHARS — this is the single source of truth
   const [activeIndex, setActiveIndex]   = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  // true = Chrome/Firefox/Android (WebM alpha), false = Safari/iOS (PNG fallback)
-  const [canWebM, setCanWebM] = useState(true);
+  // false = safe default (PNG); useEffect upgrades to WebM on Chrome/Android/Firefox
+  const [canWebM, setCanWebM] = useState(false);
 
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
   const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Detect WebM VP9 alpha support (Safari doesn't support it)
+  // Safari (all versions, mobile + desktop) doesn't render WebM VP9 alpha correctly.
+  // Detect Safari by UA and keep PNG fallback for it; enable WebM on everything else.
   useEffect(() => {
-    const v = document.createElement("video");
-    const supported = v.canPlayType('video/webm; codecs="vp9"') !== "";
-    setCanWebM(supported);
+    const ua = navigator.userAgent;
+    const isSafari = /Safari/i.test(ua) && !/Chrome|Chromium|CriOS|FxiOS/i.test(ua);
+    setCanWebM(!isSafari);
   }, []);
 
   // Play active video, pause others
