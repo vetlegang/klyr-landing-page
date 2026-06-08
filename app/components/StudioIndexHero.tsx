@@ -8,12 +8,12 @@ const G = "#2A5C18";
 const V = "7";
 
 const CHARS = [
-  { key: "arbeid",         webm: "/characters/karakter-1.webm", mp4: "/characters/karakter-1.mp4", png: "/characters/arbeid.png?v=7" },
-  { key: "meta-creatives", webm: "/characters/karakter-2.webm", mp4: "/characters/karakter-2.mp4", png: "/characters/meta-creatives.png?v=7" },
-  { key: "testpakken",     webm: "/characters/karakter-3.webm", mp4: "/characters/karakter-3.mp4", png: "/characters/testpakken.png?v=7" },
-  { key: "produksjon",     webm: "/characters/karakter-4.webm", mp4: "/characters/karakter-4.mp4", png: "/characters/produksjon.png?v=7" },
-  { key: "prosess",        webm: "/characters/karakter-5.webm", mp4: "/characters/karakter-5.mp4", png: "/characters/prosess.png?v=7" },
-  { key: "kontakt",        webm: "/characters/karakter-6.webm", mp4: "/characters/karakter-6.mp4", png: "/characters/kontakt.png?v=7" },
+  { key: "arbeid",         webm: "/characters/karakter-1.webm", hevc: "/characters/karakter-1-hevc.mp4", png: "/characters/arbeid.png?v=7" },
+  { key: "meta-creatives", webm: "/characters/karakter-2.webm", hevc: "/characters/karakter-2-hevc.mp4", png: "/characters/meta-creatives.png?v=7" },
+  { key: "testpakken",     webm: "/characters/karakter-3.webm", hevc: "/characters/karakter-3-hevc.mp4", png: "/characters/testpakken.png?v=7" },
+  { key: "produksjon",     webm: "/characters/karakter-4.webm", hevc: "/characters/karakter-4-hevc.mp4", png: "/characters/produksjon.png?v=7" },
+  { key: "prosess",        webm: "/characters/karakter-5.webm", hevc: "/characters/karakter-5-hevc.mp4", png: "/characters/prosess.png?v=7" },
+  { key: "kontakt",        webm: "/characters/karakter-6.webm", hevc: "/characters/karakter-6-hevc.mp4", png: "/characters/kontakt.png?v=7" },
 ];
 
 const menuItemsNo = [
@@ -184,7 +184,10 @@ export default function StudioIndexHero() {
                           (e.currentTarget as HTMLVideoElement).style.opacity = "1";
                         }}
                       >
+                        {/* Chrome/Firefox/Android: VP9 WebM with alpha */}
                         <source src={char.webm} type="video/webm" />
+                        {/* Safari iOS 13+ / macOS Catalina+: HEVC with alpha */}
+                        <source src={char.hevc} type='video/mp4; codecs="hvc1"' />
                       </video>
                     )}
                   </div>
