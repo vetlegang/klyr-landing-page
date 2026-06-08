@@ -104,6 +104,7 @@ function ChromakeyCanvas({
 
   return (
     <>
+      {/* iOS Safari needs the video in DOM (not display:none) to draw frames to canvas */}
       <video
         ref={videoRef}
         src={src}
@@ -111,7 +112,15 @@ function ChromakeyCanvas({
         playsInline
         loop
         preload="auto"
-        style={{ display: "none" }}
+        style={{
+          position:      "fixed",
+          left:          "-9999px",
+          top:           0,
+          width:         1,
+          height:        1,
+          opacity:       0,
+          pointerEvents: "none",
+        }}
         onCanPlay={() => {
           readyRef.current = true;
           if (isActive) {
