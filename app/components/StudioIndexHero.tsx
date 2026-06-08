@@ -8,12 +8,12 @@ const G = "#2A5C18";
 const V = "7";
 
 const CHARS = [
-  { key: "arbeid",         video: "/characters/karakter-1.mp4", png: "/characters/arbeid.png?v=7" },
-  { key: "meta-creatives", video: "/characters/karakter-2.mp4", png: "/characters/meta-creatives.png?v=7" },
-  { key: "testpakken",     video: "/characters/karakter-3.mp4", png: "/characters/testpakken.png?v=7" },
-  { key: "produksjon",     video: "/characters/karakter-4.mp4", png: "/characters/produksjon.png?v=7" },
-  { key: "prosess",        video: "/characters/karakter-5.mp4", png: "/characters/prosess.png?v=7" },
-  { key: "kontakt",        video: null,                         png: "/characters/kontakt.png?v=7" },
+  { key: "arbeid",         video: "/characters/karakter-1.webm", png: "/characters/arbeid.png?v=7" },
+  { key: "meta-creatives", video: "/characters/karakter-2.webm", png: "/characters/meta-creatives.png?v=7" },
+  { key: "testpakken",     video: "/characters/karakter-3.webm", png: "/characters/testpakken.png?v=7" },
+  { key: "produksjon",     video: "/characters/karakter-4.webm", png: "/characters/produksjon.png?v=7" },
+  { key: "prosess",        video: "/characters/karakter-5.webm", png: "/characters/prosess.png?v=7" },
+  { key: "kontakt",        video: "/characters/karakter-6.webm", png: "/characters/kontakt.png?v=7" },
 ];
 
 const menuItemsNo = [
@@ -153,7 +153,6 @@ export default function StudioIndexHero() {
                   opacity:        i === activeIndex ? 1 : 0,
                   transition:     `opacity ${FADE_MS}ms ease-in-out`,
                   willChange:     "opacity",
-                  mixBlendMode:   "multiply",
                 };
                 return char.video ? (
                   <video
