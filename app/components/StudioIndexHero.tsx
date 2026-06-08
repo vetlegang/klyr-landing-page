@@ -84,8 +84,8 @@ function ChromakeyCanvas({
     const d = imgData.data;
 
     const [bgR, bgG, bgB] = bg;
-    const HARD = 18;  // pixels within 18 units of bg colour → fully transparent
-    const SOFT = 45;  // pixels within 45 units → fade (anti-aliasing / edge pixels)
+    const HARD = 28;  // pixels within 28 units of bg colour → fully transparent
+    const SOFT = 58;  // pixels within 58 units → fade (anti-aliasing / edge pixels)
 
     for (let i = 0; i < d.length; i += 4) {
       const dr = d[i]     - bgR;
@@ -162,8 +162,12 @@ export default function StudioIndexHero() {
   const imgRefs    = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
-    const v = document.createElement("video");
-    setIsSafari(v.canPlayType('video/webm; codecs="vp9"') === "");
+    // Detect Safari via user-agent regardless of VP9 support.
+    // Newer Safari (16+) added VP9, so canPlayType alone no longer works.
+    const ua = navigator.userAgent;
+    const isSafariBrowser =
+      /Safari/i.test(ua) && !/Chrome|CriOS|FxiOS|EdgA|OPR/i.test(ua);
+    setIsSafari(isSafariBrowser);
   }, []);
 
   useEffect(() => {
