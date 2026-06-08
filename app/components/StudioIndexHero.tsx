@@ -56,17 +56,25 @@ export default function StudioIndexHero() {
   const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
   const imgRefs    = useRef<(HTMLImageElement | null)[]>([]);
 
-  // Play active video, pause others
+  // On mount: preload + silently play all videos so canplay fires for every
+  // character before the user hovers — eliminates PNG flash on character switch.
+  useEffect(() => {
+    videoRefs.current.forEach((v) => {
+      if (!v) return;
+      v.muted = true;
+      v.play().catch(() => {});
+    });
+  }, []);
+
+  // Play active video from start, keep others running silently in background
   useEffect(() => {
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
       if (i === activeIndex) {
         v.currentTime = 0;
-        v.play().catch(() => {});
-      } else {
-        v.pause();
-        v.currentTime = 0;
       }
+      // All videos keep playing; wrapper opacity hides inactive ones
+      v.play().catch(() => {});
     });
   }, [activeIndex]);
 
@@ -191,10 +199,9 @@ export default function StudioIndexHero() {
                           if (img) img.style.opacity = "0";
                         }}
                       >
-                        {/* Chrome/Firefox/Android: VP9 WebM with alpha */}
+                        {/* Chrome / Firefox / Android: VP9 WebM with alpha */}
                         <source src={char.webm} type="video/webm" />
-                        {/* Safari iOS 13+ / macOS Catalina+: HEVC with alpha */}
-                        <source src={char.hevc} type='video/mp4; codecs="hvc1"' />
+                        {/* Safari: no valid source → canplay never fires → PNG stays (no grey box) */}
                       </video>
                     )}
                   </div>
