@@ -50,10 +50,19 @@ export default function StudioIndexHero() {
   // Index into CHARS — this is the single source of truth
   const [activeIndex, setActiveIndex]   = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // true = Chrome/Firefox/Android (WebM alpha), false = Safari/iOS (PNG fallback)
+  const [canWebM, setCanWebM] = useState(true);
 
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
   const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // Detect WebM VP9 alpha support (Safari doesn't support it)
+  useEffect(() => {
+    const v = document.createElement("video");
+    const supported = v.canPlayType('video/webm; codecs="vp9"') !== "";
+    setCanWebM(supported);
+  }, []);
 
   // Play active video, pause others
   useEffect(() => {
@@ -153,11 +162,11 @@ export default function StudioIndexHero() {
                   opacity:        i === activeIndex ? 1 : 0,
                   transition:     `opacity ${FADE_MS}ms ease-in-out`,
                   willChange:     "opacity",
-                  // multiply removes near-white MP4 bg on Safari (iOS doesn't support WebM)
-                  // has no visible effect on transparent WebM on Chrome/Firefox
-                  mixBlendMode:   "multiply",
                 };
-                return char.webm ? (
+                // Safari/iOS doesn't support WebM VP9 alpha — show PNG instead (no grey box)
+                // Chrome/Firefox/Android: show WebM with real transparency
+                const showVideo = canWebM && char.webm;
+                return showVideo ? (
                   <video
                     key={char.key}
                     ref={el => { videoRefs.current[i] = el; }}
@@ -167,15 +176,12 @@ export default function StudioIndexHero() {
                     aria-hidden={i !== activeIndex}
                     style={sharedStyle}
                   >
-                    {/* WebM with alpha: Chrome, Firefox, Android */}
                     <source src={char.webm} type="video/webm" />
-                    {/* MP4 fallback: Safari/iOS — mix-blend-mode:multiply handles bg */}
-                    {char.mp4 && <source src={char.mp4} type="video/mp4" />}
                   </video>
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    key={char.key}
+                    key={`${char.key}-png`}
                     src={char.png}
                     alt={i === 0 ? "Fujii karakter" : ""}
                     aria-hidden={i !== activeIndex}
