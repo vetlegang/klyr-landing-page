@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # Re-encode all 6 karakter videos as HEVC with alpha for Safari.
 # Run this on your Mac from the project root:
-#   bash scripts/encode-hevc-alpha.sh
+#   zsh scripts/encode-hevc-alpha.sh
 #
 # Requires: ffmpeg with hevc_videotoolbox (built into macOS / Homebrew ffmpeg)
 # After running, commit the new -hevc.mp4 files and push to deploy.
@@ -10,14 +10,13 @@ set -e
 cd "$(dirname "$0")/.."
 CHARS="public/characters"
 
-declare -A BG=(
-  [1]="f8f9f9"
-  [2]="f4f5f4"
-  [3]="f8f9f8"
-  [4]="f7f8f7"
-  [5]="f6f9f8"
-  [6]="fdfdfd"
-)
+typeset -A BG
+BG[1]="f8f9f9"
+BG[2]="f4f5f4"
+BG[3]="f8f9f8"
+BG[4]="f7f8f7"
+BG[5]="f6f9f8"
+BG[6]="fdfdfd"
 
 for k in 1 2 3 4 5 6; do
   bg="${BG[$k]}"
