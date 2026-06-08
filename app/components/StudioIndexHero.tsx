@@ -8,12 +8,12 @@ const G = "#2A5C18";
 const V = "7";
 
 const CHARS = [
-  "arbeid",
-  "meta-creatives",
-  "testpakken",
-  "produksjon",
-  "prosess",
-  "kontakt",
+  { key: "arbeid",         video: "/characters/karakter-1.mp4", png: "/characters/arbeid.png?v=7" },
+  { key: "meta-creatives", video: "/characters/karakter-2.mp4", png: "/characters/meta-creatives.png?v=7" },
+  { key: "testpakken",     video: "/characters/karakter-3.mp4", png: "/characters/testpakken.png?v=7" },
+  { key: "produksjon",     video: "/characters/karakter-4.mp4", png: "/characters/produksjon.png?v=7" },
+  { key: "prosess",        video: "/characters/karakter-5.mp4", png: "/characters/prosess.png?v=7" },
+  { key: "kontakt",        video: null,                         png: "/characters/kontakt.png?v=7" },
 ];
 
 const menuItemsNo = [
@@ -53,6 +53,21 @@ export default function StudioIndexHero() {
 
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
+  const videoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // Play active video, pause others
+  useEffect(() => {
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === activeIndex) {
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+        v.currentTime = 0;
+      }
+    });
+  }, [activeIndex]);
 
   // Auto-rotate on touch devices — functional setState avoids stale closure
   useEffect(() => {
@@ -78,8 +93,6 @@ export default function StudioIndexHero() {
     setHoveredIndex(null);
     resetTimer.current = setTimeout(() => setActiveIndex(0), 600);
   };
-
-  const src = (name: string) => `/characters/${name}.png?v=${V}`;
 
   return (
     <section
@@ -129,26 +142,40 @@ export default function StudioIndexHero() {
                 flexShrink:  0,
               }}
             >
-              {CHARS.map((name, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={name}
-                  src={src(name)}
-                  alt={i === 0 ? "Fujii karakter" : ""}
-                  aria-hidden={i !== activeIndex}
-                  style={{
-                    position:        "absolute",
-                    inset:           0,
-                    width:           "100%",
-                    height:          "100%",
-                    objectFit:       "contain",
-                    objectPosition:  "center center",
-                    opacity:         i === activeIndex ? 1 : 0,
-                    transition:      `opacity ${FADE_MS}ms ease-in-out`,
-                    willChange:      "opacity",
-                  }}
-                />
-              ))}
+              {CHARS.map((char, i) => {
+                const sharedStyle: React.CSSProperties = {
+                  position:       "absolute",
+                  inset:          0,
+                  width:          "100%",
+                  height:         "100%",
+                  objectFit:      "contain",
+                  objectPosition: "center center",
+                  opacity:        i === activeIndex ? 1 : 0,
+                  transition:     `opacity ${FADE_MS}ms ease-in-out`,
+                  willChange:     "opacity",
+                };
+                return char.video ? (
+                  <video
+                    key={char.key}
+                    ref={el => { videoRefs.current[i] = el; }}
+                    src={char.video}
+                    muted
+                    playsInline
+                    loop
+                    aria-hidden={i !== activeIndex}
+                    style={sharedStyle}
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={char.key}
+                    src={char.png}
+                    alt={i === 0 ? "Fujii karakter" : ""}
+                    aria-hidden={i !== activeIndex}
+                    style={sharedStyle}
+                  />
+                );
+              })}
             </div>
           </motion.div>
 
