@@ -80,12 +80,14 @@ function ChromakeyCanvas({
     const d = imgData.data;
 
     // Black-background chromakey: pixels close to (0,0,0) → transparent
+    // High threshold to catch HEVC compression noise around edges
     for (let i = 0; i < d.length; i += 4) {
-      const sum = d[i] + d[i + 1] + d[i + 2];
-      if (sum < 60) {
-        d[i + 3] = 0;                                       // pure black → fully transparent
-      } else if (sum < 200) {
-        d[i + 3] = Math.round(((sum - 60) / 140) * 255);   // edge fade for anti-aliasing
+      const r = d[i], g = d[i + 1], b = d[i + 2];
+      const sum = r + g + b;
+      if (sum < 120) {
+        d[i + 3] = 0;                                         // dark + noise → fully transparent
+      } else if (sum < 300) {
+        d[i + 3] = Math.round(((sum - 120) / 180) * 255);    // smooth edge transition
       }
     }
 
