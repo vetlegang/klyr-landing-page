@@ -193,8 +193,8 @@ export default function StudioIndexHero() {
                       >
                         {/* Chrome/Firefox/Android: VP9 WebM with alpha */}
                         <source src={char.webm} type="video/webm" />
-                        {/* Safari: HEVC with alpha — uncomment once re-encoded with format=ayuv */}
-                        {/* <source src={char.hevc} type='video/mp4; codecs="hvc1"' /> */}
+                        {/* Safari iOS 13+ / macOS Catalina+: HEVC with alpha */}
+                        <source src={char.hevc} type='video/mp4; codecs="hvc1"' />
                       </video>
                     )}
                   </div>
