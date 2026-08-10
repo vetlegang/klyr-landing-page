@@ -18,21 +18,37 @@ const videos: VideoCardData[] = [
     src: "/videos/camilo-12lover-1.mp4",
     client: "Camillo 12 Lover",
     label: "Kampanje fortsatt live",
+    stats: [
+      { value: "+550%", label: "ROAS" },
+      { value: "2 000+", label: "LEADS GENERERT" },
+    ],
   },
   {
     src: "/videos/camilo-12lover-2.mp4",
     client: "Camillo 12 Lover",
     label: "Kampanje fortsatt live",
+    stats: [
+      { value: "+550%", label: "ROAS" },
+      { value: "2 000+", label: "LEADS GENERERT" },
+    ],
   },
   {
     src: "/videos/mars-bilpleie-1.mp4",
     client: "Mars Bilpleie",
     label: "Kampanje fortsatt live",
+    stats: [
+      { value: "11,4x", label: "ROAS" },
+      { value: "57 000 KR", label: "GENERERT FRA 5 000 KR" },
+    ],
   },
   {
     src: "/videos/mars-bilpleie-2.mp4",
     client: "Mars Bilpleie",
     label: "Kampanje fortsatt live",
+    stats: [
+      { value: "11,4x", label: "ROAS" },
+      { value: "57 000 KR", label: "GENERERT FRA 5 000 KR" },
+    ],
   },
   {
     src: "/videos/boyer-bil-1.mp4",

@@ -1,13 +1,87 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+
+export interface KpiFrame {
+  value: string;  // e.g. "+550%"
+  label: string;  // e.g. "ROAS"
+}
 
 export interface VideoCardData {
   src: string;
   client: string;
   label: string;
-  stat?: string;       // e.g. "5.6×"
-  statLabel?: string;  // e.g. "ROAS"
+  stat?: string;         // e.g. "5.6×" (single, static stat)
+  statLabel?: string;    // e.g. "ROAS"
+  stats?: KpiFrame[];    // when 2+ frames given, rotates automatically
+}
+
+// ── Rotating KPI: cycles through frames with a subtle crossfade/slide ──────
+function RotatingKpi({ frames }: { frames: KpiFrame[] }) {
+  const [index, setIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (frames.length < 2) return;
+    const id = setInterval(() => {
+      setIndex(i => (i + 1) % frames.length);
+    }, 3000);
+    return () => clearInterval(id);
+  }, [frames.length]);
+
+  const current = frames[index];
+  const slide = prefersReducedMotion ? 0 : 8;
+  const duration = prefersReducedMotion ? 0.2 : 0.45;
+
+  return (
+    <div>
+      {/* Screen-reader summary — avoids noisy live-region updates every 3s */}
+      <span className="sr-only">
+        {frames.map(f => `${f.value} ${f.label}`).join(" · ")}
+      </span>
+
+      <div className="relative" style={{ minHeight: "0.85rem" }} aria-hidden="true">
+        <AnimatePresence initial={false}>
+          <motion.p
+            key={`label-${index}`}
+            className="text-white/55 uppercase tracking-widest mb-1"
+            style={{ fontSize: "0.65rem", fontWeight: 700, position: "absolute", top: 0, left: 0, whiteSpace: "nowrap" }}
+            initial={{ opacity: 0, y: slide }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -slide }}
+            transition={{ duration, ease: [0.4, 0, 0.2, 1] }}
+          >
+            {current.label}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
+      <div className="relative" style={{ minHeight: "clamp(2rem, 6vw, 3rem)" }} aria-hidden="true">
+        <AnimatePresence initial={false}>
+          <motion.p
+            key={`value-${index}`}
+            className="text-white leading-none font-black"
+            style={{
+              fontFamily:    "var(--font-nunito), sans-serif",
+              fontSize:      "clamp(2rem, 6vw, 3rem)",
+              letterSpacing: "-0.03em",
+              position:      "absolute",
+              top:           0,
+              left:          0,
+              whiteSpace:    "nowrap",
+            }}
+            initial={{ opacity: 0, y: slide }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -slide }}
+            transition={{ duration, ease: [0.4, 0, 0.2, 1] }}
+          >
+            {current.value}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
 }
 
 function LiveBadge() {
@@ -48,7 +122,7 @@ function SoundOffIcon() {
   );
 }
 
-export default function VideoCard({ src, client, label, stat, statLabel }: VideoCardData) {
+export default function VideoCard({ src, client, label, stat, statLabel, stats }: VideoCardData) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef     = useRef<HTMLVideoElement>(null);
 
@@ -232,7 +306,24 @@ export default function VideoCard({ src, client, label, stat, statLabel }: Video
           pointerEvents:          "none",
         }}
       >
-        {stat ? (
+        {stats && stats.length > 1 ? (
+          <div className="flex items-end justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <RotatingKpi frames={stats} />
+            </div>
+            <p
+              className="text-white/55 text-right pb-1 shrink-0"
+              style={{
+                fontFamily: "var(--font-nunito), sans-serif",
+                fontWeight: 700,
+                fontSize:   "0.75rem",
+                lineHeight: 1.3,
+              }}
+            >
+              {client}
+            </p>
+          </div>
+        ) : stat ? (
           <div className="flex items-end justify-between">
             <div>
               <p
