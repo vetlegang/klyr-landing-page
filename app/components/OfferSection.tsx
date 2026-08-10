@@ -138,8 +138,8 @@ const headingNo = "Velg pakken som passer deg.";
 const headingEn = "Choose the package that fits you.";
 const subNo = "50% rabatt på første runde. Vanlig pris er det dobbelte — vi gir deg halv pris for å teste oss.";
 const subEn = "50% off the first round. Regular price is double — we give you half price to test us.";
-const footerNoteNo = "Ingen binding · du bestemmer hva som skjer etter første runde";
-const footerNoteEn = "No commitment · you decide what happens after the first round";
+const footerNoteNo = "Ingen binding · du bestemmer hva som skjer etter første runde. Egne betingelser gjelder for Revenue Share-modellen.";
+const footerNoteEn = "No commitment · you decide what happens after the first round. Separate terms apply for the Revenue Share model.";
 const labelNo = "Tilbudet";
 const labelEn = "Offer";
 
