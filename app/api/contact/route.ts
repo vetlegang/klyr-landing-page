@@ -20,6 +20,7 @@ function row(label: string, value: string | undefined) {
 function buildHtml(fields: Record<string, string>) {
   const rows = [
     row("Navn", fields.navn),
+    row("Firma", fields.firma),
     row("E-post", fields.epost),
     row("Telefon", fields.telefon),
     row("Nettside", fields.nettside),
@@ -95,12 +96,14 @@ export async function POST(req: NextRequest) {
 
   const from = process.env.CONTACT_EMAIL_FROM ?? "Fujii <onboarding@resend.dev>";
 
+  const subject = body.subject?.trim() || "New Fujii lead from website";
+
   const resend = new Resend(apiKey);
   const { data, error } = await resend.emails.send({
     from,
     to,
     replyTo: epost.trim(),
-    subject: "New Fujii lead from website",
+    subject,
     html: buildHtml(body),
   });
 

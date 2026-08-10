@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../i18n/LanguageContext";
 
@@ -212,7 +212,7 @@ function CalcAccordion({ label, answer }: { label?: string; answer?: string }) {
 }
 
 // ─── Standard package card (original design, unchanged) ────────────────────
-function StandardPlanCard({ plan, i, scrollToContact }: { plan: Plan; i: number; scrollToContact: () => void }) {
+function StandardPlanCard({ plan, i, onApply }: { plan: Plan; i: number; onApply: () => void }) {
   return (
     <motion.div
       className="relative flex flex-col rounded-2xl overflow-hidden"
@@ -278,7 +278,7 @@ function StandardPlanCard({ plan, i, scrollToContact }: { plan: Plan; i: number;
 
         {/* CTA */}
         <button
-          onClick={scrollToContact}
+          onClick={onApply}
           className="w-full py-3.5 rounded-xl text-[13px] font-black tracking-tight transition-all duration-150 mb-8"
           style={
             plan.featured
@@ -344,7 +344,7 @@ function StandardPlanCard({ plan, i, scrollToContact }: { plan: Plan; i: number;
 }
 
 // ─── Revenue Share card — same visual language, distinct commercial model ──
-function RevenueShareCard({ plan, i, scrollToContact }: { plan: Plan; i: number; scrollToContact: () => void }) {
+function RevenueShareCard({ plan, i, onApply }: { plan: Plan; i: number; onApply: () => void }) {
   return (
     <motion.div
       className="relative flex flex-col rounded-2xl overflow-hidden"
@@ -441,7 +441,7 @@ function RevenueShareCard({ plan, i, scrollToContact }: { plan: Plan; i: number;
 
         {/* CTA */}
         <button
-          onClick={scrollToContact}
+          onClick={onApply}
           className="w-full py-3.5 rounded-xl text-[13px] font-black tracking-tight transition-all duration-150 mb-2"
           style={{ background: G, color: "#fff" }}
           onMouseEnter={e => {
@@ -482,6 +482,260 @@ function RevenueShareCard({ plan, i, scrollToContact }: { plan: Plan; i: number;
   );
 }
 
+// ─── Quick-apply modal — shown when a package CTA is clicked ───────────────
+const applyLabelsNo = {
+  title: (name: string) => `Søk om ${name}`,
+  intro: "Legg igjen kontaktinfo, så tar vi kontakt innen 1 arbeidsdag.",
+  company: "Bedriftens navn",
+  companyPh: "Din bedrift AS",
+  email: "E-post",
+  emailPh: "din@epost.no",
+  phone: "Telefon",
+  phonePh: "400 00 000",
+  submit: "Send søknad",
+  sending: "Sender…",
+  successTitle: "Takk — vi tar kontakt snart.",
+  successSub: "Vi har mottatt henvendelsen din og svarer innen 1 arbeidsdag.",
+  error: "Noe gikk galt. Prøv igjen eller kontakt oss direkte.",
+  altLink: "Vil du heller fylle ut hele kontaktskjemaet?",
+  close: "Lukk",
+};
+
+const applyLabelsEn = {
+  title: (name: string) => `Apply for ${name}`,
+  intro: "Leave your details and we'll get back to you within 1 business day.",
+  company: "Company name",
+  companyPh: "Your company Inc",
+  email: "Email",
+  emailPh: "your@email.com",
+  phone: "Phone",
+  phonePh: "400 00 000",
+  submit: "Send application",
+  sending: "Sending…",
+  successTitle: "Thanks — we'll be in touch soon.",
+  successSub: "We've received your request and will respond within 1 business day.",
+  error: "Something went wrong. Try again or contact us directly.",
+  altLink: "Prefer to fill out the full contact form?",
+  close: "Close",
+};
+
+const modalInputClass =
+  "w-full bg-[#fcfcfc] border border-[rgba(42,92,24,0.14)] text-[#101010] text-sm px-4 py-3 rounded-xl placeholder-[#A3A3A3] focus:outline-none focus:border-[rgba(42,92,24,0.35)] transition-colors duration-200";
+
+function ApplyModal({
+  plan,
+  lang,
+  onClose,
+  onGoToFullForm,
+}: {
+  plan: Plan;
+  lang: "no" | "en";
+  onClose: () => void;
+  onGoToFullForm: () => void;
+}) {
+  const L = lang === "no" ? applyLabelsNo : applyLabelsEn;
+  const [firma, setFirma] = useState("");
+  const [epost, setEpost] = useState("");
+  const [telefon, setTelefon] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Close on Escape + lock body scroll while open
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const pakkeLabel = plan.revenueShare
+      ? (lang === "no" ? "Revenue Share (søknad)" : "Revenue Share (application)")
+      : plan.name;
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          navn: firma,
+          firma,
+          epost,
+          telefon,
+          pakke: pakkeLabel,
+          subject:
+            lang === "no"
+              ? `Ny henvendelse: ${pakkeLabel} — fujii.no`
+              : `New inquiry: ${pakkeLabel} — fujii.no`,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.details ?? json.error ?? L.error);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : L.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "rgba(10,20,8,0.55)", backdropFilter: "blur(4px)" }}
+        onClick={onClose}
+      />
+
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={L.title(plan.name)}
+        className="relative w-full max-w-md rounded-2xl overflow-hidden"
+        style={{ background: "#fff", boxShadow: "0 20px 60px rgba(0,0,0,0.25)" }}
+        initial={{ opacity: 0, y: 16, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10, scale: 0.98 }}
+        transition={{ duration: 0.25, ease: [0.2, 0, 0.2, 1] }}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={L.close}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-[13px]"
+          style={{ color: G, opacity: 0.5, background: "rgba(42,92,24,0.06)" }}
+        >
+          ✕
+        </button>
+
+        <div className="p-7 md:p-8">
+          {submitted ? (
+            <div className="py-2">
+              <div className="w-11 h-11 rounded-full bg-[#BEFF00] flex items-center justify-center mb-5">
+                <svg width="20" height="20" fill="none" viewBox="0 0 22 22">
+                  <path stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" d="M4 11l5 5 9-9" />
+                </svg>
+              </div>
+              <h3
+                className="font-black leading-tight mb-2"
+                style={{ fontFamily: "var(--font-nunito), sans-serif", fontSize: "1.35rem", color: G }}
+              >
+                {L.successTitle}
+              </h3>
+              <p className="text-[13px] leading-relaxed" style={{ color: G, opacity: 0.6 }}>
+                {L.successSub}
+              </p>
+            </div>
+          ) : (
+            <>
+              <p
+                className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2"
+                style={{ color: G, opacity: 0.5 }}
+              >
+                {plan.revenueShare ? (plan.badge ?? plan.name) : plan.name}
+              </p>
+              <h3
+                className="font-black leading-tight mb-2"
+                style={{ fontFamily: "var(--font-nunito), sans-serif", fontSize: "1.5rem", color: G }}
+              >
+                {L.title(plan.name)}
+              </h3>
+              <p className="text-[13px] leading-relaxed mb-6" style={{ color: G, opacity: 0.55 }}>
+                {L.intro}
+              </p>
+
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+                <div>
+                  <label
+                    className="block text-[10px] font-bold tracking-[0.18em] uppercase mb-1.5"
+                    style={{ color: G, opacity: 0.55 }}
+                  >
+                    {L.company}
+                  </label>
+                  <input
+                    type="text" required value={firma}
+                    onChange={e => setFirma(e.target.value)}
+                    placeholder={L.companyPh}
+                    className={modalInputClass}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="block text-[10px] font-bold tracking-[0.18em] uppercase mb-1.5"
+                    style={{ color: G, opacity: 0.55 }}
+                  >
+                    {L.email}
+                  </label>
+                  <input
+                    type="email" required value={epost}
+                    onChange={e => setEpost(e.target.value)}
+                    placeholder={L.emailPh}
+                    className={modalInputClass}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="block text-[10px] font-bold tracking-[0.18em] uppercase mb-1.5"
+                    style={{ color: G, opacity: 0.55 }}
+                  >
+                    {L.phone}
+                  </label>
+                  <input
+                    type="tel" required value={telefon}
+                    onChange={e => setTelefon(e.target.value)}
+                    placeholder={L.phonePh}
+                    className={modalInputClass}
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-[12px] text-red-600 text-center">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="mt-1 w-full py-3.5 rounded-xl text-[13px] font-black tracking-tight transition-colors duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ background: G, color: "#fff" }}
+                >
+                  {loading ? L.sending : L.submit}
+                </button>
+              </form>
+
+              <button
+                type="button"
+                onClick={onGoToFullForm}
+                className="mt-4 w-full text-center text-[11px] underline underline-offset-2"
+                style={{ color: G, opacity: 0.45 }}
+              >
+                {L.altLink}
+              </button>
+            </>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function OfferSection() {
   const { lang } = useLanguage();
   const plans    = lang === "no" ? plansNo : plansEn;
@@ -490,8 +744,15 @@ export default function OfferSection() {
   const footerNote = lang === "no" ? footerNoteNo : footerNoteEn;
   const sectionLabel = lang === "no" ? labelNo : labelEn;
 
+  const [applyPlan, setApplyPlan] = useState<Plan | null>(null);
+
   const scrollToContact = () => {
     document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const goToFullForm = () => {
+    setApplyPlan(null);
+    setTimeout(scrollToContact, 50);
   };
 
   return (
@@ -530,12 +791,12 @@ export default function OfferSection() {
         </motion.div>
 
         {/* Pricing grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 items-stretch max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 items-stretch max-w-4xl mx-auto">
           {plans.map((plan, i) => (
             plan.revenueShare ? (
-              <RevenueShareCard key={plan.id} plan={plan} i={i} scrollToContact={scrollToContact} />
+              <RevenueShareCard key={plan.id} plan={plan} i={i} onApply={() => setApplyPlan(plan)} />
             ) : (
-              <StandardPlanCard key={plan.id} plan={plan} i={i} scrollToContact={scrollToContact} />
+              <StandardPlanCard key={plan.id} plan={plan} i={i} onApply={() => setApplyPlan(plan)} />
             )
           ))}
         </div>
@@ -553,6 +814,18 @@ export default function OfferSection() {
         </motion.p>
 
       </div>
+
+      <AnimatePresence>
+        {applyPlan && (
+          <ApplyModal
+            key="apply-modal"
+            plan={applyPlan}
+            lang={lang}
+            onClose={() => setApplyPlan(null)}
+            onGoToFullForm={goToFullForm}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
