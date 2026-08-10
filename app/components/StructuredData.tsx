@@ -89,33 +89,9 @@ export default function StructuredData() {
         },
         {
           "@type": "Offer",
-          name: "Testpakken + Shoot",
+          name: "Revenue Share",
           description:
-            "Alt i Testpakken pluss filming hos kunden. 20 unike Meta-creatives med nytt materiell.",
-          price: "8000",
-          priceCurrency: "NOK",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            price: "8000",
-            priceCurrency: "NOK",
-            valueAddedTaxIncluded: false,
-          },
-          availability: "https://schema.org/InStock",
-          url: "https://fujii.no/#tilbud",
-        },
-        {
-          "@type": "Offer",
-          name: "Testpakken + UGC",
-          description:
-            "Alt i Testpakken pluss filming med UGC-person eller creator.",
-          price: "10000",
-          priceCurrency: "NOK",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            price: "10000",
-            priceCurrency: "NOK",
-            valueAddedTaxIncluded: false,
-          },
+            "Resultatbasert modell. 0 kr i honorar — Fujii tar kostnaden og risikoen på arbeidet, kunden betaler kun annonsebudsjettet. Fujii mottar 20% av generert overskudd.",
           availability: "https://schema.org/InStock",
           url: "https://fujii.no/#tilbud",
         },

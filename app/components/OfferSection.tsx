@@ -54,46 +54,6 @@ const plansNo: Plan[] = [
     featured: false,
   },
   {
-    id: "shoot",
-    name: "Testpakken + Shoot",
-    price: "8 000",
-    unit: "kr eks. mva",
-    tag: "Mest populær",
-    desc: "Alt i Testpakken, pluss at vi kommer og filmer nytt materiell hos dere.",
-    features: [
-      "20 unike Meta-creatives",
-      "Still ads + video ads",
-      "Hooks og vinkler",
-      "Copy til hvert creative",
-      "Feed, Stories og Reels",
-      "Filming hos dere inkludert",
-      "Ingen binding",
-    ],
-    absent: ["UGC-person/creator"],
-    cta: "Velg Shoot-pakken",
-    featured: true,
-  },
-  {
-    id: "ugc",
-    name: "Testpakken + UGC",
-    price: "10 000",
-    unit: "kr eks. mva",
-    tag: null,
-    desc: "Alt i Testpakken, pluss filming med UGC-person eller creator.",
-    features: [
-      "20 unike Meta-creatives",
-      "Still ads + video ads",
-      "Hooks og vinkler",
-      "Copy til hvert creative",
-      "Feed, Stories og Reels",
-      "Filming med UGC/creator",
-      "Ingen binding",
-    ],
-    absent: [],
-    cta: "Velg UGC-pakken",
-    featured: false,
-  },
-  {
     id: "revenue-share",
     name: "Revenue Share",
     desc: "For bedrifter vi virkelig tror vi kan skape vekst for, tilbyr vi en resultatbasert modell. Du betaler kun annonsebudsjettet — vi tar kostnaden og risikoen på arbeidet.",
@@ -142,46 +102,6 @@ const plansEn: Plan[] = [
     ],
     absent: ["On-location shoot", "UGC creator"],
     cta: "Choose Test Package",
-    featured: false,
-  },
-  {
-    id: "shoot",
-    name: "Test Package + Shoot",
-    price: "8 000",
-    unit: "kr excl. VAT",
-    tag: "Most popular",
-    desc: "Everything in the Test Package, plus we come and film new material at your location.",
-    features: [
-      "20 unique Meta creatives",
-      "Still ads + video ads",
-      "Hooks and angles",
-      "Copy for each creative",
-      "Feed, Stories and Reels",
-      "On-location shoot included",
-      "No commitment",
-    ],
-    absent: ["UGC creator"],
-    cta: "Choose Shoot Package",
-    featured: true,
-  },
-  {
-    id: "ugc",
-    name: "Test Package + UGC",
-    price: "10 000",
-    unit: "kr excl. VAT",
-    tag: null,
-    desc: "Everything in the Test Package, plus filming with a UGC creator.",
-    features: [
-      "20 unique Meta creatives",
-      "Still ads + video ads",
-      "Hooks and angles",
-      "Copy for each creative",
-      "Feed, Stories and Reels",
-      "Filming with UGC creator",
-      "No commitment",
-    ],
-    absent: [],
-    cta: "Choose UGC Package",
     featured: false,
   },
   {
@@ -427,7 +347,7 @@ function StandardPlanCard({ plan, i, scrollToContact }: { plan: Plan; i: number;
 function RevenueShareCard({ plan, i, scrollToContact }: { plan: Plan; i: number; scrollToContact: () => void }) {
   return (
     <motion.div
-      className="relative flex flex-col rounded-2xl overflow-hidden md:col-span-3 lg:col-span-1"
+      className="relative flex flex-col rounded-2xl overflow-hidden"
       style={{
         background:  "#fff",
         border:      "1.5px solid rgba(190,255,0,0.5)",
@@ -610,7 +530,7 @@ export default function OfferSection() {
         </motion.div>
 
         {/* Pricing grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 items-stretch max-w-4xl">
           {plans.map((plan, i) => (
             plan.revenueShare ? (
               <RevenueShareCard key={plan.id} plan={plan} i={i} scrollToContact={scrollToContact} />
